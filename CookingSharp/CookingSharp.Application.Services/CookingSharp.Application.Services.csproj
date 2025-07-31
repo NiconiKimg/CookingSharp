@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CookingSharp.Data\CookingSharp.Data.csproj" />
     <ProjectReference Include="..\CookingSharp.Domain.Model\CookingSharp.Domain.Model.csproj" />
     <ProjectReference Include="..\CookingSharp.DTOs\CookingSharp.DTOs.csproj" />
   </ItemGroup>

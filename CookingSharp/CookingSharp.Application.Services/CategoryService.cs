@@ -1,18 +1,26 @@
 ﻿using CookingSharp.DTOs;
-using CookingSharp.Data;
 using CookingSharp.Domain.Model;
-using System.Runtime.CompilerServices;
+using CookingSharp.Application.Services.Contracts;
 
 namespace CookingSharp.Application.Services
 {
     public class CategoryService
     {
-        public CategoryDTO Get(int id)
+
+        private readonly ICategoryRepository _categoryRepository;
+
+        public CategoryService(ICategoryRepository categoryRepository)
         {
-            Category? category = CategoryInMemory.Categories.Find(c => c.Id == id);
+            _categoryRepository = categoryRepository;
+        }
+
+
+        public async Task<CategoryDTO?> GetAsync(int id)
+        {
+            var category = await _categoryRepository.GetByIdAsync(id);
             if (category == null)
             {
-                throw new KeyNotFoundException($"Category with ID {id} not found.");
+                return null;
             }
             return new CategoryDTO
             {
@@ -22,73 +30,52 @@ namespace CookingSharp.Application.Services
             };
         }
 
-        public IEnumerable<CategoryDTO> GetAll()
+        public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
         {
-            return CategoryInMemory.Categories.Select(category => new CategoryDTO
+            var categories = await _categoryRepository.GetAllAsync();
+            return categories.Select(c => new CategoryDTO
             {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            }).ToList();
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description
+            });
         }
 
-        public CategoryDTO Add(CategoryDTO dto)
+        public async Task<CategoryDTO> AddAsync(CategoryDTO dto)
         {
-            if(CategoryInMemory.Categories.Any(c => c.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase)))
+            if (await _categoryRepository.ExistsWithNameAsync(dto.Name))
             {
                 throw new ArgumentException("Category with the same name already exists.");
             }
 
-            var id = GetNextId();
+            var category = new Category(0, dto.Name, dto.Description);
 
-            Category category = new Category(id, dto.Name, dto.Description);
+            var addedCategory = await _categoryRepository.AddAsync(category);
 
-            CategoryInMemory.Categories.Add(category);
-
-            dto.Id = category.Id;
+            dto.Id = addedCategory.Id;
 
             return dto;
         }
 
-        public bool Update(CategoryDTO dto)
+        public async Task UpdateAsync(CategoryDTO dto)
         {
-            Category? existingCategory = CategoryInMemory.Categories.Find(c => c.Id == dto.Id);
-
+            var existingCategory = await _categoryRepository.GetByIdAsync(dto.Id);
             if (existingCategory == null)
             {
                 throw new KeyNotFoundException($"Category with ID {dto.Id} not found.");
             }
-
-            if (CategoryInMemory.Categories.Any(c => c.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase) && c.Id != dto.Id))
+            if (await _categoryRepository.ExistsWithNameAsync(dto.Name, dto.Id))
             {
                 throw new ArgumentException("Category with the same name already exists.");
             }
-
             existingCategory.Name = dto.Name;
             existingCategory.Description = dto.Description;
-            return true;
+            await _categoryRepository.UpdateAsync(existingCategory);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Category? categoryToDelete = CategoryInMemory.Categories.Find(c => c.Id == id);
-
-            if (categoryToDelete == null)
-            {
-                return false;
-            }
-
-            CategoryInMemory.Categories.Remove(categoryToDelete);
-            return true;
-        }
-
-        private static int GetNextId()
-        {
-            if (CategoryInMemory.Categories.Count == 0)
-            {
-                return 1;
-            }
-            return CategoryInMemory.Categories.Max(c => c.Id) + 1;
+            return await _categoryRepository.DeleteAsync(id);
         }
     }
 }
