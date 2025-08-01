@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CookingSharp.Application.Services\CookingSharp.Application.Services.csproj" />
+    <ProjectReference Include="..\CookingSharp.Domain.Model\CookingSharp.Domain.Model.csproj" />
+  </ItemGroup>
+
 </Project>

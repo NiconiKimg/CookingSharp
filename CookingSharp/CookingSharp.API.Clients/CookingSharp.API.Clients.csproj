@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CookingSharp.DTOs\CookingSharp.DTOs.csproj" />
+  </ItemGroup>
+
 </Project>

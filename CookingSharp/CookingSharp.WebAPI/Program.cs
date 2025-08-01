@@ -1,15 +1,32 @@
-namespace CookingSharp.WebAPI
+using CookingSharp.Application.Services;
+using CookingSharp.Application.Services.Contracts;
+using CookingSharp.Data.Repositories;
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<CategoryService>();
+
+builder.Services.AddSingleton<ICategoryRepository, InMemoryCategoryRepository>();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-            var app = builder.Build();
-
-            app.MapGet("/", () => "Hello World!");
-
-            app.Run();
-        }
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
