@@ -681,7 +681,6 @@
         internal TableLayoutPanel tlpHeaderLeft;
         internal PictureBox picLogo;
         internal Label lblAppName;
-        internal RoundedLabel rlblAppSubtitle;
         internal TableLayoutPanel tlpHeaderRight;
         internal PictureBox picUser;
         internal TableLayoutPanel tlpUserDetails;

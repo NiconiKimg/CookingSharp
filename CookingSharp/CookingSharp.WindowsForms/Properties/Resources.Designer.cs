@@ -73,6 +73,16 @@ namespace CookingSharp.WindowsForms.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap circleCheck {
+            get {
+                object obj = ResourceManager.GetObject("circleCheck", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap closeSessionIcon {
             get {
                 object obj = ResourceManager.GetObject("closeSessionIcon", resourceCulture);
@@ -146,6 +156,16 @@ namespace CookingSharp.WindowsForms.Properties {
         internal static System.Drawing.Bitmap recipesIcon {
             get {
                 object obj = ResourceManager.GetObject("recipesIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap roundedLogo {
+            get {
+                object obj = ResourceManager.GetObject("roundedLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

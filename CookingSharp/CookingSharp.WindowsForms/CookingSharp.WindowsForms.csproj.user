@@ -4,8 +4,8 @@
     <Compile Update="FrmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="RoundedLabel.cs">
-      <SubType>Component</SubType>
+    <Compile Update="FrmLogin.cs">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 </Project>
