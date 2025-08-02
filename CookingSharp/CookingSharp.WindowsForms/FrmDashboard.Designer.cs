@@ -85,9 +85,10 @@
             lblKpiCategoryTittle = new Label();
             flpQuickActions = new FlowLayoutPanel();
             lblQuickActionsTittle = new Label();
+            flpQuickActionsButtons = new FlowLayoutPanel();
             btnNewUser = new Button();
+            btnViewReports = new Button();
             btnCheckPending = new Button();
-            button1 = new Button();
             tlpMainLayout.SuspendLayout();
             pnlHeader.SuspendLayout();
             tlpHeaderLayout.SuspendLayout();
@@ -119,6 +120,7 @@
             tlpKpiCategoryLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picKpiCategory).BeginInit();
             flpQuickActions.SuspendLayout();
+            flpQuickActionsButtons.SuspendLayout();
             SuspendLayout();
             // 
             // tlpMainLayout
@@ -137,7 +139,7 @@
             tlpMainLayout.RowCount = 2;
             tlpMainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 62F));
             tlpMainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlpMainLayout.Size = new Size(1033, 629);
+            tlpMainLayout.Size = new Size(1036, 655);
             tlpMainLayout.TabIndex = 0;
             // 
             // pnlHeader
@@ -149,7 +151,7 @@
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Margin = new Padding(0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1033, 62);
+            pnlHeader.Size = new Size(1036, 62);
             pnlHeader.TabIndex = 0;
             // 
             // tlpHeaderLayout
@@ -167,7 +169,7 @@
             tlpHeaderLayout.Name = "tlpHeaderLayout";
             tlpHeaderLayout.RowCount = 1;
             tlpHeaderLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlpHeaderLayout.Size = new Size(1033, 62);
+            tlpHeaderLayout.Size = new Size(1036, 62);
             tlpHeaderLayout.TabIndex = 0;
             // 
             // tlpHeaderLeft
@@ -238,7 +240,7 @@
             tlpHeaderRight.Controls.Add(tlpUserDetails, 1, 0);
             tlpHeaderRight.Controls.Add(btnUserOptions, 2, 0);
             tlpHeaderRight.Dock = DockStyle.Right;
-            tlpHeaderRight.Location = new Point(830, 2);
+            tlpHeaderRight.Location = new Point(833, 2);
             tlpHeaderRight.Margin = new Padding(3, 2, 3, 2);
             tlpHeaderRight.Name = "tlpHeaderRight";
             tlpHeaderRight.RowCount = 1;
@@ -324,7 +326,7 @@
             pnlNavigation.Location = new Point(0, 62);
             pnlNavigation.Margin = new Padding(0);
             pnlNavigation.Name = "pnlNavigation";
-            pnlNavigation.Size = new Size(250, 567);
+            pnlNavigation.Size = new Size(250, 593);
             pnlNavigation.TabIndex = 1;
             // 
             // tlpNavigation
@@ -549,7 +551,7 @@
             pnlMainContent.Margin = new Padding(2);
             pnlMainContent.Name = "pnlMainContent";
             pnlMainContent.Padding = new Padding(14, 13, 14, 13);
-            pnlMainContent.Size = new Size(779, 563);
+            pnlMainContent.Size = new Size(782, 589);
             pnlMainContent.TabIndex = 2;
             // 
             // tlpContentLayout
@@ -568,7 +570,7 @@
             tlpContentLayout.RowStyles.Add(new RowStyle());
             tlpContentLayout.RowStyles.Add(new RowStyle());
             tlpContentLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 17F));
-            tlpContentLayout.Size = new Size(751, 537);
+            tlpContentLayout.Size = new Size(754, 563);
             tlpContentLayout.TabIndex = 0;
             // 
             // flpTitleContainer
@@ -581,7 +583,7 @@
             flpTitleContainer.Location = new Point(3, 2);
             flpTitleContainer.Margin = new Padding(3, 2, 3, 2);
             flpTitleContainer.Name = "flpTitleContainer";
-            flpTitleContainer.Size = new Size(745, 72);
+            flpTitleContainer.Size = new Size(748, 72);
             flpTitleContainer.TabIndex = 0;
             // 
             // lblContentTitle
@@ -618,7 +620,7 @@
             flpKPIs.Location = new Point(3, 78);
             flpKPIs.Margin = new Padding(3, 2, 3, 2);
             flpKPIs.Name = "flpKPIs";
-            flpKPIs.Size = new Size(745, 256);
+            flpKPIs.Size = new Size(748, 256);
             flpKPIs.TabIndex = 1;
             // 
             // pnlKpiUsersBorder
@@ -883,9 +885,10 @@
             tlpKpiCategoryLayout.Location = new Point(0, 0);
             tlpKpiCategoryLayout.Margin = new Padding(3, 2, 3, 2);
             tlpKpiCategoryLayout.Name = "tlpKpiCategoryLayout";
-            tlpKpiCategoryLayout.RowCount = 2;
+            tlpKpiCategoryLayout.RowCount = 3;
             tlpKpiCategoryLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpKpiCategoryLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpKpiCategoryLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tlpKpiCategoryLayout.Size = new Size(238, 113);
             tlpKpiCategoryLayout.TabIndex = 0;
             // 
@@ -897,7 +900,7 @@
             lblKpiCategoryValue.Location = new Point(119, 0);
             lblKpiCategoryValue.Margin = new Padding(0, 0, 15, 0);
             lblKpiCategoryValue.Name = "lblKpiCategoryValue";
-            lblKpiCategoryValue.Size = new Size(104, 56);
+            lblKpiCategoryValue.Size = new Size(104, 46);
             lblKpiCategoryValue.TabIndex = 1;
             lblKpiCategoryValue.Text = "24";
             lblKpiCategoryValue.TextAlign = ContentAlignment.MiddleRight;
@@ -919,7 +922,7 @@
             tlpKpiCategoryLayout.SetColumnSpan(lblKpiCategoryTittle, 2);
             lblKpiCategoryTittle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblKpiCategoryTittle.ForeColor = Color.Black;
-            lblKpiCategoryTittle.Location = new Point(3, 56);
+            lblKpiCategoryTittle.Location = new Point(3, 46);
             lblKpiCategoryTittle.Name = "lblKpiCategoryTittle";
             lblKpiCategoryTittle.Size = new Size(150, 21);
             lblKpiCategoryTittle.TabIndex = 3;
@@ -928,16 +931,14 @@
             // flpQuickActions
             // 
             flpQuickActions.Controls.Add(lblQuickActionsTittle);
-            flpQuickActions.Controls.Add(btnNewUser);
-            flpQuickActions.Controls.Add(btnCheckPending);
-            flpQuickActions.Controls.Add(button1);
+            flpQuickActions.Controls.Add(flpQuickActionsButtons);
             flpQuickActions.Dock = DockStyle.Fill;
             flpQuickActions.FlowDirection = FlowDirection.TopDown;
             flpQuickActions.Location = new Point(2, 338);
             flpQuickActions.Margin = new Padding(2);
             flpQuickActions.Name = "flpQuickActions";
             flpQuickActions.Padding = new Padding(0, 12, 0, 0);
-            flpQuickActions.Size = new Size(747, 197);
+            flpQuickActions.Size = new Size(750, 223);
             flpQuickActions.TabIndex = 2;
             // 
             // lblQuickActionsTittle
@@ -949,74 +950,89 @@
             lblQuickActionsTittle.Margin = new Padding(0, 12, 0, 6);
             lblQuickActionsTittle.Name = "lblQuickActionsTittle";
             lblQuickActionsTittle.Size = new Size(146, 21);
-            lblQuickActionsTittle.TabIndex = 0;
+            lblQuickActionsTittle.TabIndex = 1;
             lblQuickActionsTittle.Text = "Acciones Rápidas";
+            // 
+            // flpQuickActionsButtons
+            // 
+            flpQuickActionsButtons.AutoSize = true;
+            flpQuickActionsButtons.Controls.Add(btnNewUser);
+            flpQuickActionsButtons.Controls.Add(btnViewReports);
+            flpQuickActionsButtons.Controls.Add(btnCheckPending);
+            flpQuickActionsButtons.Location = new Point(3, 53);
+            flpQuickActionsButtons.Margin = new Padding(3, 2, 3, 2);
+            flpQuickActionsButtons.Name = "flpQuickActionsButtons";
+            flpQuickActionsButtons.Size = new Size(732, 58);
+            flpQuickActionsButtons.TabIndex = 5;
             // 
             // btnNewUser
             // 
             btnNewUser.BackColor = Color.FromArgb(165, 182, 252);
             btnNewUser.FlatAppearance.BorderSize = 0;
-            btnNewUser.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNewUser.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
+            btnNewUser.FlatAppearance.MouseDownBackColor = Color.FromArgb(193, 220, 253);
+            btnNewUser.FlatAppearance.MouseOverBackColor = Color.FromArgb(193, 220, 253);
             btnNewUser.FlatStyle = FlatStyle.Flat;
             btnNewUser.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnNewUser.ForeColor = Color.Black;
             btnNewUser.Image = (Image)resources.GetObject("btnNewUser.Image");
             btnNewUser.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNewUser.Location = new Point(3, 53);
+            btnNewUser.Location = new Point(3, 2);
             btnNewUser.Margin = new Padding(3, 2, 3, 4);
             btnNewUser.Name = "btnNewUser";
-            btnNewUser.Size = new Size(238, 35);
+            btnNewUser.Padding = new Padding(4);
+            btnNewUser.Size = new Size(238, 52);
             btnNewUser.TabIndex = 1;
             btnNewUser.Text = "Crear Usuario";
             btnNewUser.UseVisualStyleBackColor = false;
+            // 
+            // btnViewReports
+            // 
+            btnViewReports.BackColor = Color.FromArgb(193, 152, 243);
+            btnViewReports.FlatAppearance.BorderSize = 0;
+            btnViewReports.FlatAppearance.MouseDownBackColor = Color.FromArgb(227, 209, 250);
+            btnViewReports.FlatAppearance.MouseOverBackColor = Color.FromArgb(227, 209, 250);
+            btnViewReports.FlatStyle = FlatStyle.Flat;
+            btnViewReports.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnViewReports.ForeColor = Color.Black;
+            btnViewReports.Image = (Image)resources.GetObject("btnViewReports.Image");
+            btnViewReports.ImageAlign = ContentAlignment.MiddleLeft;
+            btnViewReports.Location = new Point(247, 2);
+            btnViewReports.Margin = new Padding(3, 2, 3, 4);
+            btnViewReports.Name = "btnViewReports";
+            btnViewReports.Padding = new Padding(4);
+            btnViewReports.Size = new Size(238, 52);
+            btnViewReports.TabIndex = 3;
+            btnViewReports.Text = "Ver Reportes";
+            btnViewReports.UseVisualStyleBackColor = false;
             // 
             // btnCheckPending
             // 
             btnCheckPending.BackColor = Color.FromArgb(192, 255, 192);
             btnCheckPending.FlatAppearance.BorderSize = 0;
-            btnCheckPending.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnCheckPending.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
+            btnCheckPending.FlatAppearance.MouseDownBackColor = Color.FromArgb(215, 255, 215);
+            btnCheckPending.FlatAppearance.MouseOverBackColor = Color.FromArgb(215, 255, 215);
             btnCheckPending.FlatStyle = FlatStyle.Flat;
             btnCheckPending.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCheckPending.ForeColor = Color.Black;
             btnCheckPending.Image = (Image)resources.GetObject("btnCheckPending.Image");
             btnCheckPending.ImageAlign = ContentAlignment.MiddleLeft;
-            btnCheckPending.Location = new Point(3, 94);
+            btnCheckPending.Location = new Point(491, 2);
             btnCheckPending.Margin = new Padding(3, 2, 3, 4);
             btnCheckPending.Name = "btnCheckPending";
-            btnCheckPending.Size = new Size(238, 35);
+            btnCheckPending.Padding = new Padding(4);
+            btnCheckPending.Size = new Size(238, 52);
             btnCheckPending.TabIndex = 2;
             btnCheckPending.Text = "Revisar Pendientes";
             btnCheckPending.UseVisualStyleBackColor = false;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(193, 152, 243);
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            button1.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            button1.ForeColor = Color.Black;
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.ImageAlign = ContentAlignment.MiddleLeft;
-            button1.Location = new Point(3, 135);
-            button1.Margin = new Padding(3, 2, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(238, 35);
-            button1.TabIndex = 3;
-            button1.Text = "Ver Reportes";
-            button1.UseVisualStyleBackColor = false;
             // 
             // FrmDashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1033, 629);
+            ClientSize = new Size(1036, 655);
             Controls.Add(tlpMainLayout);
             Margin = new Padding(2);
-            MinimumSize = new Size(899, 490);
+            MinimumSize = new Size(900, 650);
             Name = "FrmDashboard";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cooking # - Panel de Administración";
@@ -1064,6 +1080,7 @@
             ((System.ComponentModel.ISupportInitialize)picKpiCategory).EndInit();
             flpQuickActions.ResumeLayout(false);
             flpQuickActions.PerformLayout();
+            flpQuickActionsButtons.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1093,9 +1110,6 @@
         internal Button btnNavAprobacionRecetas;
         internal Button btnNavAprobacionIngredientes;
         internal TableLayoutPanel tlpContentLayout;
-        internal Label lblContentTitle;
-        internal Label lblContentSubtitle;
-        internal FlowLayoutPanel flpTitleContainer;
         internal FlowLayoutPanel flpKPIs;
         internal Panel pnlKpiUsersBorder;
         internal Panel pnlKpiUsuariosContent;
@@ -1124,9 +1138,13 @@
         internal PictureBox picKpiCategory;
         internal Label lblKpiCategoryTittle;
         private FlowLayoutPanel flpQuickActions;
-        private Label lblQuickActionsTittle;
         internal Button btnNewUser;
         internal Button btnCheckPending;
-        internal Button button1;
+        internal Button btnViewReports;
+        internal FlowLayoutPanel flpTitleContainer;
+        internal Label lblContentTitle;
+        internal Label lblContentSubtitle;
+        private Label lblQuickActionsTittle;
+        internal FlowLayoutPanel flpQuickActionsButtons;
     }
 }
