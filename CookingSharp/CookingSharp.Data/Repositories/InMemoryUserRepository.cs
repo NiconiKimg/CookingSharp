@@ -7,9 +7,9 @@ namespace CookingSharp.Data.Repositories
     {
         private static readonly List<User> _users = new List<User>
         {
-            new User(1, "Desserts", "Sweet dishes served at the end of a meal", "", ""),
-            new User(2, "Main Courses", "The primary dish in a meal", "", ""),
-            new User(3, "Appetizers", "Small dishes served before the main course", "", "")
+            new User(1, "Emiliano", "Luhmann", "emyluhmann@gmail.com", "123"),
+            new User(2, "Nicolas", "Pedemonte", "NicoPedi@gmail.com", "123"),
+            new User(3, "Luca", "Trincavelli", "LucaTricavelli@gmail.com", "123")
         };
 
         private static int _nextId = _users.Any() ? _users.Max(c => c.Id) + 1 : 1;

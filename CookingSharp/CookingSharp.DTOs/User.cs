@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CookingSharp.DTOs
+﻿namespace CookingSharp.DTOs
 {
     public class UserDTO
     {
@@ -13,5 +7,14 @@ namespace CookingSharp.DTOs
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public class UserResponseDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+
     }
 }

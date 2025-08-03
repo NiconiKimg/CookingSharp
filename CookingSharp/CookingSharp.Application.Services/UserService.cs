@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CookingSharp.Application.Services.Contracts;
+﻿using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain.Model;
 using CookingSharp.DTOs;
 
