@@ -27,8 +27,9 @@ namespace CookingSharp.WindowsForms
         {
             //Validations must be done in Program.cs
             var frmDashboard = new FrmDashboard();
+            this.Hide();
             frmDashboard.ShowDialog();
-            this.Close();
+            
         }
     }
 }

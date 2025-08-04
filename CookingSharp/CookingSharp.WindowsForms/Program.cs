@@ -42,7 +42,7 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<FrmDashboard>();
 
             services.AddTransient<frmCategoriesCreate>();
-
+            
             services.AddTransient<UC_Categories>();
             services.AddTransient<UC_AdminPanel>();
         }
