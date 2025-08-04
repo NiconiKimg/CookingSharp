@@ -30,12 +30,12 @@
         {
             components = new System.ComponentModel.Container();
             dgvCategories = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            DescriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             class1BindingSource = new BindingSource(components);
             class1BindingSource1 = new BindingSource(components);
-            button1 = new Button();
+            btnCreateCategory = new Button();
+            btnDeleteCategory = new Button();
+            btnModifyCategory = new Button();
+            lblCategories = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCategories).BeginInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource1).BeginInit();
@@ -44,45 +44,59 @@
             // dgvCategories
             // 
             dgvCategories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategories.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, DescriptionDataGridViewTextBoxColumn });
             dgvCategories.Location = new Point(58, 109);
             dgvCategories.Name = "dgvCategories";
             dgvCategories.Size = new Size(667, 370);
             dgvCategories.TabIndex = 0;
             // 
-            // idDataGridViewTextBoxColumn
+            // btnCreateCategory
             // 
-            idDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            idDataGridViewTextBoxColumn.HeaderText = "ID";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            btnCreateCategory.Location = new Point(618, 69);
+            btnCreateCategory.Name = "btnCreateCategory";
+            btnCreateCategory.Size = new Size(107, 23);
+            btnCreateCategory.TabIndex = 1;
+            btnCreateCategory.Text = "Crear Categoria";
+            btnCreateCategory.UseVisualStyleBackColor = true;
+            btnCreateCategory.Click += btnCreateCategory_Click;
             // 
-            // nameDataGridViewTextBoxColumn
+            // btnDeleteCategory
             // 
-            nameDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            nameDataGridViewTextBoxColumn.HeaderText = "Nombre";
-            nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            btnDeleteCategory.Location = new Point(610, 497);
+            btnDeleteCategory.Name = "btnDeleteCategory";
+            btnDeleteCategory.Size = new Size(115, 23);
+            btnDeleteCategory.TabIndex = 2;
+            btnDeleteCategory.Text = "Eliminar Categoría";
+            btnDeleteCategory.UseVisualStyleBackColor = true;
+            btnDeleteCategory.Click += btnDeleteCategory_Click;
             // 
-            // DescriptionDataGridViewTextBoxColumn
+            // btnModifyCategory
             // 
-            DescriptionDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            DescriptionDataGridViewTextBoxColumn.HeaderText = "Descripcion";
-            DescriptionDataGridViewTextBoxColumn.Name = "DescriptionDataGridViewTextBoxColumn";
+            btnModifyCategory.Location = new Point(472, 497);
+            btnModifyCategory.Name = "btnModifyCategory";
+            btnModifyCategory.Size = new Size(121, 23);
+            btnModifyCategory.TabIndex = 3;
+            btnModifyCategory.Text = "Modificar Categoría";
+            btnModifyCategory.UseVisualStyleBackColor = true;
+            btnModifyCategory.Click += btnModifyCategory_Click;
             // 
-            // button1
+            // lblCategories
             // 
-            button1.Location = new Point(618, 69);
-            button1.Name = "button1";
-            button1.Size = new Size(107, 23);
-            button1.TabIndex = 1;
-            button1.Text = "Crear Categoria";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            lblCategories.AutoSize = true;
+            lblCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblCategories.Location = new Point(58, 22);
+            lblCategories.Name = "lblCategories";
+            lblCategories.Size = new Size(264, 32);
+            lblCategories.TabIndex = 4;
+            lblCategories.Text = "Gestión de Categorías";
             // 
             // UC_Categories
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(button1);
+            Controls.Add(lblCategories);
+            Controls.Add(btnModifyCategory);
+            Controls.Add(btnDeleteCategory);
+            Controls.Add(btnCreateCategory);
             Controls.Add(dgvCategories);
             Name = "UC_Categories";
             Size = new Size(782, 589);
@@ -90,16 +104,17 @@
             ((System.ComponentModel.ISupportInitialize)class1BindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView dgvCategories;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn DescriptionDataGridViewTextBoxColumn;
         private BindingSource class1BindingSource;
         private BindingSource class1BindingSource1;
-        private Button button1;
+        private Button btnCreateCategory;
+        private Button btnDeleteCategory;
+        private Button btnModifyCategory;
+        private Label lblCategories;
     }
 }

@@ -1,5 +1,6 @@
 using CookingSharp.WindowsForms.CategoriesControl;
 using CookingSharp.WindowsForms.UserControls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CookingSharp.WindowsForms
 {
@@ -8,26 +9,57 @@ namespace CookingSharp.WindowsForms
         public FrmDashboard()
         {
             InitializeComponent();
+
+            // Suscribimos los eventos en el constructor.
+            this.Load += FrmDashboard_Load;
+            this.btnNavCategorias.Click += btnNavCategorias_Click;
         }
 
-        private void addUserControl(UserControl userControl)
-        {
-            userControl.Dock = DockStyle.Fill;
-            pnlMainContent.Controls.Clear();
-            pnlMainContent.Controls.Add(userControl);
-            userControl.BringToFront();
-        }
 
-        private void btnNavCategorias_Click(object sender, EventArgs e)
+        private void FrmDashboard_Load(object sender, EventArgs e)
         {
-            UC_Categories uc = new UC_Categories();
-            addUserControl(uc);
+            LoadAdminPanelControl();
         }
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            UC_AdminPanel uc = new UC_AdminPanel();
-            addUserControl(uc);
+            LoadAdminPanelControl();
         }
+
+        private void btnNavCategorias_Click(object sender, EventArgs e)
+        {
+            LoadCategoriesControl();
+        }
+
+        #region Métodos de Ayuda para Cargar Controles
+
+        private void LoadControl<T>() where T : UserControl
+        {
+
+            var control = Program.ServiceProvider?.GetRequiredService<T>();
+
+            if (control == null)
+            {
+                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}.", "Error de Configuración");
+                return;
+            }
+
+
+            pnlMainContent.Controls.Clear();
+            control.Dock = DockStyle.Fill;
+            pnlMainContent.Controls.Add(control);
+        }
+
+        private void LoadAdminPanelControl()
+        {
+            LoadControl<UC_AdminPanel>();
+        }
+
+        private void LoadCategoriesControl()
+        {
+            LoadControl<UC_Categories>();
+        }
+
+        #endregion
     }
 }

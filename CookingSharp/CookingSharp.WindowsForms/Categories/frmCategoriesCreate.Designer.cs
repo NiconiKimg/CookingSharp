@@ -33,8 +33,8 @@
             lblName = new Label();
             lblDescription = new Label();
             txtBoxDescription = new TextBox();
-            btnCancel = new Button();
             btnSave = new Button();
+            btnCancel = new Button();
             SuspendLayout();
             // 
             // lblCRUDCategories
@@ -80,37 +80,63 @@
             txtBoxDescription.Size = new Size(380, 86);
             txtBoxDescription.TabIndex = 3;
             // 
-            // btnCancel
-            // 
-            btnCancel.Location = new Point(40, 333);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(144, 44);
-            btnCancel.TabIndex = 5;
-            btnCancel.Text = "Cancelar";
-            btnCancel.UseVisualStyleBackColor = true;
-            // 
             // btnSave
             // 
+            btnSave.Anchor = AnchorStyles.None;
+            btnSave.BackColor = Color.FromArgb(31, 41, 55);
+            btnSave.Cursor = Cursors.Hand;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
+            btnSave.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(276, 333);
+            btnSave.Margin = new Padding(0, 17, 0, 0);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(144, 44);
-            btnSave.TabIndex = 6;
+            btnSave.TabIndex = 7;
             btnSave.Text = "Guardar";
-            btnSave.UseVisualStyleBackColor = true;
+            btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Anchor = AnchorStyles.None;
+            btnCancel.BackColor = Color.FromArgb(224, 224, 224);
+            btnCancel.Cursor = Cursors.Hand;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatAppearance.MouseDownBackColor = Color.Silver;
+            btnCancel.FlatAppearance.MouseOverBackColor = Color.Silver;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = Color.Black;
+            btnCancel.Location = new Point(40, 333);
+            btnCancel.Margin = new Padding(0, 17, 0, 0);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(144, 44);
+            btnCancel.TabIndex = 8;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.Click += btnCancel_Click;
             // 
             // frmCategoriesCreate
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(460, 437);
-            Controls.Add(btnSave);
             Controls.Add(btnCancel);
+            Controls.Add(btnSave);
             Controls.Add(lblDescription);
             Controls.Add(txtBoxDescription);
             Controls.Add(lblName);
             Controls.Add(txtBoxName);
             Controls.Add(lblCRUDCategories);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "frmCategoriesCreate";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmCategoriesCU";
             ResumeLayout(false);
             PerformLayout();
@@ -123,7 +149,8 @@
         private Label lblName;
         private Label lblDescription;
         private TextBox txtBoxDescription;
-        private Button btnCancel;
         private Button btnSave;
+        private Button btnCancel;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
