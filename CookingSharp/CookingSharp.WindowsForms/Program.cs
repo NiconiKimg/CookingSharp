@@ -2,6 +2,7 @@ using CookingSharp.API.Clients;
 //using CookingSharp.WindowsForms;
 using CookingSharp.WindowsForms.CategoriesControl;
 using CookingSharp.WindowsForms.UserControls;
+using CookingSharp.WindowsForms.Users;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 
@@ -42,9 +43,11 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<FrmDashboard>();
 
             services.AddTransient<frmCategoriesCreate>();
-            
+            services.AddTransient<FrmUsersCreate>();
+
             services.AddTransient<UC_Categories>();
             services.AddTransient<UC_AdminPanel>();
+            services.AddTransient<UC_Users>();
         }
     }
 }

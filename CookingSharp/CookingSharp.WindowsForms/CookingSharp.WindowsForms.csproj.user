@@ -25,5 +25,14 @@
     <Compile Update="UserControls\UC_Categories.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UserControls\UC_Users.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Users\FrmUsersCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Users\FrmUsersUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

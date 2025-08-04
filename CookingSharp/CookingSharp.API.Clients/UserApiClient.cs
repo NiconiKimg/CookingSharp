@@ -33,7 +33,7 @@ namespace CookingSharp.API.Clients
             return null;
         }
 
-        public async Task<bool> UpdateAsync(UserDTO dto)
+        public async Task<bool> UpdateAsync(UserResponseDTO dto)
         {
             HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"api/users/{dto.Id}", dto);
             return response.IsSuccessStatusCode;

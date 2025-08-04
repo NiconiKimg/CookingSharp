@@ -60,6 +60,16 @@ namespace CookingSharp.WindowsForms
             LoadControl<UC_Categories>();
         }
 
+        private void LoadUsersControl()
+        {
+            LoadControl<UC_Users>();
+        }
+
         #endregion
+
+        private void btnNavUsuarios_Click(object sender, EventArgs e)
+        {
+            LoadUsersControl();
+        }
     }
 }
