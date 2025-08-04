@@ -1,46 +1,49 @@
-﻿using CookingSharp.API.Clients;
+﻿using System.Windows.Forms;
+using CookingSharp.API.Clients;
 using CookingSharp.DTOs;
-using System.Xml.Linq;
 
-namespace CookingSharp.WindowsForms
+namespace CookingSharp.WindowsForms.Users
 {
-    public partial class frmCategoriesCreate : Form
+    public partial class FrmUsersCreate : Form
     {
-        private readonly CategoryApiClient _apiClient;
+        private readonly UserApiClient _apiClient;
 
-        public frmCategoriesCreate(CategoryApiClient apiClient)
+        public FrmUsersCreate(UserApiClient apiClient)
         {
             InitializeComponent();
             _apiClient = apiClient;
         }
 
+
         private async void btnSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtBoxName.Text))
             {
-                MessageBox.Show("El nombre de la categoría es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("El nombre del usuario es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var newCategoryDto = new CategoryDTO
+            var newUserDto = new UserDTO
             {
                 Name = txtBoxName.Text.Trim(),
-                Description = txtBoxDescription.Text.Trim()
+                Surname = txtBoxSurname.Text.Trim(),
+                Email = txtBoxEmail.Text.Trim(),
+                Password = txtBoxPassword.Text.Trim()
             };
 
             try
             {
-                var createdCategory = await _apiClient.AddAsync(newCategoryDto);
+                var createdUser = await _apiClient.AddAsync(newUserDto);
 
-                if (createdCategory != null)
+                if (createdUser != null)
                 {
-                    MessageBox.Show("Categoría creada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Usario creada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo crear la categoría. La API no devolvió el objeto creado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo crear el usuario. La API no devolvió el objeto creado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)

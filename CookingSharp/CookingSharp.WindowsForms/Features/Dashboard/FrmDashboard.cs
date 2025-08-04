@@ -9,8 +9,6 @@ namespace CookingSharp.WindowsForms
         public FrmDashboard()
         {
             InitializeComponent();
-
-            // Suscribimos los eventos en el constructor.
             this.Load += FrmDashboard_Load;
             this.btnNavCategorias.Click += btnNavCategorias_Click;
         }
@@ -60,6 +58,16 @@ namespace CookingSharp.WindowsForms
             LoadControl<UC_Categories>();
         }
 
+        private void LoadUsersControl()
+        {
+            LoadControl<UC_Users>();
+        }
+
         #endregion
+
+        private void btnNavUsuarios_Click(object sender, EventArgs e)
+        {
+            LoadUsersControl();
+        }
     }
 }

@@ -15,14 +15,14 @@ namespace CookingSharp.Application.Services
         }
 
 
-        public async Task<UserDTO?> GetAsync(int id)
+        public async Task<UserResponseDTO?> GetAsync(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)
             {
                 return null;
             }
-            return new UserDTO
+            return new UserResponseDTO
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -31,10 +31,10 @@ namespace CookingSharp.Application.Services
             };
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            return users.Select(u => new UserDTO
+            return users.Select(u => new UserResponseDTO
             {
                 Id = u.Id,
                 Name = u.Name,
@@ -43,7 +43,7 @@ namespace CookingSharp.Application.Services
             });
         }
 
-        public async Task<UserDTO> AddAsync(UserDTO dto)
+        public async Task<UserResponseDTO> AddAsync(UserDTO dto)
         {
             if (await _userRepository.ExistsWithEmailAsync(dto.Email))
             {
@@ -54,12 +54,17 @@ namespace CookingSharp.Application.Services
 
             var addedUser = await _userRepository.AddAsync(user);
 
-            dto.Id = addedUser.Id;
-
-            return dto;
+            var responseDto = new UserResponseDTO
+            {
+                Id = addedUser.Id,
+                Name = addedUser.Name,
+                Surname = addedUser.Surname,
+                Email = addedUser.Email
+            };
+            return responseDto;
         }
 
-        public async Task UpdateAsync(UserDTO dto)
+        public async Task UpdateAsync(UserResponseDTO dto)
         {
             var existingUser = await _userRepository.GetByIdAsync(dto.Id);
             if (existingUser == null)
@@ -73,7 +78,6 @@ namespace CookingSharp.Application.Services
             existingUser.Name = dto.Name;
             existingUser.Surname = dto.Surname;
             existingUser.Email = dto.Email;
-            existingUser.Password = dto.Password;
             await _userRepository.UpdateAsync(existingUser);
         }
 

@@ -41,9 +41,10 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(276, 352);
+            btnSave.Location = new Point(394, 587);
+            btnSave.Margin = new Padding(4, 5, 4, 5);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(144, 44);
+            btnSave.Size = new Size(206, 73);
             btnSave.TabIndex = 13;
             btnSave.Text = "Guardar";
             btnSave.UseVisualStyleBackColor = true;
@@ -51,9 +52,10 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(40, 352);
+            btnCancel.Location = new Point(57, 587);
+            btnCancel.Margin = new Padding(4, 5, 4, 5);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(144, 44);
+            btnCancel.Size = new Size(206, 73);
             btnCancel.TabIndex = 12;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = true;
@@ -62,67 +64,74 @@
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(40, 195);
+            lblDescription.Location = new Point(57, 325);
+            lblDescription.Margin = new Padding(4, 0, 4, 0);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(69, 15);
+            lblDescription.Size = new Size(104, 25);
             lblDescription.TabIndex = 11;
             lblDescription.Text = "Descripcion";
             // 
             // txtBoxDescription
             // 
-            txtBoxDescription.Location = new Point(40, 213);
+            txtBoxDescription.Location = new Point(57, 355);
+            txtBoxDescription.Margin = new Padding(4, 5, 4, 5);
             txtBoxDescription.Multiline = true;
             txtBoxDescription.Name = "txtBoxDescription";
-            txtBoxDescription.Size = new Size(380, 86);
+            txtBoxDescription.Size = new Size(541, 141);
             txtBoxDescription.TabIndex = 10;
             // 
             // lblName
             // 
             lblName.AutoSize = true;
-            lblName.Location = new Point(40, 139);
+            lblName.Location = new Point(57, 232);
+            lblName.Margin = new Padding(4, 0, 4, 0);
             lblName.Name = "lblName";
-            lblName.Size = new Size(121, 15);
+            lblName.Size = new Size(184, 25);
             lblName.TabIndex = 9;
             lblName.Text = "Nombre de Categoría";
             // 
             // txtBoxName
             // 
-            txtBoxName.Location = new Point(40, 157);
+            txtBoxName.Location = new Point(57, 262);
+            txtBoxName.Margin = new Padding(4, 5, 4, 5);
             txtBoxName.Name = "txtBoxName";
-            txtBoxName.Size = new Size(380, 23);
+            txtBoxName.Size = new Size(541, 31);
             txtBoxName.TabIndex = 8;
             // 
             // lblCRUDCategories
             // 
             lblCRUDCategories.AutoSize = true;
             lblCRUDCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCRUDCategories.Location = new Point(134, 41);
+            lblCRUDCategories.Location = new Point(191, 68);
+            lblCRUDCategories.Margin = new Padding(4, 0, 4, 0);
             lblCRUDCategories.Name = "lblCRUDCategories";
-            lblCRUDCategories.Size = new Size(198, 32);
+            lblCRUDCategories.Size = new Size(289, 48);
             lblCRUDCategories.TabIndex = 7;
             lblCRUDCategories.Text = "Editar Categoria";
             // 
             // lblId
             // 
             lblId.AutoSize = true;
-            lblId.Location = new Point(40, 86);
+            lblId.Location = new Point(57, 143);
+            lblId.Margin = new Padding(4, 0, 4, 0);
             lblId.Name = "lblId";
-            lblId.Size = new Size(18, 15);
+            lblId.Size = new Size(30, 25);
             lblId.TabIndex = 15;
             lblId.Text = "ID";
             // 
             // txtBoxId
             // 
-            txtBoxId.Location = new Point(40, 104);
+            txtBoxId.Location = new Point(57, 173);
+            txtBoxId.Margin = new Padding(4, 5, 4, 5);
             txtBoxId.Name = "txtBoxId";
-            txtBoxId.Size = new Size(380, 23);
+            txtBoxId.Size = new Size(541, 31);
             txtBoxId.TabIndex = 14;
             // 
             // frmCategoriesUpdate
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(460, 437);
+            ClientSize = new Size(657, 728);
             Controls.Add(lblId);
             Controls.Add(txtBoxId);
             Controls.Add(btnSave);
@@ -133,11 +142,12 @@
             Controls.Add(txtBoxName);
             Controls.Add(lblCRUDCategories);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmCategoriesUpdate";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "frmCategoriesDelete";
+            Text = "Cooking # - Editar Categoría";
             ResumeLayout(false);
             PerformLayout();
         }

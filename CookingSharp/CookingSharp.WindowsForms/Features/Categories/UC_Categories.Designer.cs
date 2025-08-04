@@ -44,16 +44,19 @@
             // dgvCategories
             // 
             dgvCategories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategories.Location = new Point(58, 109);
+            dgvCategories.Location = new Point(83, 182);
+            dgvCategories.Margin = new Padding(4, 5, 4, 5);
             dgvCategories.Name = "dgvCategories";
-            dgvCategories.Size = new Size(667, 370);
+            dgvCategories.RowHeadersWidth = 62;
+            dgvCategories.Size = new Size(953, 617);
             dgvCategories.TabIndex = 0;
             // 
             // btnCreateCategory
             // 
-            btnCreateCategory.Location = new Point(618, 69);
+            btnCreateCategory.Location = new Point(883, 115);
+            btnCreateCategory.Margin = new Padding(4, 5, 4, 5);
             btnCreateCategory.Name = "btnCreateCategory";
-            btnCreateCategory.Size = new Size(107, 23);
+            btnCreateCategory.Size = new Size(153, 38);
             btnCreateCategory.TabIndex = 1;
             btnCreateCategory.Text = "Crear Categoria";
             btnCreateCategory.UseVisualStyleBackColor = true;
@@ -61,9 +64,10 @@
             // 
             // btnDeleteCategory
             // 
-            btnDeleteCategory.Location = new Point(610, 497);
+            btnDeleteCategory.Location = new Point(871, 828);
+            btnDeleteCategory.Margin = new Padding(4, 5, 4, 5);
             btnDeleteCategory.Name = "btnDeleteCategory";
-            btnDeleteCategory.Size = new Size(115, 23);
+            btnDeleteCategory.Size = new Size(164, 38);
             btnDeleteCategory.TabIndex = 2;
             btnDeleteCategory.Text = "Eliminar Categoría";
             btnDeleteCategory.UseVisualStyleBackColor = true;
@@ -71,9 +75,10 @@
             // 
             // btnModifyCategory
             // 
-            btnModifyCategory.Location = new Point(472, 497);
+            btnModifyCategory.Location = new Point(670, 828);
+            btnModifyCategory.Margin = new Padding(4, 5, 4, 5);
             btnModifyCategory.Name = "btnModifyCategory";
-            btnModifyCategory.Size = new Size(121, 23);
+            btnModifyCategory.Size = new Size(177, 38);
             btnModifyCategory.TabIndex = 3;
             btnModifyCategory.Text = "Modificar Categoría";
             btnModifyCategory.UseVisualStyleBackColor = true;
@@ -83,23 +88,25 @@
             // 
             lblCategories.AutoSize = true;
             lblCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCategories.Location = new Point(58, 22);
+            lblCategories.Location = new Point(83, 37);
+            lblCategories.Margin = new Padding(4, 0, 4, 0);
             lblCategories.Name = "lblCategories";
-            lblCategories.Size = new Size(264, 32);
+            lblCategories.Size = new Size(387, 48);
             lblCategories.TabIndex = 4;
             lblCategories.Text = "Gestión de Categorías";
             // 
             // UC_Categories
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(lblCategories);
             Controls.Add(btnModifyCategory);
             Controls.Add(btnDeleteCategory);
             Controls.Add(btnCreateCategory);
             Controls.Add(dgvCategories);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "UC_Categories";
-            Size = new Size(782, 589);
+            Size = new Size(1117, 982);
             ((System.ComponentModel.ISupportInitialize)dgvCategories).EndInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource1).EndInit();
