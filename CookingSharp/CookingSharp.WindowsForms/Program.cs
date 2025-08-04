@@ -1,18 +1,50 @@
+using CookingSharp.API.Clients;
+//using CookingSharp.WindowsForms;
+using CookingSharp.WindowsForms.CategoriesControl;
+using CookingSharp.WindowsForms.UserControls;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+
 namespace CookingSharp.WindowsForms
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+
+        public static IServiceProvider? ServiceProvider { get; private set; }
+
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmLogin());
 
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            ServiceProvider = services.BuildServiceProvider();
+
+            var mainForm = ServiceProvider.GetRequiredService<FrmLogin>();
+            Application.Run(mainForm);
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddHttpClient<CategoryApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7111/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
+            services.AddTransient<FrmLogin>();
+            services.AddTransient<FrmDashboard>();
+
+            services.AddTransient<frmCategoriesCreate>();
+            
+            services.AddTransient<UC_Categories>();
+            services.AddTransient<UC_AdminPanel>();
         }
     }
 }
