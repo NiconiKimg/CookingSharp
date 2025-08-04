@@ -9,8 +9,6 @@ namespace CookingSharp.WindowsForms
         public FrmDashboard()
         {
             InitializeComponent();
-
-            // Suscribimos los eventos en el constructor.
             this.Load += FrmDashboard_Load;
             this.btnNavCategorias.Click += btnNavCategorias_Click;
         }

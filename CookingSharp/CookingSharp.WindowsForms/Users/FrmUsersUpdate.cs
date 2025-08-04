@@ -34,27 +34,22 @@ namespace CookingSharp.WindowsForms.Users
                 return;
             }
 
+            _userToUpdate.Id = _userToUpdate.Id;
             _userToUpdate.Name = txtBoxName.Text.Trim();
             _userToUpdate.Surname = txtBoxSurname.Text.Trim();
+            _userToUpdate.Email = txtBoxEmail.Text.Trim();
 
             try
             {
-                bool success = await _apiClient.UpdateAsync(_userToUpdate);
+                await _apiClient.UpdateAsync(_userToUpdate);
 
-                if (success)
-                {
-                    MessageBox.Show("Usuario actualizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.DialogResult = DialogResult.OK;
-                    this.Dispose();
-                }
-                else
-                {
-                    MessageBox.Show("No se pudo actualizar el usuario (posiblemente fue eliminado).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Usuario actualizado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Dispose();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al actualizar el usuario: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

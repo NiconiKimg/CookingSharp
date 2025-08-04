@@ -6,19 +6,19 @@ namespace CookingSharp.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController(UserService userService) : ControllerBase
+    public class UsersController(UserService userService) : ControllerBase
     {
         #region GET Endpoints
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAll()
         {
             var users = await userService.GetAllAsync();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetById(int id)
+        public async Task<ActionResult<UserResponseDTO>> GetById(int id)
         {
             var user = await userService.GetAsync(id);
 
@@ -53,7 +53,7 @@ namespace CookingSharp.WebAPI.Controllers
         #region PUT Endpoint
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserDTO userDto)
+        public async Task<IActionResult> Update(int id, [FromBody] UserResponseDTO userDto)
         {
             if (id != userDto.Id)
             {

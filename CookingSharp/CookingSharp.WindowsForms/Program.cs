@@ -1,5 +1,4 @@
 using CookingSharp.API.Clients;
-//using CookingSharp.WindowsForms;
 using CookingSharp.WindowsForms.CategoriesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;
@@ -22,14 +21,39 @@ namespace CookingSharp.WindowsForms
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider();
 
-            var mainForm = ServiceProvider.GetRequiredService<FrmLogin>();
-            Application.Run(mainForm);
+            using (var loginForm = ServiceProvider?.GetRequiredService<FrmLogin>())
+            {
+                DialogResult result = loginForm?.ShowDialog() ?? DialogResult.Cancel;
+                if (result == DialogResult.OK)
+                {
+                    var mainForm = ServiceProvider?.GetRequiredService<FrmDashboard>();
+                    if (mainForm != null)
+                    {
+                        Application.Run(mainForm);
+                    }
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
 
             services.AddHttpClient<CategoryApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7111/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
+
+            services.AddHttpClient<UserApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
                 client.DefaultRequestHeaders.Accept.Clear();

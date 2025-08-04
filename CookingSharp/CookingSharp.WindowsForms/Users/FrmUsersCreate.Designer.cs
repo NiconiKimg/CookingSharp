@@ -52,13 +52,14 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(57, 587);
-            btnCancel.Margin = new Padding(0, 28, 0, 0);
+            btnCancel.Location = new Point(40, 352);
+            btnCancel.Margin = new Padding(0, 17, 0, 0);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(206, 73);
+            btnCancel.Size = new Size(144, 44);
             btnCancel.TabIndex = 15;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.Click += btnCancel_Click;
             // 
             // btnSave
             // 
@@ -71,102 +72,94 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(394, 587);
-            btnSave.Margin = new Padding(0, 28, 0, 0);
+            btnSave.Location = new Point(276, 352);
+            btnSave.Margin = new Padding(0, 17, 0, 0);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(206, 73);
+            btnSave.Size = new Size(144, 44);
             btnSave.TabIndex = 14;
             btnSave.Text = "Guardar";
             btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += btnSave_Click;
             // 
             // lblSurname
             // 
             lblSurname.AutoSize = true;
-            lblSurname.Location = new Point(57, 250);
-            lblSurname.Margin = new Padding(4, 0, 4, 0);
+            lblSurname.Location = new Point(40, 150);
             lblSurname.Name = "lblSurname";
-            lblSurname.Size = new Size(78, 25);
+            lblSurname.Size = new Size(51, 15);
             lblSurname.TabIndex = 13;
             lblSurname.Text = "Apellido";
             // 
             // lblName
             // 
             lblName.AutoSize = true;
-            lblName.Location = new Point(57, 166);
-            lblName.Margin = new Padding(4, 0, 4, 0);
+            lblName.Location = new Point(40, 100);
             lblName.Name = "lblName";
-            lblName.Size = new Size(78, 25);
+            lblName.Size = new Size(51, 15);
             lblName.TabIndex = 11;
             lblName.Text = "Nombre";
             // 
             // txtBoxName
             // 
-            txtBoxName.Location = new Point(57, 196);
-            txtBoxName.Margin = new Padding(4, 5, 4, 5);
+            txtBoxName.Location = new Point(40, 118);
             txtBoxName.Name = "txtBoxName";
-            txtBoxName.Size = new Size(541, 31);
+            txtBoxName.Size = new Size(380, 23);
             txtBoxName.TabIndex = 10;
             // 
             // lblCRUDCategories
             // 
             lblCRUDCategories.AutoSize = true;
             lblCRUDCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCRUDCategories.Location = new Point(191, 69);
-            lblCRUDCategories.Margin = new Padding(4, 0, 4, 0);
+            lblCRUDCategories.Location = new Point(134, 41);
             lblCRUDCategories.Name = "lblCRUDCategories";
-            lblCRUDCategories.Size = new Size(266, 48);
+            lblCRUDCategories.Size = new Size(182, 32);
             lblCRUDCategories.TabIndex = 9;
             lblCRUDCategories.Text = "Nuevo usuario";
             // 
             // txtBoxSurname
             // 
-            txtBoxSurname.Location = new Point(57, 280);
-            txtBoxSurname.Margin = new Padding(4, 5, 4, 5);
+            txtBoxSurname.Location = new Point(40, 168);
             txtBoxSurname.Name = "txtBoxSurname";
-            txtBoxSurname.Size = new Size(541, 31);
+            txtBoxSurname.Size = new Size(380, 23);
             txtBoxSurname.TabIndex = 16;
             // 
             // txtBoxEmail
             // 
-            txtBoxEmail.Location = new Point(57, 371);
-            txtBoxEmail.Margin = new Padding(4, 5, 4, 5);
+            txtBoxEmail.Location = new Point(40, 223);
             txtBoxEmail.Name = "txtBoxEmail";
-            txtBoxEmail.Size = new Size(541, 31);
+            txtBoxEmail.Size = new Size(380, 23);
             txtBoxEmail.TabIndex = 18;
             // 
             // lblEmail
             // 
             lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(57, 341);
-            lblEmail.Margin = new Padding(4, 0, 4, 0);
+            lblEmail.Location = new Point(40, 205);
             lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(54, 25);
+            lblEmail.Size = new Size(36, 15);
             lblEmail.TabIndex = 17;
             lblEmail.Text = "Email";
             // 
             // txtBoxPassword
             // 
-            txtBoxPassword.Location = new Point(57, 464);
-            txtBoxPassword.Margin = new Padding(4, 5, 4, 5);
+            txtBoxPassword.Location = new Point(40, 278);
             txtBoxPassword.Name = "txtBoxPassword";
-            txtBoxPassword.Size = new Size(541, 31);
+            txtBoxPassword.Size = new Size(380, 23);
             txtBoxPassword.TabIndex = 20;
             // 
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(57, 434);
-            lblPassword.Margin = new Padding(4, 0, 4, 0);
+            lblPassword.Location = new Point(40, 260);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(101, 25);
+            lblPassword.Size = new Size(67, 15);
             lblPassword.TabIndex = 19;
             lblPassword.Text = "Contraseña";
             // 
             // FrmUsersCreate
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(657, 728);
+            ClientSize = new Size(460, 437);
             Controls.Add(txtBoxPassword);
             Controls.Add(lblPassword);
             Controls.Add(txtBoxEmail);
@@ -178,6 +171,7 @@
             Controls.Add(lblName);
             Controls.Add(txtBoxName);
             Controls.Add(lblCRUDCategories);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "FrmUsersCreate";
             Text = "FrmUsersCreate";
             ResumeLayout(false);
