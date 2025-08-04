@@ -44,27 +44,30 @@
             // dgvUsers
             // 
             dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvUsers.Location = new Point(57, 133);
+            dgvUsers.Location = new Point(81, 171);
+            dgvUsers.Margin = new Padding(4, 5, 4, 5);
             dgvUsers.Name = "dgvUsers";
             dgvUsers.RowHeadersWidth = 62;
-            dgvUsers.Size = new Size(667, 370);
+            dgvUsers.Size = new Size(953, 617);
             dgvUsers.TabIndex = 5;
             // 
             // lblUsers
             // 
             lblUsers.AutoSize = true;
             lblUsers.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblUsers.Location = new Point(57, 46);
+            lblUsers.Location = new Point(81, 26);
+            lblUsers.Margin = new Padding(4, 0, 4, 0);
             lblUsers.Name = "lblUsers";
-            lblUsers.Size = new Size(242, 32);
+            lblUsers.Size = new Size(355, 48);
             lblUsers.TabIndex = 9;
             lblUsers.Text = "Gestión de Usuarios";
             // 
             // btnModifyUser
             // 
-            btnModifyUser.Location = new Point(471, 521);
+            btnModifyUser.Location = new Point(673, 817);
+            btnModifyUser.Margin = new Padding(4, 5, 4, 5);
             btnModifyUser.Name = "btnModifyUser";
-            btnModifyUser.Size = new Size(121, 23);
+            btnModifyUser.Size = new Size(173, 38);
             btnModifyUser.TabIndex = 8;
             btnModifyUser.Text = "Modificar Usuario";
             btnModifyUser.UseVisualStyleBackColor = true;
@@ -72,9 +75,10 @@
             // 
             // btnDeleteUser
             // 
-            btnDeleteUser.Location = new Point(609, 521);
+            btnDeleteUser.Location = new Point(870, 817);
+            btnDeleteUser.Margin = new Padding(4, 5, 4, 5);
             btnDeleteUser.Name = "btnDeleteUser";
-            btnDeleteUser.Size = new Size(115, 23);
+            btnDeleteUser.Size = new Size(164, 38);
             btnDeleteUser.TabIndex = 7;
             btnDeleteUser.Text = "Eliminar Usuarios";
             btnDeleteUser.UseVisualStyleBackColor = true;
@@ -82,9 +86,10 @@
             // 
             // btnCreateUser
             // 
-            btnCreateUser.Location = new Point(617, 93);
+            btnCreateUser.Location = new Point(881, 104);
+            btnCreateUser.Margin = new Padding(4, 5, 4, 5);
             btnCreateUser.Name = "btnCreateUser";
-            btnCreateUser.Size = new Size(107, 23);
+            btnCreateUser.Size = new Size(153, 38);
             btnCreateUser.TabIndex = 6;
             btnCreateUser.Text = "Crear Usuarios";
             btnCreateUser.UseVisualStyleBackColor = true;
@@ -92,16 +97,15 @@
             // 
             // UC_Users
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(dgvUsers);
             Controls.Add(lblUsers);
             Controls.Add(btnModifyUser);
             Controls.Add(btnDeleteUser);
             Controls.Add(btnCreateUser);
-            Margin = new Padding(2, 2, 2, 2);
             Name = "UC_Users";
-            Size = new Size(782, 589);
+            Size = new Size(1117, 982);
             ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)class1BindingSource1).EndInit();

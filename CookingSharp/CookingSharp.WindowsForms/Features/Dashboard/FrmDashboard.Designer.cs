@@ -193,6 +193,7 @@
             // picUser
             // 
             picUser.Anchor = AnchorStyles.None;
+            picUser.Cursor = Cursors.No;
             picUser.Image = (Image)resources.GetObject("picUser.Image");
             picUser.Location = new Point(4, 20);
             picUser.Margin = new Padding(4, 3, 4, 3);
@@ -251,6 +252,7 @@
             // btnUserOptions
             // 
             btnUserOptions.Anchor = AnchorStyles.None;
+            btnUserOptions.Cursor = Cursors.No;
             btnUserOptions.FlatAppearance.BorderSize = 0;
             btnUserOptions.FlatStyle = FlatStyle.Flat;
             btnUserOptions.Image = (Image)resources.GetObject("btnUserOptions.Image");
@@ -327,6 +329,7 @@
             // 
             // btnNavRecetas
             // 
+            btnNavRecetas.Cursor = Cursors.No;
             btnNavRecetas.Dock = DockStyle.Fill;
             btnNavRecetas.FlatAppearance.BorderSize = 0;
             btnNavRecetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -348,6 +351,7 @@
             // 
             // btnNavUsuarios
             // 
+            btnNavUsuarios.Cursor = Cursors.Hand;
             btnNavUsuarios.Dock = DockStyle.Fill;
             btnNavUsuarios.FlatAppearance.BorderSize = 0;
             btnNavUsuarios.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -370,6 +374,7 @@
             // 
             // btnNavUnidadesMedida
             // 
+            btnNavUnidadesMedida.Cursor = Cursors.No;
             btnNavUnidadesMedida.Dock = DockStyle.Fill;
             btnNavUnidadesMedida.FlatAppearance.BorderSize = 0;
             btnNavUnidadesMedida.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -391,6 +396,7 @@
             // 
             // btnNavDificultades
             // 
+            btnNavDificultades.Cursor = Cursors.No;
             btnNavDificultades.Dock = DockStyle.Fill;
             btnNavDificultades.FlatAppearance.BorderSize = 0;
             btnNavDificultades.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -412,6 +418,7 @@
             // 
             // btnNavCategorias
             // 
+            btnNavCategorias.Cursor = Cursors.Hand;
             btnNavCategorias.Dock = DockStyle.Fill;
             btnNavCategorias.FlatAppearance.BorderSize = 0;
             btnNavCategorias.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -449,6 +456,7 @@
             // 
             // btnNavAprobacionRecetas
             // 
+            btnNavAprobacionRecetas.Cursor = Cursors.No;
             btnNavAprobacionRecetas.Dock = DockStyle.Fill;
             btnNavAprobacionRecetas.FlatAppearance.BorderSize = 0;
             btnNavAprobacionRecetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -470,6 +478,7 @@
             // 
             // btnNavAprobacionIngredientes
             // 
+            btnNavAprobacionIngredientes.Cursor = Cursors.No;
             btnNavAprobacionIngredientes.Dock = DockStyle.Fill;
             btnNavAprobacionIngredientes.FlatAppearance.BorderSize = 0;
             btnNavAprobacionIngredientes.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
@@ -505,6 +514,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1480, 1050);
             Controls.Add(tlpMainLayout);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(1276, 1078);
             Name = "FrmDashboard";
             StartPosition = FormStartPosition.CenterScreen;

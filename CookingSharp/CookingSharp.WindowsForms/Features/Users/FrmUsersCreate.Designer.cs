@@ -1,6 +1,6 @@
 ﻿namespace CookingSharp.WindowsForms.Users
 {
-    partial class FrmUsersUpdate
+    partial class FrmUsersCreate
     {
         /// <summary>
         /// Required designer variable.
@@ -28,39 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtBoxEmail = new TextBox();
-            lblEmail = new Label();
-            txtBoxSurname = new TextBox();
             btnCancel = new Button();
             btnSave = new Button();
             lblSurname = new Label();
             lblName = new Label();
             txtBoxName = new TextBox();
             lblCRUDCategories = new Label();
+            txtBoxSurname = new TextBox();
+            txtBoxEmail = new TextBox();
+            lblEmail = new Label();
+            txtBoxPassword = new TextBox();
+            lblPassword = new Label();
             SuspendLayout();
-            // 
-            // txtBoxEmail
-            // 
-            txtBoxEmail.Location = new Point(40, 245);
-            txtBoxEmail.Name = "txtBoxEmail";
-            txtBoxEmail.Size = new Size(380, 23);
-            txtBoxEmail.TabIndex = 29;
-            // 
-            // lblEmail
-            // 
-            lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(40, 227);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(36, 15);
-            lblEmail.TabIndex = 28;
-            lblEmail.Text = "Email";
-            // 
-            // txtBoxSurname
-            // 
-            txtBoxSurname.Location = new Point(40, 191);
-            txtBoxSurname.Name = "txtBoxSurname";
-            txtBoxSurname.Size = new Size(380, 23);
-            txtBoxSurname.TabIndex = 27;
             // 
             // btnCancel
             // 
@@ -73,11 +52,11 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(40, 352);
-            btnCancel.Margin = new Padding(0, 17, 0, 0);
+            btnCancel.Location = new Point(57, 587);
+            btnCancel.Margin = new Padding(0, 28, 0, 0);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(144, 44);
-            btnCancel.TabIndex = 26;
+            btnCancel.Size = new Size(206, 73);
+            btnCancel.TabIndex = 15;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
@@ -93,11 +72,11 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(276, 352);
-            btnSave.Margin = new Padding(0, 17, 0, 0);
+            btnSave.Location = new Point(394, 587);
+            btnSave.Margin = new Padding(0, 28, 0, 0);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(144, 44);
-            btnSave.TabIndex = 25;
+            btnSave.Size = new Size(206, 73);
+            btnSave.TabIndex = 14;
             btnSave.Text = "Guardar";
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
@@ -105,43 +84,93 @@
             // lblSurname
             // 
             lblSurname.AutoSize = true;
-            lblSurname.Location = new Point(40, 173);
+            lblSurname.Location = new Point(57, 250);
+            lblSurname.Margin = new Padding(4, 0, 4, 0);
             lblSurname.Name = "lblSurname";
-            lblSurname.Size = new Size(51, 15);
-            lblSurname.TabIndex = 24;
+            lblSurname.Size = new Size(78, 25);
+            lblSurname.TabIndex = 13;
             lblSurname.Text = "Apellido";
             // 
             // lblName
             // 
             lblName.AutoSize = true;
-            lblName.Location = new Point(40, 122);
+            lblName.Location = new Point(57, 167);
+            lblName.Margin = new Padding(4, 0, 4, 0);
             lblName.Name = "lblName";
-            lblName.Size = new Size(51, 15);
-            lblName.TabIndex = 23;
+            lblName.Size = new Size(78, 25);
+            lblName.TabIndex = 11;
             lblName.Text = "Nombre";
             // 
             // txtBoxName
             // 
-            txtBoxName.Location = new Point(40, 140);
+            txtBoxName.Location = new Point(57, 197);
+            txtBoxName.Margin = new Padding(4, 5, 4, 5);
             txtBoxName.Name = "txtBoxName";
-            txtBoxName.Size = new Size(380, 23);
-            txtBoxName.TabIndex = 22;
+            txtBoxName.Size = new Size(541, 31);
+            txtBoxName.TabIndex = 10;
             // 
             // lblCRUDCategories
             // 
             lblCRUDCategories.AutoSize = true;
             lblCRUDCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCRUDCategories.Location = new Point(134, 41);
+            lblCRUDCategories.Location = new Point(191, 68);
+            lblCRUDCategories.Margin = new Padding(4, 0, 4, 0);
             lblCRUDCategories.Name = "lblCRUDCategories";
-            lblCRUDCategories.Size = new Size(174, 32);
-            lblCRUDCategories.TabIndex = 21;
-            lblCRUDCategories.Text = "Editar usuario";
+            lblCRUDCategories.Size = new Size(266, 48);
+            lblCRUDCategories.TabIndex = 9;
+            lblCRUDCategories.Text = "Nuevo usuario";
             // 
-            // FrmUsersUpdate
+            // txtBoxSurname
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            txtBoxSurname.Location = new Point(57, 280);
+            txtBoxSurname.Margin = new Padding(4, 5, 4, 5);
+            txtBoxSurname.Name = "txtBoxSurname";
+            txtBoxSurname.Size = new Size(541, 31);
+            txtBoxSurname.TabIndex = 16;
+            // 
+            // txtBoxEmail
+            // 
+            txtBoxEmail.Location = new Point(57, 372);
+            txtBoxEmail.Margin = new Padding(4, 5, 4, 5);
+            txtBoxEmail.Name = "txtBoxEmail";
+            txtBoxEmail.Size = new Size(541, 31);
+            txtBoxEmail.TabIndex = 18;
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(57, 342);
+            lblEmail.Margin = new Padding(4, 0, 4, 0);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(54, 25);
+            lblEmail.TabIndex = 17;
+            lblEmail.Text = "Email";
+            // 
+            // txtBoxPassword
+            // 
+            txtBoxPassword.Location = new Point(57, 463);
+            txtBoxPassword.Margin = new Padding(4, 5, 4, 5);
+            txtBoxPassword.Name = "txtBoxPassword";
+            txtBoxPassword.Size = new Size(541, 31);
+            txtBoxPassword.TabIndex = 20;
+            // 
+            // lblPassword
+            // 
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(57, 433);
+            lblPassword.Margin = new Padding(4, 0, 4, 0);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(101, 25);
+            lblPassword.TabIndex = 19;
+            lblPassword.Text = "Contraseña";
+            // 
+            // FrmUsersCreate
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(460, 437);
+            ClientSize = new Size(657, 728);
+            Controls.Add(txtBoxPassword);
+            Controls.Add(lblPassword);
             Controls.Add(txtBoxEmail);
             Controls.Add(lblEmail);
             Controls.Add(txtBoxSurname);
@@ -151,23 +180,24 @@
             Controls.Add(lblName);
             Controls.Add(txtBoxName);
             Controls.Add(lblCRUDCategories);
-            Margin = new Padding(2, 2, 2, 2);
-            Name = "FrmUsersUpdate";
-            Text = "FrmUsersUpdate";
+            Name = "FrmUsersCreate";
+            Text = "Cooking # - Nuevo Usuario";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private TextBox txtBoxEmail;
-        private Label lblEmail;
-        private TextBox txtBoxSurname;
         private Button btnCancel;
         private Button btnSave;
         private Label lblSurname;
         private Label lblName;
         private TextBox txtBoxName;
         private Label lblCRUDCategories;
+        private TextBox txtBoxSurname;
+        private TextBox txtBoxEmail;
+        private Label lblEmail;
+        private TextBox txtBoxPassword;
+        private Label lblPassword;
     }
 }

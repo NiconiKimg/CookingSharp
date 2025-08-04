@@ -41,43 +41,48 @@
             // 
             lblCRUDCategories.AutoSize = true;
             lblCRUDCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCRUDCategories.Location = new Point(134, 22);
+            lblCRUDCategories.Location = new Point(191, 37);
+            lblCRUDCategories.Margin = new Padding(4, 0, 4, 0);
             lblCRUDCategories.Name = "lblCRUDCategories";
-            lblCRUDCategories.Size = new Size(204, 32);
+            lblCRUDCategories.Size = new Size(298, 48);
             lblCRUDCategories.TabIndex = 0;
             lblCRUDCategories.Text = "Nueva Categoria";
             // 
             // txtBoxName
             // 
-            txtBoxName.Location = new Point(40, 114);
+            txtBoxName.Location = new Point(57, 190);
+            txtBoxName.Margin = new Padding(4, 5, 4, 5);
             txtBoxName.Name = "txtBoxName";
-            txtBoxName.Size = new Size(380, 23);
+            txtBoxName.Size = new Size(541, 31);
             txtBoxName.TabIndex = 1;
             // 
             // lblName
             // 
             lblName.AutoSize = true;
-            lblName.Location = new Point(40, 96);
+            lblName.Location = new Point(57, 160);
+            lblName.Margin = new Padding(4, 0, 4, 0);
             lblName.Name = "lblName";
-            lblName.Size = new Size(121, 15);
+            lblName.Size = new Size(184, 25);
             lblName.TabIndex = 2;
             lblName.Text = "Nombre de Categoría";
             // 
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(40, 176);
+            lblDescription.Location = new Point(57, 293);
+            lblDescription.Margin = new Padding(4, 0, 4, 0);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(69, 15);
+            lblDescription.Size = new Size(104, 25);
             lblDescription.TabIndex = 4;
             lblDescription.Text = "Descripcion";
             // 
             // txtBoxDescription
             // 
-            txtBoxDescription.Location = new Point(40, 194);
+            txtBoxDescription.Location = new Point(57, 323);
+            txtBoxDescription.Margin = new Padding(4, 5, 4, 5);
             txtBoxDescription.Multiline = true;
             txtBoxDescription.Name = "txtBoxDescription";
-            txtBoxDescription.Size = new Size(380, 86);
+            txtBoxDescription.Size = new Size(541, 141);
             txtBoxDescription.TabIndex = 3;
             // 
             // btnSave
@@ -91,10 +96,10 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(276, 333);
-            btnSave.Margin = new Padding(0, 17, 0, 0);
+            btnSave.Location = new Point(394, 555);
+            btnSave.Margin = new Padding(0, 28, 0, 0);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(144, 44);
+            btnSave.Size = new Size(206, 73);
             btnSave.TabIndex = 7;
             btnSave.Text = "Guardar";
             btnSave.UseVisualStyleBackColor = false;
@@ -111,10 +116,10 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(40, 333);
-            btnCancel.Margin = new Padding(0, 17, 0, 0);
+            btnCancel.Location = new Point(57, 555);
+            btnCancel.Margin = new Padding(0, 28, 0, 0);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(144, 44);
+            btnCancel.Size = new Size(206, 73);
             btnCancel.TabIndex = 8;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
@@ -122,9 +127,9 @@
             // 
             // frmCategoriesCreate
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(460, 437);
+            ClientSize = new Size(657, 728);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(lblDescription);
@@ -133,11 +138,12 @@
             Controls.Add(txtBoxName);
             Controls.Add(lblCRUDCategories);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmCategoriesCreate";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "frmCategoriesCU";
+            Text = "Cooking # - Nueva Categoría";
             ResumeLayout(false);
             PerformLayout();
         }

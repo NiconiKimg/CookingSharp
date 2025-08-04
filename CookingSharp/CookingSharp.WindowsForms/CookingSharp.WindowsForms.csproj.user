@@ -7,31 +7,31 @@
     <ActiveDebugProfile>CookingSharp.WindowsForms</ActiveDebugProfile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Categories\frmCategoriesCreate.cs">
+    <Compile Update="Features\Categories\FrmCategoriesCreate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Categories\frmCategoriesUpdate.cs">
+    <Compile Update="Features\Categories\FrmCategoriesUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmDashboard.cs">
+    <Compile Update="Features\Dashboard\FrmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserControls\UC_AdminPanel.cs">
+    <Compile Update="Features\Dashboard\UC_AdminPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="FrmLogin.cs">
+    <Compile Update="Features\Authentication\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserControls\UC_Categories.cs">
+    <Compile Update="Features\Categories\UC_Categories.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="UserControls\UC_Users.cs">
+    <Compile Update="Features\Users\UC_Users.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Users\FrmUsersCreate.cs">
+    <Compile Update="Features\Users\FrmUsersCreate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Users\FrmUsersUpdate.cs">
+    <Compile Update="Features\Users\FrmUsersUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
