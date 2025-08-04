@@ -7,9 +7,9 @@ namespace CookingSharp.Data.Repositories
     {
         private static readonly List<Category> _categories = new List<Category>
         {
-            new Category(1, "Desserts", "Sweet dishes served at the end of a meal"),
-            new Category(2, "Main Courses", "The primary dish in a meal"),
-            new Category(3, "Appetizers", "Small dishes served before the main course")
+            new Category(1, "Postres", "Platos generalmente dulces que se sirven después de una comida"),
+            new Category(2, "Plato principal", "Plato principal de la comida"),
+            new Category(3, "Aperitivos", "Pequeños platos que se sirven antes de el plato principal")
         };
 
         private static int _nextId = _categories.Any() ? _categories.Max(c => c.Id) + 1 : 1;
