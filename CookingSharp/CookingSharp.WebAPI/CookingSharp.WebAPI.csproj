@@ -12,9 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CookingSharp.Application.Services\CookingSharp.Application.Services.csproj" />
-    <ProjectReference Include="..\CookingSharp.Data\CookingSharp.Data.csproj" />
-    <ProjectReference Include="..\CookingSharp.DTOs\CookingSharp.DTOs.csproj" />
+    <ProjectReference Include="..\CookingSharp.Application\CookingSharp.Application.csproj" />
+    <ProjectReference Include="..\CookingSharp.Infrastructure\CookingSharp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
