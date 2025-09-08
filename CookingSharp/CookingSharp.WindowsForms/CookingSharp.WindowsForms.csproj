@@ -19,8 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CookingSharp.API.Clients\CookingSharp.API.Clients.csproj" />
-    <ProjectReference Include="..\CookingSharp.DTOs\CookingSharp.DTOs.csproj" />
+    <ProjectReference Include="..\CookingSharp.Infrastructure\CookingSharp.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

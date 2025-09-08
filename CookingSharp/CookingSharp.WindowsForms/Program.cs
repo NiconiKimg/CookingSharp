@@ -29,12 +29,12 @@ namespace CookingSharp.WindowsForms
                     var mainForm = ServiceProvider?.GetRequiredService<FrmDashboard>();
                     if (mainForm != null)
                     {
-                        Application.Run(mainForm);
+                        System.Windows.Forms.Application.Run(mainForm);
                     }
                 }
                 else
                 {
-                    Application.Exit();
+                    System.Windows.Forms.Application.Exit();
                 }
             }
         }

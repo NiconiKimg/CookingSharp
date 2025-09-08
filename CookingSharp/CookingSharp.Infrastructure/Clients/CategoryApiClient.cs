@@ -1,5 +1,5 @@
-﻿using CookingSharp.DTOs;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
+using CookingSharp.DTOs;
 
 namespace CookingSharp.API.Clients
 {
