@@ -5,25 +5,15 @@ VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{E41D155E-BE2D-46D8-9414-22A1AF29291A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{62496455-3A6D-463C-A321-27D0A45065DB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructure", "Infraestructure", "{80F8C034-CBD9-4A62-BB9C-28E7681D26B2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Domain.Model", "CookingSharp.Domain.Model\CookingSharp.Domain.Model.csproj", "{194577F3-01AB-493C-BE9B-C671B513D252}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Application.Services", "CookingSharp.Application.Services\CookingSharp.Application.Services.csproj", "{5A2A5381-7154-4E6D-AA42-BB6E33A83788}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.DTOs", "CookingSharp.DTOs\CookingSharp.DTOs.csproj", "{E035E279-3304-4CF3-A7BF-2B04EF1AC1C4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Data", "CookingSharp.Data\CookingSharp.Data.csproj", "{3897FD99-C5F2-46B6-9D4F-57ECAA056FE2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.API.Clients", "CookingSharp.API.Clients\CookingSharp.API.Clients.csproj", "{652B06A9-D529-4B97-AE5F-94AD6A7A34BF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.WebAPI", "CookingSharp.WebAPI\CookingSharp.WebAPI.csproj", "{08B6363B-766C-4A3E-8527-B79C054EE036}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.WindowsForms", "CookingSharp.WindowsForms\CookingSharp.WindowsForms.csproj", "{F5D665AF-3CD5-4C29-B758-B10B40A23824}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Domain", "CookingSharp.Domain\CookingSharp.Domain.csproj", "{1D38182C-D654-4064-9BB7-1EF47BEA723E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Application", "CookingSharp.Application\CookingSharp.Application.csproj", "{C9AB0A87-5EF3-4297-BD74-6D2940A7A841}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Infrastructure", "CookingSharp.Infrastructure\CookingSharp.Infrastructure.csproj", "{6F7996E6-950D-4E2E-816D-5982157D7F7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,26 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{194577F3-01AB-493C-BE9B-C671B513D252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{194577F3-01AB-493C-BE9B-C671B513D252}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{194577F3-01AB-493C-BE9B-C671B513D252}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{194577F3-01AB-493C-BE9B-C671B513D252}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A2A5381-7154-4E6D-AA42-BB6E33A83788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A2A5381-7154-4E6D-AA42-BB6E33A83788}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A2A5381-7154-4E6D-AA42-BB6E33A83788}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A2A5381-7154-4E6D-AA42-BB6E33A83788}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E035E279-3304-4CF3-A7BF-2B04EF1AC1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E035E279-3304-4CF3-A7BF-2B04EF1AC1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E035E279-3304-4CF3-A7BF-2B04EF1AC1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E035E279-3304-4CF3-A7BF-2B04EF1AC1C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3897FD99-C5F2-46B6-9D4F-57ECAA056FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3897FD99-C5F2-46B6-9D4F-57ECAA056FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3897FD99-C5F2-46B6-9D4F-57ECAA056FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3897FD99-C5F2-46B6-9D4F-57ECAA056FE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{652B06A9-D529-4B97-AE5F-94AD6A7A34BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{652B06A9-D529-4B97-AE5F-94AD6A7A34BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{652B06A9-D529-4B97-AE5F-94AD6A7A34BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{652B06A9-D529-4B97-AE5F-94AD6A7A34BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08B6363B-766C-4A3E-8527-B79C054EE036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08B6363B-766C-4A3E-8527-B79C054EE036}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B6363B-766C-4A3E-8527-B79C054EE036}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,16 +29,23 @@ Global
 		{F5D665AF-3CD5-4C29-B758-B10B40A23824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D665AF-3CD5-4C29-B758-B10B40A23824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D665AF-3CD5-4C29-B758-B10B40A23824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D38182C-D654-4064-9BB7-1EF47BEA723E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D38182C-D654-4064-9BB7-1EF47BEA723E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D38182C-D654-4064-9BB7-1EF47BEA723E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D38182C-D654-4064-9BB7-1EF47BEA723E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9AB0A87-5EF3-4297-BD74-6D2940A7A841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9AB0A87-5EF3-4297-BD74-6D2940A7A841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9AB0A87-5EF3-4297-BD74-6D2940A7A841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9AB0A87-5EF3-4297-BD74-6D2940A7A841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F7996E6-950D-4E2E-816D-5982157D7F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F7996E6-950D-4E2E-816D-5982157D7F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F7996E6-950D-4E2E-816D-5982157D7F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F7996E6-950D-4E2E-816D-5982157D7F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{194577F3-01AB-493C-BE9B-C671B513D252} = {62496455-3A6D-463C-A321-27D0A45065DB}
-		{5A2A5381-7154-4E6D-AA42-BB6E33A83788} = {E41D155E-BE2D-46D8-9414-22A1AF29291A}
-		{E035E279-3304-4CF3-A7BF-2B04EF1AC1C4} = {E41D155E-BE2D-46D8-9414-22A1AF29291A}
-		{3897FD99-C5F2-46B6-9D4F-57ECAA056FE2} = {80F8C034-CBD9-4A62-BB9C-28E7681D26B2}
-		{652B06A9-D529-4B97-AE5F-94AD6A7A34BF} = {80F8C034-CBD9-4A62-BB9C-28E7681D26B2}
 		{08B6363B-766C-4A3E-8527-B79C054EE036} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{F5D665AF-3CD5-4C29-B758-B10B40A23824} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
