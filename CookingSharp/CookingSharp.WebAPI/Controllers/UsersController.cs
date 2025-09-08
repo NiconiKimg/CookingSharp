@@ -1,5 +1,5 @@
-﻿using CookingSharp.Application.Services;
-using CookingSharp.DTOs;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingSharp.WebAPI.Controllers

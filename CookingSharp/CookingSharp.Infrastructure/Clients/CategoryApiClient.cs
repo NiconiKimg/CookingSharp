@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
-using CookingSharp.DTOs;
+using CookingSharp.Application.DTOs;
 
-namespace CookingSharp.API.Clients
+namespace CookingSharp.Infrastructure.Clients
 {
     public class CategoryApiClient
     {

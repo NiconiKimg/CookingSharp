@@ -1,5 +1,5 @@
-﻿using CookingSharp.API.Clients;
-using CookingSharp.DTOs;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Infrastructure.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CookingSharp.WindowsForms.CategoriesControl

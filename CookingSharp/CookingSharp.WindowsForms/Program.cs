@@ -1,4 +1,4 @@
-using CookingSharp.API.Clients;
+using CookingSharp.Infrastructure.Clients;
 using CookingSharp.WindowsForms.CategoriesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;

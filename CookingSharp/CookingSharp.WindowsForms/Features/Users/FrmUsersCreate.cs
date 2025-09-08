@@ -1,6 +1,5 @@
-﻿using System.Windows.Forms;
-using CookingSharp.API.Clients;
-using CookingSharp.DTOs;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Infrastructure.Clients;
 
 namespace CookingSharp.WindowsForms.Users
 {
