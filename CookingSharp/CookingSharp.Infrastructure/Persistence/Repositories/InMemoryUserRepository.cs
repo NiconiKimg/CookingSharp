@@ -1,7 +1,7 @@
 ﻿using CookingSharp.Application.Services.Contracts;
-using CookingSharp.Domain.Model;
+using CookingSharp.Domain;
 
-namespace CookingSharp.Data.Repositories
+namespace CookingSharp.Infrastructure.Persistence.Repositories
 {
     public class InMemoryUserRepository : IUserRepository
     {

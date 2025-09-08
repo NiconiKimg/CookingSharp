@@ -1,8 +1,8 @@
-﻿using CookingSharp.DTOs;
+﻿using CookingSharp.Application.DTOs;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace CookingSharp.API.Clients
+namespace CookingSharp.Infrastructure.Clients
 {
     public class UserApiClient
     {

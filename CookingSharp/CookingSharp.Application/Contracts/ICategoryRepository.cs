@@ -1,4 +1,4 @@
-﻿using CookingSharp.Domain.Model;
+﻿using CookingSharp.Domain;
 
 namespace CookingSharp.Application.Services.Contracts
 {

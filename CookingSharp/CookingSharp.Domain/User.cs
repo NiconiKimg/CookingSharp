@@ -1,4 +1,4 @@
-﻿namespace CookingSharp.Domain.Model
+﻿namespace CookingSharp.Domain
 {
     public class User
     {

@@ -1,4 +1,4 @@
-﻿namespace CookingSharp.DTOs
+﻿namespace CookingSharp.Application.DTOs
 {
     public class UserDTO
     {

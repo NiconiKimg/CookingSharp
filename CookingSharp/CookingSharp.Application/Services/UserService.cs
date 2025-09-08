@@ -1,6 +1,6 @@
 ﻿using CookingSharp.Application.Services.Contracts;
-using CookingSharp.Domain.Model;
-using CookingSharp.DTOs;
+using CookingSharp.Domain;
+using CookingSharp.Application.DTOs;
 
 namespace CookingSharp.Application.Services
 {
