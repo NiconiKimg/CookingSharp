@@ -2,7 +2,6 @@ using CookingSharp.Application.Services;
 using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Data.Repositories;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
