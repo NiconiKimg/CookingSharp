@@ -1,12 +1,14 @@
-﻿using CookingSharp.DTOs;
-using CookingSharp.Domain.Model;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Domain;
 using CookingSharp.Application.Services.Contracts;
 
 namespace CookingSharp.Application.Services
 {
+    /// <summary>
+    /// Proporciona la lógica de negocio para gestionar las categorías.
+    /// </summary>
     public class CategoryService
     {
-
         private readonly ICategoryRepository _categoryRepository;
 
         public CategoryService(ICategoryRepository categoryRepository)
@@ -14,14 +16,20 @@ namespace CookingSharp.Application.Services
             _categoryRepository = categoryRepository;
         }
 
-
+        /// <summary>
+        /// Obtiene una categoría por su identificador único.
+        /// </summary>
+        /// <param name="id">El ID de la categoría a buscar.</param>
+        /// <returns>Un DTO de la categoría si se encuentra; de lo contrario, null.</returns>
         public async Task<CategoryDTO?> GetAsync(int id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
-            if (category == null)
+
+            if (category is null)
             {
                 return null;
             }
+
             return new CategoryDTO
             {
                 Id = category.Id,
@@ -30,6 +38,10 @@ namespace CookingSharp.Application.Services
             };
         }
 
+        /// <summary>
+        /// Obtiene todas las categorías existentes.
+        /// </summary>
+        /// <returns>Una colección de DTOs de todas las categorías.</returns>
         public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
@@ -41,6 +53,11 @@ namespace CookingSharp.Application.Services
             });
         }
 
+        /// <summary>
+        /// Añade una nueva categoría al sistema.
+        /// </summary>
+        /// <param name="dto">El DTO con la información de la nueva categoría.</param>
+        /// <returns>El DTO de la categoría recién creada con su ID asignado.</returns>
         public async Task<CategoryDTO> AddAsync(CategoryDTO dto)
         {
             if (await _categoryRepository.ExistsWithNameAsync(dto.Name))
@@ -57,10 +74,15 @@ namespace CookingSharp.Application.Services
             return dto;
         }
 
+        /// <summary>
+        /// Actualiza una categoría existente.
+        /// </summary>
+        /// <param name="dto">El DTO con los datos actualizados de la categoría.</param>
         public async Task UpdateAsync(CategoryDTO dto)
         {
             var existingCategory = await _categoryRepository.GetByIdAsync(dto.Id);
-            if (existingCategory == null)
+
+            if (existingCategory is null)
             {
                 throw new KeyNotFoundException($"Category with ID {dto.Id} not found.");
             }
@@ -68,11 +90,17 @@ namespace CookingSharp.Application.Services
             {
                 throw new ArgumentException("Category with the same name already exists.");
             }
-            existingCategory.Name = dto.Name;
-            existingCategory.Description = dto.Description;
+
+            existingCategory.UpdateDetails(dto.Name, dto.Description);
+
             await _categoryRepository.UpdateAsync(existingCategory);
         }
 
+        /// <summary>lica
+        /// Elimina una categoría por su identificador único.
+        /// </summary>
+        /// <param name="id">El ID de la categoría a eliminar.</param>
+        /// <returns>Verdadero si la eliminación fue exitosa, falso en caso contrario.</returns>
         public async Task<bool> DeleteAsync(int id)
         {
             return await _categoryRepository.DeleteAsync(id);
