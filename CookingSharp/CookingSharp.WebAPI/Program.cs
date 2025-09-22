@@ -17,8 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<UserService>();
 
-builder.Services.AddSingleton<ICategoryRepository, InMemoryCategoryRepository>();
-builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+builder.Services.AddScoped<IUserRepository, EFUserRepository>();
 
 var app = builder.Build();
 

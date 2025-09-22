@@ -7,11 +7,17 @@
     <ActiveDebugProfile>CookingSharp.WindowsForms</ActiveDebugProfile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Features\Authentication\FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Features\Categories\FrmCategoriesCreate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Features\Categories\FrmCategoriesUpdate.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Features\Categories\UC_Categories.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Features\Dashboard\FrmDashboard.cs">
       <SubType>Form</SubType>
@@ -19,20 +25,14 @@
     <Compile Update="Features\Dashboard\UC_AdminPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Features\Authentication\FrmLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Features\Categories\UC_Categories.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Features\Users\UC_Users.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Update="Features\Users\FrmUsersCreate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Features\Users\FrmUsersUpdate.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Features\Users\UC_Users.cs">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
 </Project>
