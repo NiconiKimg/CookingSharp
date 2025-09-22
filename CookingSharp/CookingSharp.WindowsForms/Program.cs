@@ -63,7 +63,8 @@ namespace CookingSharp.WindowsForms
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
-            services.AddTransient<FrmLogin>();
+
+            services.AddTransient<FrmLogin>();
             services.AddTransient<FrmDashboard>();
 
             services.AddTransient<frmCategoriesCreate>();
