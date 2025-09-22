@@ -16,9 +16,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AppealService>();
 
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<IUserRepository, EFUserRepository>();
+builder.Services.AddScoped<IAppealRepository, EFAppealRepository>();
 
 var app = builder.Build();
 
