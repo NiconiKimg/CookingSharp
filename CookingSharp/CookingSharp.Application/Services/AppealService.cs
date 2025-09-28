@@ -10,10 +10,12 @@ namespace CookingSharp.Application.Services
     public class AppealService
     {
         private readonly IAppealRepository _appealRepository;
+        private readonly IUserRepository _userRepository;
 
-        public AppealService(IAppealRepository appealRepository)
+        public AppealService(IAppealRepository appealRepository, IUserRepository userRepository)
         {
             _appealRepository = appealRepository;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -35,6 +37,8 @@ namespace CookingSharp.Application.Services
                 Id = appeal.Id,
                 Description = appeal.Description,
                 Status = appeal.Status.ToString(),
+                UserId = appeal.UserId,
+                UserName = appeal.User?.Name
             };
         }
 
@@ -49,7 +53,9 @@ namespace CookingSharp.Application.Services
             {
                 Id = a.Id,
                 Status = a.Status.ToString(),
-                Description = a.Description
+                Description = a.Description,
+                UserId = a.UserId,
+                UserName = a.User?.Name
             });
         }
 
@@ -61,10 +67,15 @@ namespace CookingSharp.Application.Services
         public async Task<AppealDTO> AddAsync(AppealDTO dto)
         {
 
-            var appeal = new Appeal(0, dto.Description);
+            var userExists = await _userRepository.GetByIdAsync(dto.UserId);
+            if (userExists == null)
+            {
+                throw new KeyNotFoundException($"User with ID {dto.UserId} not found.");
+            }
+
+            var appeal = new Appeal(0, dto.Description, dto.UserId);
 
             var addedAppeal = await _appealRepository.AddAsync(appeal);
-
             dto.Id = addedAppeal.Id;
 
             return dto;

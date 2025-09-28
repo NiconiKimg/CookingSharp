@@ -22,12 +22,13 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<Appeal>> GetAllAsync()
         {
-            return await _context.Appeals.ToListAsync();
+            return await _context.Appeals.Include(a => a.User).ToListAsync();
         }
 
         public async Task<Appeal?> GetByIdAsync(int id)
         {
-            return await _context.Appeals.FindAsync(id);
+            return await _context.Appeals.Include(a => a.User)
+                                         .FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task UpdateAsync(Appeal appeal)

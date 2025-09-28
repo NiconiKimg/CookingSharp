@@ -16,8 +16,13 @@ namespace CookingSharp.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(255);
 
-            builder.Property(u => u.Status)
+            builder.Property(a => a.Status)
                 .IsRequired();
+
+            builder.HasOne(a => a.User)
+                   .WithMany(u => u.Appeals)
+                   .HasForeignKey(a => a.UserId)
+                   .IsRequired();
         }
     }
 }

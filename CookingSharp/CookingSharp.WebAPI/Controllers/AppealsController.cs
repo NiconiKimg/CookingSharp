@@ -46,6 +46,10 @@ namespace CookingSharp.WebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         #endregion

@@ -17,15 +17,21 @@
 
         public string Description { get; private set; }
 
+        public int UserId { get; set; }
+
+        public virtual User User { get; set; }
         /// <summary>
         /// Constructor para crear una nueva instancia de Solicitud.
         /// </summary>
-        public Appeal(int id, string description)
+        public Appeal(int id, string description, int userId)
         {
             Id = id;
             Description = description;
             Status = StatusType.Pending;
+            UserId = userId;
         }
+
+        private Appeal() { } // For EF
 
         /// <summary>
         /// Actualiza los detalles de la solicitud, aplicando las reglas de validación del dominio.
