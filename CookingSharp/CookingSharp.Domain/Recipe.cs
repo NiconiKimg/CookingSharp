@@ -1,65 +1,70 @@
-﻿using System.Data;
-
-
-namespace CookingSharp.Domain
+﻿namespace CookingSharp.Domain
 {
+    public enum RecipeStatus
+    {
+        Draft,      // Borrador
+        Published,  // Publicada
+        Archived,   // Archivada
+        Blocked     //Bloqueada
+    }
+
     public class Recipe
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public ICollection<RecipeStep> Steps { get; set; } = new List<RecipeStep>();
+        public int Id { get; set; }
+        public RecipeStatus Status { get; private set; }
+        public string Description { get; private set; }
+        public string Content { get; private set; }
+        public int UserId { get; private set; }
+        public virtual User User { get; private set; }
+        public ICollection<Category> Categories { get; set; } = new List<Category>();
 
-        public Recipe(string name, string descripcion, List<RecipeStep> steps) { 
-            UpdateDetails(name, descripcion);
-            AsignSteps(steps);
-
-        }
-        private void UpdateDetails( string name, string description)
+        public Recipe(string description, string content, int userId)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("El nombre de la receta no puede ser nulo o vacío.", nameof(name));
-            }
-
             if (string.IsNullOrWhiteSpace(description))
             {
-                throw new ArgumentException("La descripción de la receta no puede ser nula o vacía.", nameof(description));
+                throw new ArgumentException("La descripción no puede ser nula o vacía.", nameof(description));
+            }
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                throw new ArgumentException("El contenido de la receta no puede ser nulo o vacío.", nameof(content));
             }
 
-            Name = name;
             Description = description;
+            Content = content;
+            UserId = userId;
+            Status = RecipeStatus.Draft;
         }
 
-        public void AsignSteps(List<RecipeStep> steps)
+        public void Update(string newDescription, string newContent)
         {
-            if (steps == null) 
+            if (string.IsNullOrWhiteSpace(newDescription))
             {
-                throw new ArgumentException("La receta no puede no tener pasos.");
+                throw new ArgumentException("La descripción no puede ser nula o vacía.", nameof(newDescription));
             }
-
-            foreach (RecipeStep step in steps)
+            if (string.IsNullOrWhiteSpace(newContent))
             {
-                AddStep(step);
+                throw new ArgumentException("El contenido de la receta no puede ser nulo o vacío.", nameof(newContent));
             }
+            Description = newDescription;
+            Content = newContent;
         }
 
-        public void AddStep(RecipeStep stepAdded)
+        public void Publish()
         {
-            if (stepAdded == null)
-            {
-                throw new ArgumentNullException(nameof(stepAdded));
-            }
-
-            int actualOrder = stepAdded.Order;
-            foreach(var step in Steps)
-            {
-                if(step.Order == actualOrder)
-                {
-                    throw new Exception("El orden ingresado es incorrecto.");
-                }
-            }
-
-            Steps.Add(stepAdded);
+            Status = RecipeStatus.Published;
         }
+
+        public void Archive()
+        {
+            Status = RecipeStatus.Archived;
+        }
+
+        public void Block()
+        {
+            Status = RecipeStatus.Blocked;
+        }
+
+        // Constructor privado para EF Core
+        private Recipe() { }
     }
 }

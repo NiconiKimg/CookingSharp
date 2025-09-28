@@ -3,6 +3,7 @@ using CookingSharp.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingSharp.Infrastructure.Migrations
 {
     [DbContext(typeof(CookingSharpDbContext))]
-    partial class CookingSharpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250928215729_AddRecipeRelationships")]
+    partial class AddRecipeRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

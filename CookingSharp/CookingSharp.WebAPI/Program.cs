@@ -17,10 +17,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AppealService>();
+builder.Services.AddScoped<RecipeService>();
 
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<IUserRepository, EFUserRepository>();
 builder.Services.AddScoped<IAppealRepository, EFAppealRepository>();
+builder.Services.AddScoped<IRecipeRepository, EFRecipeRepository>();
 
 var app = builder.Build();
 

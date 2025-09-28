@@ -21,6 +21,8 @@
         /// </summary>
         public string Description { get; private set; }
 
+        public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+
         /// <summary>
         /// Constructor para crear una nueva instancia de Categoría.
         /// </summary>

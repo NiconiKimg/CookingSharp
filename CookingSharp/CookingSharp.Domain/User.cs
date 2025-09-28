@@ -15,6 +15,7 @@
         public RoleTypes Role { get; private set; }
 
         public ICollection<Appeal> Appeals { get; set; } = new List<Appeal>();
+        public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
 
         /// <summary>
         /// Constructor para crear una nueva instancia de Usuario.
