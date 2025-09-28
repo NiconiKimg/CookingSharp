@@ -5,11 +5,17 @@
     /// </summary>
     public class User
     {
+        public enum RoleTypes { Chef, Admin, Apprentice };
+
         public int Id { get; set; }
         public string Name { get; private set; }
         public string Surname { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
+        public RoleTypes Role { get; private set; }
+
+        public ICollection<Appeal> Appeals { get; set; } = new List<Appeal>();
+        public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
 
         /// <summary>
         /// Constructor para crear una nueva instancia de Usuario.
@@ -19,6 +25,7 @@
             Id = id;
             UpdateProfile(name, surname, email);
             ChangePassword(password);
+            Role = RoleTypes.Apprentice;
         }
 
         /// <summary>
