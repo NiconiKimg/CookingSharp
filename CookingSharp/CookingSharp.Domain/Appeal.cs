@@ -6,7 +6,7 @@
     /// </summary>
     public class Appeal
     {
-        public enum StatusType { Pending, Aproved, Rejected }; 
+        public enum StatusType { Pending, Approved, Rejected }; 
 
         /// <summary>
         /// Identificador único de la solicitud.
@@ -40,19 +40,18 @@
         public void UpdateStatus(string NewStatus)
         {
 
-            if (NewStatus == StatusType.Aproved.ToString())
+            if (string.Equals(NewStatus, nameof(StatusType.Approved), StringComparison.OrdinalIgnoreCase))
             {
-                Status = StatusType.Aproved;          
+                Status = StatusType.Approved;
             }
-            if (NewStatus == StatusType.Rejected.ToString())
+            else if (string.Equals(NewStatus, nameof(StatusType.Rejected), StringComparison.OrdinalIgnoreCase))
             {
                 Status = StatusType.Rejected;
             }
             else
             {
-                throw new Exception("Seleccione una acción válida");
+                throw new ArgumentException($"El estado '{NewStatus}' no es una acción válida.", nameof(NewStatus));
             }
-
         }
     }
 }

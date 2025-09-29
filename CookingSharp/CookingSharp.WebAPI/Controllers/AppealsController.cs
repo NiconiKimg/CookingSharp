@@ -57,16 +57,12 @@ namespace CookingSharp.WebAPI.Controllers
         #region PUT Endpoint
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] AppealDTO appealDto)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateAppealDTO appealDto)
         {
-            if (id != appealDto.Id)
-            {
-                return BadRequest("El ID de la URL no coincide con el ID del objeto.");
-            }
 
             try
             {
-                await appealService.UpdateAsync(appealDto);
+                await appealService.UpdateAsync(id, appealDto);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)

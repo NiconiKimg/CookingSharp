@@ -67,5 +67,10 @@
 
             Password = newPassword;
         }
+
+        public void PromoteToChef()
+        {
+            Role = RoleTypes.Chef;
+        }
     }
 }

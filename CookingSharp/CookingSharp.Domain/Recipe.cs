@@ -64,6 +64,11 @@
             Status = RecipeStatus.Blocked;
         }
 
+        public void Unblock()
+        {
+            Status = RecipeStatus.Draft;
+        }
+
         // Constructor privado para EF Core
         private Recipe() { }
     }

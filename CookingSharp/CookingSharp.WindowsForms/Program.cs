@@ -2,6 +2,8 @@ using CookingSharp.Infrastructure.Clients;
 using CookingSharp.WindowsForms.CategoriesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;
+using CookingSharp.WindowsForms.AppealsControl;
+using CookingSharp.WindowsForms.RecipesControl;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 
@@ -53,6 +55,28 @@ namespace CookingSharp.WindowsForms
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
+            services.AddHttpClient<AppealApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7111/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
+
+            services.AddHttpClient<RecipeApiClient>(recipe =>
+            {
+                recipe.BaseAddress = new Uri("https://localhost:7111/api/");
+                recipe.DefaultRequestHeaders.Accept.Clear();
+                recipe.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
+
             services.AddHttpClient<UserApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
@@ -70,8 +94,10 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<frmCategoriesCreate>();
             services.AddTransient<FrmUsersCreate>();
 
-            services.AddTransient<UC_Categories>();
             services.AddTransient<UC_AdminPanel>();
+            services.AddTransient<UC_Appeals>();
+            services.AddTransient<UC_Categories>();
+            services.AddTransient<UC_Recipes>();
             services.AddTransient<UC_Users>();
         }
     }

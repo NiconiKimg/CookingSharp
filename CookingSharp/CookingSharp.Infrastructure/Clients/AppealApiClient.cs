@@ -36,21 +36,25 @@ namespace CookingSharp.Infrastructure.Clients
             return null;
         }
 
-        public async Task UpdateAsync(UserResponseDTO dto)
+        public async Task UpdateAsync(int id, UpdateAppealDTO dto)
         {
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"{AppealsEndpoint}/{dto.Id}", dto);
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"{AppealsEndpoint}/{id}", dto);
 
             if (!response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw new Exception($"La solicitud con ID: {dto.Id} no fue encontrada. Probablemente fue eliminado por otro usuario.");
+                    throw new Exception($"La solicitud con ID: {id} no fue encontrada. Probablemente fue eliminada.");
+                }
+
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error en la solicitud (Bad Request): {errorContent}");
                 }
 
                 throw new Exception($"Error al actualizar la solicitud. El servidor respondió con el código: {response.StatusCode}");
             }
-
-
         }
     }
 }

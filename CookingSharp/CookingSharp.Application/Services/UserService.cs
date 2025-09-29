@@ -34,6 +34,7 @@ namespace CookingSharp.Application.Services
                 Name = user.Name,
                 Surname = user.Surname,
                 Email = user.Email,
+                Role = user.Role.ToString()
             };
         }
 
@@ -49,7 +50,8 @@ namespace CookingSharp.Application.Services
                 Id = u.Id,
                 Name = u.Name,
                 Surname = u.Surname,
-                Email = u.Email
+                Email = u.Email,
+                Role = u.Role.ToString()
             });
         }
 

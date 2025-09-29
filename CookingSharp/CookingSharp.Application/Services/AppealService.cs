@@ -1,6 +1,8 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Domain;
 using CookingSharp.Application.Services.Contracts;
+using CookingSharp.Domain;
+using System.Data;
+using static CookingSharp.Domain.User;
 
 namespace CookingSharp.Application.Services
 {
@@ -85,16 +87,29 @@ namespace CookingSharp.Application.Services
         /// Actualiza una solicitud existente.
         /// </summary>
         /// <param name="dto">El DTO con los datos actualizados de la solicitud.</param>
-        public async Task UpdateAsync(AppealDTO dto)
+        public async Task UpdateAsync(int appealId, UpdateAppealDTO dto)
         {
-            var existingAppeal = await _appealRepository.GetByIdAsync(dto.Id);
-
+            var existingAppeal = await _appealRepository.GetByIdAsync(appealId);
             if (existingAppeal is null)
             {
-                throw new KeyNotFoundException($"Appeal with ID {dto.Id} not found.");
+                throw new KeyNotFoundException($"Solicitud con ID {appealId} no encontrada.");
             }
 
             existingAppeal.UpdateStatus(dto.Status);
+
+            if (string.Equals(dto.Status, nameof(RoleTypes.Chef), StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(dto.Status, "Approved", StringComparison.OrdinalIgnoreCase)) 
+            {
+                var user = await _userRepository.GetByIdAsync(existingAppeal.UserId);
+                if (user is null)
+                {
+                    throw new KeyNotFoundException($"El usuario con ID {existingAppeal.UserId} asociado a esta solicitud no fue encontrado.");
+                }
+
+                user.PromoteToChef();
+
+                await _userRepository.UpdateAsync(user);
+            }
 
             await _appealRepository.UpdateAsync(existingAppeal);
         }

@@ -7,6 +7,9 @@
     <ActiveDebugProfile>CookingSharp.WindowsForms</ActiveDebugProfile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Features\Appeals\UC_Appeals.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Features\Authentication\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -23,6 +26,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Features\Dashboard\UC_AdminPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Features\Recipes\UC_Recipes.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Features\Users\FrmUsersCreate.cs">
