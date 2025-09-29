@@ -17,20 +17,32 @@ namespace CookingSharp.WindowsForms
 
             var claims = JwtParser.ParseClaimsFromJwt(jwtToken);
 
-            // Usamos FirstOrDefault y comprobamos si es nulo para evitar excepciones.
-            var userIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub");
-            var userEmailClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-            var userRoleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            var userIdClaim = claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.NameIdentifier || c.Type == "sub");
+
+            var userEmailClaim = claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.Email || c.Type == "email");
+
+            var userRoleClaim = claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.Role || c.Type == "role" ||
+                c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 
             if (userIdClaim is null || userEmailClaim is null || userRoleClaim is null)
             {
-                // Si falta algún claim esencial, la sesión no es válida.
                 throw new InvalidOperationException("El token JWT no contiene los claims esperados (ID, Email, Rol).");
             }
 
-            var userId = int.Parse(userIdClaim.Value);
+            if (!int.TryParse(userIdClaim.Value, out var userId))
+            {
+                throw new InvalidOperationException("El claim de ID de usuario no es un número válido.");
+            }
+
             var userEmail = userEmailClaim.Value;
-            var userRole = Enum.Parse<RoleTypes>(userRoleClaim.Value);
+
+            if (!Enum.TryParse<RoleTypes>(userRoleClaim.Value, ignoreCase: true, out var userRole))
+            {
+                throw new InvalidOperationException($"El claim de rol '{userRoleClaim.Value}' no es válido.");
+            }
 
             CurrentUser = new CurrentUser(userId, userEmail, userRole);
         }
