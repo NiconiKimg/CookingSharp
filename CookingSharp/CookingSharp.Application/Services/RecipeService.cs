@@ -78,12 +78,16 @@ namespace CookingSharp.Application.Services
                 throw new KeyNotFoundException($"Receta con ID {id} no encontrada.");
             }
 
-            var newDescription = dto.Description ?? existingRecipe.Description;
-            var newContent = dto.Content ?? existingRecipe.Content;
-            existingRecipe.Update(newDescription, newContent);
+            if (!string.IsNullOrEmpty(dto.Description) || !string.IsNullOrEmpty(dto.Content))
+            {
+                var newDescription = dto.Description ?? existingRecipe.Description;
+                var newContent = dto.Content ?? existingRecipe.Content;
+                existingRecipe.Update(newDescription, newContent);
+            }
 
             if (!string.IsNullOrEmpty(dto.Status))
             {
+
                 if (dto.Status.Equals(nameof(RecipeStatus.Published), StringComparison.OrdinalIgnoreCase))
                 {
                     existingRecipe.Publish();
@@ -91,6 +95,14 @@ namespace CookingSharp.Application.Services
                 else if (dto.Status.Equals(nameof(RecipeStatus.Archived), StringComparison.OrdinalIgnoreCase))
                 {
                     existingRecipe.Archive();
+                }
+                else if (dto.Status.Equals(nameof(RecipeStatus.Blocked), StringComparison.OrdinalIgnoreCase))
+                {
+                    existingRecipe.Block();
+                }
+                else if (dto.Status.Equals(nameof(RecipeStatus.Draft), StringComparison.OrdinalIgnoreCase))
+                {
+                    existingRecipe.Unblock();
                 }
             }
 

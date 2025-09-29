@@ -50,7 +50,6 @@ namespace CookingSharp.Infrastructure.Clients
                 throw new Exception($"Error al actualizar el usuario. El servidor respondió con el código: {response.StatusCode}");
             }
 
-
         }
         public async Task<bool> DeleteAsync(int id)
         {

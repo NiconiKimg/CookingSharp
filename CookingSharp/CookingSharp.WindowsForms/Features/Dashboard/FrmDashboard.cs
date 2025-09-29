@@ -1,4 +1,6 @@
+using CookingSharp.WindowsForms.AppealsControl;
 using CookingSharp.WindowsForms.CategoriesControl;
+using CookingSharp.WindowsForms.RecipesControl;
 using CookingSharp.WindowsForms.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,8 @@ namespace CookingSharp.WindowsForms
             InitializeComponent();
             this.Load += FrmDashboard_Load;
             this.btnNavCategorias.Click += btnNavCategorias_Click;
+            this.btnNavSolicitudes.Click += btnNavSolicitudes_Click;
+            this.btnNavRecetas.Click += btnNavRecetas_Click;
         }
 
 
@@ -63,11 +67,31 @@ namespace CookingSharp.WindowsForms
             LoadControl<UC_Users>();
         }
 
+        private void LoadAppealsControl()
+        {
+            LoadControl<UC_Appeals>();
+        }
+
+        private void LoadRecipesControl()
+        {
+            LoadControl<UC_Recipes>();
+        }
+
         #endregion
 
         private void btnNavUsuarios_Click(object sender, EventArgs e)
         {
             LoadUsersControl();
+        }
+
+        private void btnNavSolicitudes_Click(object sender, EventArgs e)
+        {
+            LoadAppealsControl();
+        }
+
+        private void btnNavRecetas_Click(object sender, EventArgs e)
+        {
+            LoadRecipesControl();
         }
     }
 }

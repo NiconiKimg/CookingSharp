@@ -28,6 +28,9 @@ namespace CookingSharp.Infrastructure.Persistence.Configurations
 
             builder.Property(u => u.Password)
                 .IsRequired();
+
+            builder.Property(u => u.Role)
+                .IsRequired();
         }
     }
 }
