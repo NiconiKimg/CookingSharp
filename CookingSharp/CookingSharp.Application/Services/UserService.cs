@@ -1,6 +1,7 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Domain;
 using CookingSharp.Application.Services.Contracts;
+using BCrypt.Net;
 
 namespace CookingSharp.Application.Services
 {
@@ -56,31 +57,6 @@ namespace CookingSharp.Application.Services
         }
 
         /// <summary>
-        /// Añade un nuevo usuario al sistema.
-        /// </summary>
-        /// <param name="dto">El DTO con la información del nuevo usuario.</param>
-        /// <returns>El DTO de respuesta del usuario recién creado.</returns>
-        public async Task<UserResponseDTO> AddAsync(UserDTO dto)
-        {
-            if (await _userRepository.ExistsWithEmailAsync(dto.Email))
-            {
-                throw new ArgumentException("User with the same email already exists.");
-            }
-
-            var user = new User(0, dto.Name, dto.Surname, dto.Email, dto.Password);
-
-            var addedUser = await _userRepository.AddAsync(user);
-
-            return new UserResponseDTO
-            {
-                Id = addedUser.Id,
-                Name = addedUser.Name,
-                Surname = addedUser.Surname,
-                Email = addedUser.Email
-            };
-        }
-
-        /// <summary>
         /// Actualiza la información del perfil de un usuario existente.
         /// </summary>
         /// <param name="dto">El DTO con los datos actualizados del perfil del usuario.</param>
@@ -109,6 +85,29 @@ namespace CookingSharp.Application.Services
         public async Task<bool> DeleteAsync(int id)
         {
             return await _userRepository.DeleteAsync(id);
+        }
+
+        public async Task<UserResponseDTO> AddAsync(UserDTO dto)
+        {
+            if (await _userRepository.ExistsWithEmailAsync(dto.Email))
+            {
+                throw new ArgumentException("User with the same email already exists.");
+            }
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            var user = new User(0, dto.Name, dto.Surname, dto.Email, hashedPassword);
+
+            var addedUser = await _userRepository.AddAsync(user);
+
+            return new UserResponseDTO
+            {
+                Id = addedUser.Id,
+                Name = addedUser.Name,
+                Surname = addedUser.Surname,
+                Email = addedUser.Email,
+                Role = addedUser.Role.ToString()
+            };
         }
     }
 }

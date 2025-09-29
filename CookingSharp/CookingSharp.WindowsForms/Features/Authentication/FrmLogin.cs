@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Infrastructure.Clients;
+using System;
 using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms
 {
     public partial class FrmLogin : Form
     {
-        public FrmLogin()
+        private readonly AuthApiClient _authApiClient;
+
+        /// <summary>
+        /// Constructor que recibe el cliente de la API de autenticación
+        /// a través de la inyección de dependencias configurada en Program.cs.
+        /// </summary>
+        public FrmLogin(AuthApiClient authApiClient)
         {
             InitializeComponent();
+            _authApiClient = authApiClient;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -24,19 +25,54 @@ namespace CookingSharp.WindowsForms
             this.Close();
         }
 
-        private void btnAcceder_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Maneja el evento de clic del botón Acceder.
+        /// Se declara como 'async void' para poder realizar llamadas a la API sin congelar la interfaz de usuario.
+        /// </summary>
+        private async void btnAcceder_Click(object sender, EventArgs e)
         {
-            //We should implement authentication logic here for the next deadline
-            bool successfulLogin = true;
-            if(successfulLogin)
+            // Deshabilitar el botón para evitar múltiples clics mientras se procesa la solicitud.
+            btnAcceder.Enabled = false;
+            btnAcceder.Text = "Accediendo...";
+
+            try
             {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                // 1. Recoger las credenciales del formulario.
+                var loginDto = new UserLoginDTO
+                {
+                    Email = txtEmail.Text,
+                    Password = txtPassword.Text
+                };
+
+                // 2. Llamar a la API para intentar iniciar sesión.
+                var response = await _authApiClient.LoginAsync(loginDto);
+
+                // 3. Procesar la respuesta de la API.
+                if (response != null && !string.IsNullOrEmpty(response.Token))
+                {
+                    // ÉXITO: Se recibió un token.
+                    TokenManager.SetToken(response.Token);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    // FALLO: La API devolvió una respuesta no exitosa (ej. 401 Unauthorized).
+                    MessageBox.Show("Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.DialogResult = DialogResult.Cancel;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // ERROR: No se pudo conectar con el servidor o hubo otro error de red.
+                MessageBox.Show($"No se pudo conectar con el servidor. Verifique que la API esté en ejecución.\n\nError: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.Cancel;
+            }
+            finally
+            {
+                // Asegurarse de que el botón se vuelva a habilitar, sin importar el resultado.
+                btnAcceder.Enabled = true;
+                btnAcceder.Text = "Acceder";
             }
         }
     }

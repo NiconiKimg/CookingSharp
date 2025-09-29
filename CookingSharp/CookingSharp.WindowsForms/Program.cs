@@ -1,3 +1,4 @@
+using CookingSharp.Application.DTOs;
 using CookingSharp.Infrastructure.Clients;
 using CookingSharp.WindowsForms.CategoriesControl;
 using CookingSharp.WindowsForms.UserControls;
@@ -11,7 +12,6 @@ namespace CookingSharp.WindowsForms
 {
     internal static class Program
     {
-
         public static IServiceProvider? ServiceProvider { get; private set; }
 
         [STAThread]
@@ -43,13 +43,16 @@ namespace CookingSharp.WindowsForms
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddTransient<AuthenticationHandler>();
 
+            
             services.AddHttpClient<CategoryApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
-                client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
+            .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -58,9 +61,9 @@ namespace CookingSharp.WindowsForms
             services.AddHttpClient<AppealApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
-                client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
+            .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -69,9 +72,9 @@ namespace CookingSharp.WindowsForms
             services.AddHttpClient<RecipeApiClient>(recipe =>
             {
                 recipe.BaseAddress = new Uri("https://localhost:7111/api/");
-                recipe.DefaultRequestHeaders.Accept.Clear();
                 recipe.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
+            .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -80,7 +83,18 @@ namespace CookingSharp.WindowsForms
             services.AddHttpClient<UserApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
-                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .AddHttpMessageHandler<AuthenticationHandler>()
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
+
+            
+            services.AddHttpClient<AuthApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7111/");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
@@ -90,10 +104,8 @@ namespace CookingSharp.WindowsForms
 
             services.AddTransient<FrmLogin>();
             services.AddTransient<FrmDashboard>();
-
             services.AddTransient<frmCategoriesCreate>();
             services.AddTransient<FrmUsersCreate>();
-
             services.AddTransient<UC_AdminPanel>();
             services.AddTransient<UC_Appeals>();
             services.AddTransient<UC_Categories>();

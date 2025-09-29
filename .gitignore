@@ -56,3 +56,4 @@ nunit-*.xml
 #Others
 .vs/
 .env
+/CookingSharp/CookingSharp.WebAPI/appsettings.json

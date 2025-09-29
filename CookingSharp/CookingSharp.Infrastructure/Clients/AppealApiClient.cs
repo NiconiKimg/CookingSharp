@@ -56,5 +56,9 @@ namespace CookingSharp.Infrastructure.Clients
                 throw new Exception($"Error al actualizar la solicitud. El servidor respondió con el código: {response.StatusCode}");
             }
         }
+        public async Task<IEnumerable<AppealDTO>> GetAppealsByUserIdAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<AppealDTO>>(AppealsEndpoint);
+        }
     }
 }

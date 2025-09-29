@@ -10,6 +10,9 @@
     <Compile Update="Features\Appeals\UC_Appeals.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Features\Apprentice\UC_AppealsApprentice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Features\Apprentice\UC_RecipiesApprentice.cs">
       <SubType>UserControl</SubType>
     </Compile>

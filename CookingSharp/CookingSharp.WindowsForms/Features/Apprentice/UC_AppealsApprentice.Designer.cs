@@ -1,6 +1,6 @@
 ﻿namespace CookingSharp.WindowsForms.Features.Apprentice
 {
-    partial class UC_RecipiesApprentice
+    partial class UC_AppealsApprentice
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -29,38 +29,49 @@
         private void InitializeComponent()
         {
             lblRecetas = new Label();
-            dgvRecipesApprentice = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dgvRecipesApprentice).BeginInit();
+            dgvAppealApprentice = new DataGridView();
+            btnCreateAppeal = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvAppealApprentice).BeginInit();
             SuspendLayout();
             // 
             // lblRecetas
             // 
             lblRecetas.AutoSize = true;
             lblRecetas.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblRecetas.Location = new Point(58, 45);
+            lblRecetas.Location = new Point(58, 66);
             lblRecetas.Name = "lblRecetas";
-            lblRecetas.Size = new Size(100, 32);
-            lblRecetas.TabIndex = 9;
-            lblRecetas.Text = "Recetas";
+            lblRecetas.Size = new Size(138, 32);
+            lblRecetas.TabIndex = 11;
+            lblRecetas.Text = "Solicitudes";
             // 
-            // dgvRecipesApprentice
+            // dgvAppealApprentice
             // 
-            dgvRecipesApprentice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRecipesApprentice.Location = new Point(58, 132);
-            dgvRecipesApprentice.Name = "dgvRecipesApprentice";
-            dgvRecipesApprentice.RowHeadersWidth = 62;
-            dgvRecipesApprentice.Size = new Size(667, 370);
-            dgvRecipesApprentice.TabIndex = 5;
+            dgvAppealApprentice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAppealApprentice.Location = new Point(58, 153);
+            dgvAppealApprentice.Name = "dgvAppealApprentice";
+            dgvAppealApprentice.RowHeadersWidth = 62;
+            dgvAppealApprentice.Size = new Size(667, 370);
+            dgvAppealApprentice.TabIndex = 10;
             // 
-            // UC_RecipiesApprentice
+            // btnCreateAppeal
+            // 
+            btnCreateAppeal.Location = new Point(618, 114);
+            btnCreateAppeal.Name = "btnCreateAppeal";
+            btnCreateAppeal.Size = new Size(107, 23);
+            btnCreateAppeal.TabIndex = 12;
+            btnCreateAppeal.Text = "Crear Solicitud";
+            btnCreateAppeal.UseVisualStyleBackColor = true;
+            // 
+            // UC_AppealsApprentice
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnCreateAppeal);
             Controls.Add(lblRecetas);
-            Controls.Add(dgvRecipesApprentice);
-            Name = "UC_RecipiesApprentice";
+            Controls.Add(dgvAppealApprentice);
+            Name = "UC_AppealsApprentice";
             Size = new Size(782, 589);
-            ((System.ComponentModel.ISupportInitialize)dgvRecipesApprentice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvAppealApprentice).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -68,6 +79,7 @@
         #endregion
 
         private Label lblRecetas;
-        private DataGridView dgvRecipesApprentice;
+        private DataGridView dgvAppealApprentice;
+        private Button btnCreateAppeal;
     }
 }

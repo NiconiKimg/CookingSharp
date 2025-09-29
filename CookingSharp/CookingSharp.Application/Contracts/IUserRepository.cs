@@ -10,5 +10,6 @@ namespace CookingSharp.Application.Services.Contracts
         Task UpdateAsync(User user);
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsWithEmailAsync(string mail, int? excludeId = null);
+        Task<User?> GetByEmailAsync(string email);
     }
 }
