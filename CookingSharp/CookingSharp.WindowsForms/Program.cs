@@ -1,10 +1,12 @@
+using Azure;
 using CookingSharp.Application.DTOs;
 using CookingSharp.Infrastructure.Clients;
+using CookingSharp.WindowsForms.AppealsControl;
 using CookingSharp.WindowsForms.CategoriesControl;
+using CookingSharp.WindowsForms.Features.Dashboard;
+using CookingSharp.WindowsForms.RecipesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;
-using CookingSharp.WindowsForms.AppealsControl;
-using CookingSharp.WindowsForms.RecipesControl;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 
@@ -28,7 +30,30 @@ namespace CookingSharp.WindowsForms
                 DialogResult result = loginForm?.ShowDialog() ?? DialogResult.Cancel;
                 if (result == DialogResult.OK)
                 {
-                    var mainForm = ServiceProvider?.GetRequiredService<FrmDashboard>();
+                    var userRole = SessionManager.CurrentUser?.Role;
+
+                    Form? mainForm = null;
+
+                    switch (userRole)
+                    {
+                        case Domain.User.RoleTypes.Admin:
+                            mainForm = ServiceProvider?.GetRequiredService<FrmDashboard>();
+                            break;
+
+                        case Domain.User.RoleTypes.Chef:
+                            mainForm = ServiceProvider?.GetRequiredService<FrmChefDashboard>();
+                            break;
+
+                        case Domain.User.RoleTypes.Apprentice:
+                            mainForm = ServiceProvider?.GetRequiredService<FrmApprenticeDashboard>();
+                            break;
+
+                        default:
+                            MessageBox.Show("Rol de usuario no reconocido. La aplicación se cerrará.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            System.Windows.Forms.Application.Exit();
+                            break;
+                    }
+
                     if (mainForm != null)
                     {
                         System.Windows.Forms.Application.Run(mainForm);
@@ -46,7 +71,7 @@ namespace CookingSharp.WindowsForms
             
             services.AddTransient<AuthenticationHandler>();
 
-            
+            // Category
             services.AddHttpClient<CategoryApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
@@ -58,6 +83,7 @@ namespace CookingSharp.WindowsForms
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
+            // Appeals
             services.AddHttpClient<AppealApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
@@ -69,6 +95,7 @@ namespace CookingSharp.WindowsForms
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
+            // Recipes
             services.AddHttpClient<RecipeApiClient>(recipe =>
             {
                 recipe.BaseAddress = new Uri("https://localhost:7111/api/");
@@ -80,6 +107,7 @@ namespace CookingSharp.WindowsForms
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
+            // Users
             services.AddHttpClient<UserApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/api/");
@@ -91,19 +119,24 @@ namespace CookingSharp.WindowsForms
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
-            
+            // Auth
             services.AddHttpClient<AuthApiClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7111/");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
+            .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
             services.AddTransient<FrmLogin>();
+
             services.AddTransient<FrmDashboard>();
+            services.AddTransient<FrmChefDashboard>();
+            services.AddTransient<FrmApprenticeDashboard>();
+
             services.AddTransient<frmCategoriesCreate>();
             services.AddTransient<FrmUsersCreate>();
             services.AddTransient<UC_AdminPanel>();

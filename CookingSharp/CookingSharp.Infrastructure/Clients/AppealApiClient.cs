@@ -26,7 +26,7 @@ namespace CookingSharp.Infrastructure.Clients
             return await _httpClient.GetFromJsonAsync<IEnumerable<AppealDTO>>(AppealsEndpoint);
         }
 
-        public async Task<AppealDTO?> AddAsync(AppealDTO dto)
+        public async Task<AppealDTO?> AddAsync(AppealCreateDTO dto)
         {
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync(AppealsEndpoint, dto);
             if (response.IsSuccessStatusCode)

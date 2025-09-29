@@ -1,5 +1,9 @@
-﻿using CookingSharp.Application.DTOs;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services;
+using CookingSharp.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingSharp.WebAPI.Controllers
@@ -14,6 +18,17 @@ namespace CookingSharp.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<AppealDTO>>> GetAll()
         {
             var appeal = await appealService.GetAllAsync();
+            return Ok(appeal);
+        }
+
+
+        [HttpGet("mis-solicitudes")] //appeal/mis-solicitudes
+        public async Task<ActionResult<IEnumerable<AppealDTO>>> GetAllMy()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
+                                ?? throw new Exception("UserId no presente en el token."));
+
+            var appeal = await appealService.GetAllAsyncMy(userId);
             return Ok(appeal);
         }
 
@@ -34,11 +49,21 @@ namespace CookingSharp.WebAPI.Controllers
 
         #region POST Endpoint
 
+        [Authorize(Roles = "Apprentice")]
         [HttpPost]
-        public async Task<ActionResult<CategoryDTO>> Create([FromBody] AppealDTO appealDTO)
+        public async Task<ActionResult<CategoryDTO>> Create([FromBody] AppealCreateDTO createDTO)
         {
             try
             {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
+                                ?? throw new Exception("UserId no presente en el token."));
+
+                var appealDTO = new AppealDTO
+                {
+                    Description = createDTO.Description,                  
+                    UserId = userId
+                };
+
                 var createdAppeal = await appealService.AddAsync(appealDTO);
                 return CreatedAtAction(nameof(GetById), new { id = createdAppeal.Id }, createdAppeal);
             }
@@ -56,13 +81,13 @@ namespace CookingSharp.WebAPI.Controllers
 
         #region PUT Endpoint
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateAppealDTO appealDto)
+        [HttpPut("{id}")] 
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateAppealDTO appealDTO)
         {
 
             try
             {
-                await appealService.UpdateAsync(id, appealDto);
+                await appealService.UpdateAsync(id, appealDTO);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)

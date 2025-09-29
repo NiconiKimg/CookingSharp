@@ -1,6 +1,6 @@
-﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
-using System.Data;
+﻿using CookingSharp.Infrastructure.Clients;
+using System.Net.Http;
+using System.Security.Claims;
 
 namespace CookingSharp.WindowsForms.Features.Apprentice
 {
@@ -18,8 +18,8 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
         {
             InitializeComponent();
             _apiClient = apiClient;
-            _currentUserId = currentUserId; // Guardamos el ID del usuario
-            this.Load += UC_AppealsApprentice_Load; // Suscribimos el evento Load
+            _currentUserId = currentUserId;
+            this.Load += UC_AppealsApprentice_Load;
         }
 
         /// <summary>
@@ -37,7 +37,6 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
         {
             try
             {
-
                 var userAppeals = await _apiClient.GetAppealsByUserIdAsync();
 
                 dgvAppealApprentice.DataSource = userAppeals?.ToList();

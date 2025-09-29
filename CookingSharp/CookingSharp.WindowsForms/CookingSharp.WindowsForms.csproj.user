@@ -28,6 +28,12 @@
     <Compile Update="Features\Categories\UC_Categories.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Features\Dashboard\FrmApprenticeDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Features\Dashboard\FrmChefDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Features\Dashboard\FrmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>

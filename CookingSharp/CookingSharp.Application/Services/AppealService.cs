@@ -1,4 +1,4 @@
-﻿using CookingSharp.Application.DTOs;
+﻿ using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain;
 using System.Data;
@@ -50,6 +50,24 @@ namespace CookingSharp.Application.Services
         /// <returns>Una colección de DTOs de todas las solicitudes.</returns>
         public async Task<IEnumerable<AppealDTO>> GetAllAsync()
         {
+            var appeals = await _appealRepository.GetAllAsync();
+            return appeals.Select(a => new AppealDTO
+            {
+                Id = a.Id,
+                Status = a.Status.ToString(),
+                Description = a.Description,
+                UserId = a.UserId,
+                UserName = a.User?.Name
+            });
+        }
+
+        /// <summary>
+        /// Obtiene todas las solicitudes existentes para un id de usuario.
+        /// </summary>
+        /// <returns>Una colección de DTOs de todas las solicitudes para ese usuario.</returns>
+        public async Task<IEnumerable<AppealDTO>> GetAllAsyncMy(int idUsuario)
+        {
+
             var appeals = await _appealRepository.GetAllAsync();
             return appeals.Select(a => new AppealDTO
             {
