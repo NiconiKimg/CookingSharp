@@ -15,14 +15,14 @@ namespace CookingSharp.Infrastructure.Clients
 
         public async Task<LoginResponseDTO?> LoginAsync(UserLoginDTO loginDto)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/auth/login", loginDto);
+            var response = await _httpClient.PostAsJsonAsync("auth/login", loginDto);
 
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<LoginResponseDTO>();
             }
 
-            return null;    
+            return null;
         }
     }
 }

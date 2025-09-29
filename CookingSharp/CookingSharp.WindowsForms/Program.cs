@@ -125,7 +125,6 @@ namespace CookingSharp.WindowsForms
                 client.BaseAddress = new Uri("https://localhost:7111/");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             })
-            .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator

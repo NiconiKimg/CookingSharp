@@ -44,8 +44,7 @@ namespace CookingSharp.WindowsForms
 
                 Console.WriteLine("previo");
                 var response = await _authApiClient.LoginAsync(loginDto);
-                Console.WriteLine(response);
-
+                
                 if (response != null && !string.IsNullOrEmpty(response.Token))
                 {
                     SessionManager.StartSession(response.Token);
