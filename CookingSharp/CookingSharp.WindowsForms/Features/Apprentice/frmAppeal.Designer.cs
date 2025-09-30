@@ -42,6 +42,7 @@
             btnCreate.TabIndex = 0;
             btnCreate.Text = "Crear Solitud";
             btnCreate.UseVisualStyleBackColor = true;
+            btnCreate.Click += btnCreate_Click;
             // 
             // lblDesciption
             // 

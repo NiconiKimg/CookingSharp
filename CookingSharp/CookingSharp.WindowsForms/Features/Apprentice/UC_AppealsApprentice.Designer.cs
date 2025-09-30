@@ -55,12 +55,13 @@
             // 
             // btnCreateAppeal
             // 
-            btnCreateAppeal.Location = new Point(618, 114);
+            btnCreateAppeal.Location = new Point(58, 124);
             btnCreateAppeal.Name = "btnCreateAppeal";
             btnCreateAppeal.Size = new Size(107, 23);
             btnCreateAppeal.TabIndex = 12;
             btnCreateAppeal.Text = "Crear Solicitud";
             btnCreateAppeal.UseVisualStyleBackColor = true;
+            btnCreateAppeal.Click += btnCreateAppeal_Click;
             // 
             // UC_AppealsApprentice
             // 

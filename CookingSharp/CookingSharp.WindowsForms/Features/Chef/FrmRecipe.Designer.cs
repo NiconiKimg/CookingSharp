@@ -33,7 +33,7 @@
             lblTitle = new Label();
             txtSteps = new TextBox();
             txtDescription = new TextBox();
-            btnCreate = new Button();
+            btnCreateRecipe = new Button();
             SuspendLayout();
             // 
             // lblDescription
@@ -80,21 +80,22 @@
             txtDescription.Size = new Size(687, 23);
             txtDescription.TabIndex = 4;
             // 
-            // btnCreate
+            // btnCreateRecipe
             // 
-            btnCreate.Location = new Point(316, 385);
-            btnCreate.Name = "btnCreate";
-            btnCreate.Size = new Size(146, 23);
-            btnCreate.TabIndex = 5;
-            btnCreate.Text = "Crear Receta";
-            btnCreate.UseVisualStyleBackColor = true;
+            btnCreateRecipe.Location = new Point(316, 385);
+            btnCreateRecipe.Name = "btnCreateRecipe";
+            btnCreateRecipe.Size = new Size(146, 23);
+            btnCreateRecipe.TabIndex = 5;
+            btnCreateRecipe.Text = "Crear Receta";
+            btnCreateRecipe.UseVisualStyleBackColor = true;
+            btnCreateRecipe.Click += btnCreateRecipe_Click;
             // 
             // FrmRecipe
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(btnCreate);
+            Controls.Add(btnCreateRecipe);
             Controls.Add(txtDescription);
             Controls.Add(txtSteps);
             Controls.Add(lblTitle);
@@ -113,6 +114,6 @@
         private Label lblTitle;
         private TextBox txtSteps;
         private TextBox txtDescription;
-        private Button btnCreate;
+        private Button btnCreateRecipe;
     }
 }

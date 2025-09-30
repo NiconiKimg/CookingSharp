@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
+            btnRecipes = new Button();
             pnlMainContent = new Panel();
             btnAppeals = new Button();
-            btnRecipes = new Button();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -52,6 +52,16 @@
             tableLayoutPanel1.Size = new Size(800, 449);
             tableLayoutPanel1.TabIndex = 0;
             // 
+            // btnRecipes
+            // 
+            btnRecipes.Location = new Point(659, 3);
+            btnRecipes.Name = "btnRecipes";
+            btnRecipes.Size = new Size(138, 23);
+            btnRecipes.TabIndex = 6;
+            btnRecipes.Text = "Ver recetas";
+            btnRecipes.UseVisualStyleBackColor = true;
+            btnRecipes.Click += btnRecipes_Click;
+            // 
             // pnlMainContent
             // 
             pnlMainContent.BackColor = Color.White;
@@ -70,15 +80,7 @@
             btnAppeals.TabIndex = 5;
             btnAppeals.Text = "Ver solicitudes";
             btnAppeals.UseVisualStyleBackColor = true;
-            // 
-            // btnRecipes
-            // 
-            btnRecipes.Location = new Point(659, 3);
-            btnRecipes.Name = "btnRecipes";
-            btnRecipes.Size = new Size(138, 23);
-            btnRecipes.TabIndex = 6;
-            btnRecipes.Text = "Ver recetas";
-            btnRecipes.UseVisualStyleBackColor = true;
+            btnAppeals.Click += btnAppeals_Click;
             // 
             // FrmApprenticeDashboard
             // 

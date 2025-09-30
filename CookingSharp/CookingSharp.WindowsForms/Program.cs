@@ -10,6 +10,7 @@ using CookingSharp.WindowsForms.Users;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using CookingSharp.WindowsForms.Features.Apprentice;
+using CookingSharp.WindowsForms.Features.Chef;
 
 namespace CookingSharp.WindowsForms
 {
@@ -139,7 +140,10 @@ namespace CookingSharp.WindowsForms
 
             services.AddTransient<frmCategoriesCreate>();
             services.AddTransient<FrmUsersCreate>();
+            services.AddTransient<frmAppeal>();
+            services.AddTransient<FrmRecipe>();
             services.AddTransient<UC_AdminPanel>();
+            services.AddTransient<UC_RecipesChef>();
             services.AddTransient<UC_Appeals>();
             services.AddTransient<UC_Categories>();
             services.AddTransient<UC_Recipes>();

@@ -1,6 +1,7 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CookingSharp.WebAPI.Controllers
 {
@@ -44,7 +45,20 @@ namespace CookingSharp.WebAPI.Controllers
         {
             try
             {
-                var createdRecipe = await _recipeService.AddAsync(recipeDto);
+
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
+                                ?? throw new Exception("UserId no presente en el token."));
+
+                var createRecipeDto = new CreateRecipeDTO
+                {
+                    Description = recipeDto.Description,
+                    Content = recipeDto.Content,
+                    UserId = userId,
+                    //CategoryIds = recipeDto.CategoryIds TO DO
+                    CategoryIds = new List<int> { 1 }
+                };
+
+                var createdRecipe = await _recipeService.AddAsync(createRecipeDto);
                 return CreatedAtAction(nameof(GetById), new { id = createdRecipe.Id }, createdRecipe);
             }
             catch (ArgumentException ex)

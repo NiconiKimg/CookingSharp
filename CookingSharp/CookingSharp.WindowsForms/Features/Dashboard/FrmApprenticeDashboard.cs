@@ -9,6 +9,7 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         {
             InitializeComponent();
             this.Load += FrmDashboard_Load;
+            this.btnAppeals.Click += btnAppeals_Click;
         }
 
         private void FrmDashboard_Load(object sender, EventArgs e)
@@ -35,6 +36,21 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         private void LoadRecipesView()
         {
             LoadControl<UC_RecipiesApprentice>();
+        }
+
+        private void LoadAppealsView()
+        {
+            LoadControl<UC_AppealsApprentice>();
+        }
+
+        private void btnRecipes_Click(object sender, EventArgs e)
+        {
+            LoadRecipesView();
+        }
+
+        private void btnAppeals_Click(object sender, EventArgs e)
+        {
+            LoadAppealsView();
         }
     }
 }

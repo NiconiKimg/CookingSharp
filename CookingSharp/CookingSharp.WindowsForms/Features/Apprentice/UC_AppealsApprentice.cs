@@ -1,4 +1,5 @@
 ﻿using CookingSharp.Infrastructure.Clients;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Security.Claims;
 
@@ -14,11 +15,11 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
         /// </summary>
         /// <param name="apiClient">El cliente para comunicarse con la API de Appeals.</param>
         /// <param name="currentUserId">El ID del usuario actualmente logeado.</param>
-        public UC_AppealsApprentice(AppealApiClient apiClient, int currentUserId)
+        public UC_AppealsApprentice(AppealApiClient apiClient)//, int currentUserId)
         {
             InitializeComponent();
             _apiClient = apiClient;
-            _currentUserId = currentUserId;
+            //_currentUserId = currentUserId;
             this.Load += UC_AppealsApprentice_Load;
         }
 
@@ -77,6 +78,17 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             dgvAppealApprentice.EnableHeadersVisualStyles = false;
             dgvAppealApprentice.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
             dgvAppealApprentice.ColumnHeadersDefaultCellStyle.ForeColor = Color.WhiteSmoke;
+        }
+
+        private async void btnCreateAppeal_Click(object sender, EventArgs e)
+        {
+            using (var createForm = Program.ServiceProvider?.GetRequiredService<frmAppeal>())
+            {
+                if (createForm == null) return;
+                createForm.ShowDialog();
+            }
+
+            await LoadAppealsAsync();
         }
     }
 }

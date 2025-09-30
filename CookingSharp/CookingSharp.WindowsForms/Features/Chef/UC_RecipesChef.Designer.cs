@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             lblRecetas = new Label();
-            dgvRecipesApprentice = new DataGridView();
+            dgvRecipesChef = new DataGridView();
             btnCreateRecipe = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvRecipesApprentice).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRecipesChef).BeginInit();
             SuspendLayout();
             // 
             // lblRecetas
@@ -44,14 +44,14 @@
             lblRecetas.TabIndex = 11;
             lblRecetas.Text = "Recetas";
             // 
-            // dgvRecipesApprentice
+            // dgvRecipesChef
             // 
-            dgvRecipesApprentice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRecipesApprentice.Location = new Point(58, 153);
-            dgvRecipesApprentice.Name = "dgvRecipesApprentice";
-            dgvRecipesApprentice.RowHeadersWidth = 62;
-            dgvRecipesApprentice.Size = new Size(667, 370);
-            dgvRecipesApprentice.TabIndex = 10;
+            dgvRecipesChef.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRecipesChef.Location = new Point(58, 153);
+            dgvRecipesChef.Name = "dgvRecipesChef";
+            dgvRecipesChef.RowHeadersWidth = 62;
+            dgvRecipesChef.Size = new Size(667, 370);
+            dgvRecipesChef.TabIndex = 10;
             // 
             // btnCreateRecipe
             // 
@@ -61,6 +61,7 @@
             btnCreateRecipe.TabIndex = 13;
             btnCreateRecipe.Text = "Crear Receta";
             btnCreateRecipe.UseVisualStyleBackColor = true;
+            btnCreateRecipe.Click += btnCreateRecipe_Click;
             // 
             // UC_RecipesChef
             // 
@@ -68,10 +69,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btnCreateRecipe);
             Controls.Add(lblRecetas);
-            Controls.Add(dgvRecipesApprentice);
+            Controls.Add(dgvRecipesChef);
             Name = "UC_RecipesChef";
             Size = new Size(782, 589);
-            ((System.ComponentModel.ISupportInitialize)dgvRecipesApprentice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRecipesChef).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -79,7 +80,7 @@
         #endregion
 
         private Label lblRecetas;
-        private DataGridView dgvRecipesApprentice;
+        private DataGridView dgvRecipesChef;
         private Button btnCreateRecipe;
     }
 }
