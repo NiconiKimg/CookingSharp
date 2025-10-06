@@ -54,8 +54,7 @@ namespace CookingSharp.WebAPI.Controllers
                     Description = recipeDto.Description,
                     Content = recipeDto.Content,
                     UserId = userId,
-                    //CategoryIds = recipeDto.CategoryIds TO DO
-                    CategoryIds = new List<int> { 1 }
+                    CategoryIds = recipeDto.CategoryIds
                 };
 
                 var createdRecipe = await _recipeService.AddAsync(createRecipeDto);
