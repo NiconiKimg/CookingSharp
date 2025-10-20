@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Infrastructure.Clients;
+using System;
 using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms
 {
     public partial class FrmLogin : Form
     {
-        public FrmLogin()
+        private readonly AuthApiClient _authApiClient;
+
+        /// <summary>
+        /// Constructor que recibe el cliente de la API de autenticación
+        /// a través de la inyección de dependencias configurada en Program.cs.
+        /// </summary>
+        public FrmLogin(AuthApiClient authApiClient)
         {
             InitializeComponent();
+            _authApiClient = authApiClient;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -24,19 +25,48 @@ namespace CookingSharp.WindowsForms
             this.Close();
         }
 
-        private void btnAcceder_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Maneja el evento de clic del botón Acceder.
+        /// Se declara como 'async void' para poder realizar llamadas a la API sin congelar la interfaz de usuario.
+        /// </summary>
+        private async void btnAcceder_Click(object sender, EventArgs e)
         {
-            //We should implement authentication logic here for the next deadline
-            bool successfulLogin = true;
-            if(successfulLogin)
+            btnAcceder.Enabled = false;
+            btnAcceder.Text = "Accediendo...";
+
+            try
             {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                var loginDto = new UserLoginDTO
+                {
+                    Email = txtEmail.Text,
+                    Password = txtPassword.Text
+                };
+
+                Console.WriteLine("previo");
+                var response = await _authApiClient.LoginAsync(loginDto);
+                
+                if (response != null && !string.IsNullOrEmpty(response.Token))
+                {
+                    SessionManager.StartSession(response.Token);
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.DialogResult = DialogResult.Cancel;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error inesperado:\n\n{ex.ToString()}", "Error Detallado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.Cancel;
+            }
+            finally
+            {
+                btnAcceder.Enabled = true;
+                btnAcceder.Text = "Acceder";
             }
         }
     }

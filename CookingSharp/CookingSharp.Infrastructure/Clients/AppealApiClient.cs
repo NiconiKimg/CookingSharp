@@ -26,7 +26,7 @@ namespace CookingSharp.Infrastructure.Clients
             return await _httpClient.GetFromJsonAsync<IEnumerable<AppealDTO>>(AppealsEndpoint);
         }
 
-        public async Task<AppealDTO?> AddAsync(AppealDTO dto)
+        public async Task<AppealDTO?> AddAsync(AppealCreateDTO dto)
         {
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync(AppealsEndpoint, dto);
             if (response.IsSuccessStatusCode)
@@ -55,6 +55,10 @@ namespace CookingSharp.Infrastructure.Clients
 
                 throw new Exception($"Error al actualizar la solicitud. El servidor respondió con el código: {response.StatusCode}");
             }
+        }
+        public async Task<IEnumerable<AppealDTO>> GetAppealsByUserIdAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<AppealDTO>>(AppealsEndpoint);
         }
     }
 }

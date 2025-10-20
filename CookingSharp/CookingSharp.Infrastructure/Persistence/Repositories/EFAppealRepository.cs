@@ -36,5 +36,11 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
             _context.Entry(appeal).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Appeal>> GetByUserIdAsync(int id)
+        {
+            return await _context.Appeals.Where(a => a.UserId == id).ToListAsync();
+        }
+
     }
 }

@@ -14,8 +14,15 @@ namespace CookingSharp.Application.DTOs
         public int UserId { get; set; }
         public string? UserName { get; set; }
     }
+
+    public class AppealCreateDTO
+    {
+        public string? Description { get; set; }
+    }
+
+
     public class UpdateAppealDTO
     {
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }

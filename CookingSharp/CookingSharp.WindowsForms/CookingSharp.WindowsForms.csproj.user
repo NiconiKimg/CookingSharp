@@ -10,6 +10,15 @@
     <Compile Update="Features\Appeals\UC_Appeals.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Features\Apprentice\FrmAppeal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Features\Apprentice\UC_AppealsApprentice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Features\Apprentice\UC_RecipiesApprentice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Features\Authentication\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -21,6 +30,18 @@
     </Compile>
     <Compile Update="Features\Categories\UC_Categories.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Features\Chef\FrmRecipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Features\Chef\UC_RecipesChef.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Features\Dashboard\FrmApprenticeDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Features\Dashboard\FrmChefDashboard.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Features\Dashboard\FrmDashboard.cs">
       <SubType>Form</SubType>
