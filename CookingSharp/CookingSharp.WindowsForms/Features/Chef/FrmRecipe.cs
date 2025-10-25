@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -25,7 +25,7 @@ namespace CookingSharp.WindowsForms.Features.Chef
             {
                 var categorias = await _categoryApiClient.GetAllAsync();
 
-                if (categorias.IsNullOrEmpty())
+                if (categorias is null)
                 {
                     MessageBox.Show("No se pudieron cargar las categorías.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Close();
@@ -69,7 +69,7 @@ namespace CookingSharp.WindowsForms.Features.Chef
 
             foreach (var item in checkedListBox1.CheckedItems)
             {
-                var category = item as CategoryDTO;
+                var category = item as CategoryResponseDTO;
                 if (category != null)
                 {
                     selectedCategoryIds.Add(category.Id);
@@ -78,17 +78,17 @@ namespace CookingSharp.WindowsForms.Features.Chef
 
             // 2. Crear el DTO. No se necesita UserId ni CategoryIds.
             //    El backend se encargará de asignar el UserId desde el token.
-            var newRecipeDto = new CreateRecipeDTO
+            var newRecipeDto = new RecipeCreateDTO
             {
-                Description = txtDescription.Text.Trim(),
-                Content = txtSteps.Text.Trim(),
+                Name = txtDescription.Text.Trim(),
+                Description = txtSteps.Text.Trim(),
                 CategoryIds = selectedCategoryIds // Se envía la lista de IDs seleccionados.
             };
 
             // 3. Llamar a la API y manejar la respuesta
             try
             {
-                var createdRecipe = await _recipeApiClient.AddAsync(newRecipeDto);
+                var createdRecipe = await _recipeApiClient.CreateAsync(newRecipeDto);
 
                 if (createdRecipe != null)
                 {

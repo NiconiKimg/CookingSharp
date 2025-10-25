@@ -1,85 +1,121 @@
 /// <summary>
-/// Formulario de inicio de sesión para la aplicación CookingSharp.
-/// Se encarga de capturar las credenciales del usuario, autenticarlas contra la API
-/// y gestionar el inicio de la sesión a través del SessionManager.
+/// Archivo principal de la aplicación Windows Forms.
+/// Responsable de configurar la inyección de dependencias,
+/// gestionar el flujo de autenticación y lanzar el panel de control correspondiente al rol del usuario.
 /// </summary>
-using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
+using CookingSharp.WindowsForms.AppealsControl;
+using CookingSharp.WindowsForms.CategoriesControl;
+using CookingSharp.WindowsForms.Features.Apprentice;
+using CookingSharp.WindowsForms.Features.Authentication;
+using CookingSharp.WindowsForms.Features.Chef;
+using CookingSharp.WindowsForms.Features.Dashboard;
+using CookingSharp.WindowsForms.RecipesControl;
+using CookingSharp.WindowsForms.UserControls;
+using CookingSharp.WindowsForms.Users;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
 
-namespace CookingSharp.WindowsForms.Features.Authentication
+namespace CookingSharp.WindowsForms
 {
-    public partial class FrmLogin : Form
+    internal static class Program
     {
-        private readonly AuthApiClient _authApiClient;
+        /// <summary>
+        /// Proveedor de servicios de inyección de dependencias para toda la aplicación.
+        /// </summary>
+        public static IServiceProvider? ServiceProvider { get; private set; }
 
         /// <summary>
-        /// Constructor que recibe el cliente de la API de autenticación
-        /// a través de la inyección de dependencias configurada en Program.cs.
+        /// Punto de entrada principal de la aplicación.
         /// </summary>
-        public FrmLogin(AuthApiClient authApiClient)
+        [STAThread]
+        static void Main()
         {
-            InitializeComponent();
-            _authApiClient = authApiClient;
-        }
+            ApplicationConfiguration.Initialize();
 
-        /// <summary>
-        /// Maneja el evento de clic del botón para cerrar el formulario.
-        /// </summary>
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            ServiceProvider = services.BuildServiceProvider();
 
-        /// <summary>
-        /// Maneja el evento de clic del botón "Acceder".
-        /// Realiza una llamada asíncrona a la API para validar las credenciales.
-        /// </summary>
-        private async void btnAcceder_Click(object sender, EventArgs e)
-        {
-            // Deshabilitar el botón para prevenir múltiples clics mientras se procesa la solicitud.
-            btnAcceder.Enabled = false;
-            btnAcceder.Text = "Accediendo...";
-
-            try
+            // Iniciar el flujo de la aplicación con el formulario de Login
+            using (var loginForm = ServiceProvider.GetRequiredService<FrmLogin>())
             {
-                var loginDto = new UserLoginDTO
+                if (loginForm.ShowDialog() == DialogResult.OK)
                 {
-                    Email = txtEmail.Text.Trim(),
-                    Password = txtPassword.Text
-                };
-
-                // Llamar al cliente de la API para intentar el inicio de sesión.
-                var loginResponse = await _authApiClient.LoginAsync(loginDto);
-
-                if (loginResponse != null && !string.IsNullOrEmpty(loginResponse.Token))
-                {
-                    // ¡Éxito! Asignar el token al SessionManager.
-                    // El setter del token se encargará de decodificarlo y almacenar los claims.
-                    SessionManager.JwtToken = loginResponse.Token;
-
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    // Si el login es exitoso, determinar qué panel mostrar basado en el rol del usuario
+                    LaunchDashboardBasedOnRole();
                 }
                 else
                 {
-                    // La API respondió, pero las credenciales no son válidas.
-                    MessageBox.Show("Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Si el login se cancela o falla, cerrar la aplicación
+                    System.Windows.Forms.Application.Exit();
                 }
             }
-            catch (Exception ex)
+        }
+
+        /// <summary>
+        /// Configura el contenedor de inyección de dependencias.
+        /// </summary>
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            // URL base de la API. En un proyecto real, esto debería leerse desde un archivo de configuración.
+            const string baseApiAddress = "https://localhost:7111";
+
+            // Usar el método de extensión del proyecto Clients para registrar todos los ApiClients
+            // de forma centralizada y correcta. Esto incluye el AuthenticationHandler.
+            services.AddApiClients(baseApiAddress);
+
+            services.AddTransient<FrmLogin>();
+            services.AddTransient<FrmDashboard>();
+            services.AddTransient<FrmChefDashboard>();
+            services.AddTransient<FrmApprenticeDashboard>();
+            services.AddTransient<frmCategoriesCreate>();
+            services.AddTransient<frmCategoriesUpdate>();
+            services.AddTransient<FrmUsersCreate>();
+            services.AddTransient<FrmUsersUpdate>();
+            services.AddTransient<frmAppeal>();
+            services.AddTransient<FrmRecipe>();
+
+
+            services.AddTransient<UC_AdminPanel>();
+            services.AddTransient<UC_Categories>();
+            services.AddTransient<UC_Users>();
+            services.AddTransient<UC_Appeals>();
+            services.AddTransient<UC_Recipes>();
+            services.AddTransient<UC_RecipesChef>();
+            services.AddTransient<UC_AppealsApprentice>();
+            services.AddTransient<UC_RecipiesApprentice>();
+        }
+
+        /// <summary>
+        /// Lanza el panel de control (Dashboard) apropiado según el rol del usuario autenticado.
+        /// </summary>
+        private static void LaunchDashboardBasedOnRole()
+        {
+            if (ServiceProvider is null) return;
+
+            var userRole = SessionManager.GetUserRole();
+            Form? mainForm = null;
+
+            switch (userRole)
             {
-                // Capturar cualquier otro error (ej. la API no está disponible).
-                MessageBox.Show($"Ocurrió un error al intentar iniciar sesión:\n{ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case "Admin":
+                    mainForm = ServiceProvider.GetRequiredService<FrmDashboard>();
+                    break;
+                case "Chef":
+                    mainForm = ServiceProvider.GetRequiredService<FrmChefDashboard>();
+                    break;
+                case "Apprentice":
+                    mainForm = ServiceProvider.GetRequiredService<FrmApprenticeDashboard>();
+                    break;
+                default:
+                    MessageBox.Show("Rol de usuario no reconocido. La aplicación se cerrará.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    System.Windows.Forms.Application.Exit();
+                    return;
             }
-            finally
-            {
-                // Volver a habilitar el botón, sin importar el resultado.
-                btnAcceder.Enabled = true;
-                btnAcceder.Text = "Acceder";
-            }
+
+            System.Windows.Forms.Application.Run(mainForm);
         }
     }
 }

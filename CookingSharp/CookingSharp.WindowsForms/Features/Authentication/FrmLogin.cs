@@ -1,10 +1,9 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
-using CookingSharp.Infrastructure.Clients;
 using System;
 using System.Windows.Forms;
 
-namespace CookingSharp.WindowsForms
+namespace CookingSharp.WindowsForms.Features.Authentication
 {
     public partial class FrmLogin : Form
     {
@@ -48,7 +47,7 @@ namespace CookingSharp.WindowsForms
                 
                 if (response != null && !string.IsNullOrEmpty(response.Token))
                 {
-                    SessionManager.StartSession(response.Token);
+                    SessionManager.JwtToken = response.Token;
 
                     this.DialogResult = DialogResult.OK;
                     this.Close();

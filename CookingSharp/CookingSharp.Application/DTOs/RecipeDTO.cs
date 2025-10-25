@@ -40,6 +40,14 @@ public class RecipeUpdateDTO
 }
 
 /// <summary>
+/// DTO para actualizar el estado de una receta.
+/// </summary>
+public class RecipeStatusUpdateDTO
+{
+    public string Status { get; set; }
+}
+
+/// <summary>
 /// DTO para crear un paso dentro de una receta.
 /// </summary>
 public class RecipeStepCreateDTO

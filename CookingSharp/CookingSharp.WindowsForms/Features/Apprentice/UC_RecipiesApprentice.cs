@@ -1,4 +1,4 @@
-﻿using CookingSharp.Infrastructure.Clients;
+﻿using CookingSharp.Clients;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +20,7 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             _apiClient = apiClient;
             this.Load += UCApprentice_Load;
         }
-
+        
         private async void UCApprentice_Load(object sender, EventArgs e)
         {
             await LoadRecipes();

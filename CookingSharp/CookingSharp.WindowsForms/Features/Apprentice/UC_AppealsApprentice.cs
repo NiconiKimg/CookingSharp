@@ -1,4 +1,4 @@
-﻿using CookingSharp.Infrastructure.Clients;
+﻿using CookingSharp.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Security.Claims;
@@ -38,7 +38,7 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
         {
             try
             {
-                var userAppeals = await _apiClient.GetAppealsByUserIdAsync();
+                var userAppeals = await _apiClient.GetMyAppealsAsync();
 
                 dgvAppealApprentice.DataSource = userAppeals?.ToList();
 

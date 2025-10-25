@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 
@@ -83,7 +83,7 @@ namespace CookingSharp.WindowsForms.RecipesControl
         private async Task ProcessRecipeStatusChange(string newStatus)
         {
             var selectedRecipe = GetSelectedRecipe();
-            if (selectedRecipe == null)
+            if (selectedRecipe is null)
             {
                 MessageBox.Show("Por favor, seleccione una receta.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -103,9 +103,9 @@ namespace CookingSharp.WindowsForms.RecipesControl
                 try
                 {
 
-                    var updateDto = new UpdateRecipeDTO { Status = newStatus };
+                    var updateDto = new RecipeStatusUpdateDTO { Status = newStatus };
 
-                    bool success = await _apiClient.UpdateAsync(selectedRecipe.Id, updateDto);
+                    bool success = await _apiClient.UpdateStatusAsync(selectedRecipe.Id, updateDto);
                     if (success)
                     {
                         await LoadRecipes();
@@ -125,9 +125,9 @@ namespace CookingSharp.WindowsForms.RecipesControl
 
         #endregion
 
-        private ResponseRecipeDTO? GetSelectedRecipe()
+        private RecipeResponseDTO? GetSelectedRecipe()
         {
-            if (dgvRecipes.CurrentRow != null && dgvRecipes.CurrentRow.DataBoundItem is ResponseRecipeDTO recipe)
+            if (dgvRecipes.CurrentRow != null && dgvRecipes.CurrentRow.DataBoundItem is RecipeResponseDTO recipe)
             {
                 return recipe;
             }

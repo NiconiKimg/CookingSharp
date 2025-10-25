@@ -90,6 +90,38 @@ public class RecipesController : BaseApiController
 
     #endregion
 
+    #region --- PATCH Endpoints ---
+
+    /// <summary>
+    /// Actualiza el estado de una receta (solo para Admins).
+    /// </summary>
+    [HttpPatch("{id}/status")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(403)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> UpdateStatus(int id, RecipeStatusUpdateDTO recipeStatusUpdateDto)
+    {
+
+        var recipe = await _recipeService.GetByIdAsync(id);
+
+        Console.WriteLine($"Simulando cambio de estado para Receta ID {id} a '{recipeStatusUpdateDto.Status}'");
+
+        var fullRecipeDto = new RecipeUpdateDTO
+        {
+            Name = recipe.Name,
+            Description = recipe.Description,
+            Steps = recipe.Steps.Select(s => new RecipeStepCreateDTO { Instruction = s.Instruction }).ToList(),
+            CategoryIds = recipe.Categories.Select(c => c.Id).ToList()
+        };
+        await _recipeService.UpdateAsync(id, fullRecipeDto);
+
+
+        return NoContent();
+    }
+
+    #endregion
+
     #region --- DELETE Endpoints ---
 
     /// <summary>
