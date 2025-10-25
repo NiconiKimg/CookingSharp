@@ -1,9 +1,12 @@
 ﻿@page "/"
+@layout EmptyLayout
 @using CookingSharp.BlazorApp.Services
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
-@attribute [Authorize]
-@inject AuthService AuthService
+@using CookingSharp.BlazorApp.Shared
+
+@* @attribute [Authorize]
+@inject AuthService AuthService *@
 
 <div class="home-container">
     <div class="welcome-section">

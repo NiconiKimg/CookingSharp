@@ -1,6 +1,8 @@
 ﻿@page "/register"
+@layout EmptyLayout
 @using System.ComponentModel.DataAnnotations
 @using CookingSharp.BlazorApp.Services
+@using CookingSharp.BlazorApp.Shared
 @using Microsoft.AspNetCore.Components.Forms
 @inject AuthService AuthService
 @inject NavigationManager Navigation
@@ -50,16 +52,6 @@
                 <label for="email">Email</label>
                 <InputText id="email" @bind-Value="registerModel.Email" class="form-control" placeholder="tu@email.com" />
                 <ValidationMessage For="@(() => registerModel.Email)" />
-            </div>
-
-            <div class="form-group">
-                <label for="userType">Tipo de Usuario</label>
-                <InputSelect id="userType" @bind-Value="registerModel.UserType" class="form-control">
-                    <option value="">Selecciona un tipo</option>
-                    <option value="Aprendiz">Aprendiz</option>
-                    <option value="Cocinero">Cocinero</option>
-                </InputSelect>
-                <ValidationMessage For="@(() => registerModel.UserType)" />
             </div>
 
             <div class="form-group">
@@ -335,7 +327,18 @@
     private async Task HandleRegister()
     {
         try
-        {
+
+        
+       {
+            isLoading = true;
+            errorMessage = string.Empty;
+
+            // 🚧 BYPASS TEMPORAL
+            registrationSuccess = true;
+            await Task.Delay(1000);
+            Navigation.NavigateTo("/login");
+            return;
+            // 🚧 FIN BYPASS
             isLoading = true;
             errorMessage = string.Empty;
 

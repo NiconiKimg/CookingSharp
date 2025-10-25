@@ -13,6 +13,16 @@ namespace CookingSharp.Infrastructure.Clients
             _httpClient = httpClient;
         }
 
+        public async Task<UserResponseDTO?> RegisterAsync(UserDTO userDto)
+        {
+            var response = await _httpClient.PostAsJsonAsync("auth/register", userDto);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<UserResponseDTO>();
+            }
+            return null;
+        }
+
         public async Task<LoginResponseDTO?> LoginAsync(UserLoginDTO loginDto)
         {
             var response = await _httpClient.PostAsJsonAsync("auth/login", loginDto);
