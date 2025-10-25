@@ -3,14 +3,14 @@
     "Name": "Nuevo perfil",
     "Projects": [
       {
-        "Path": "CookingSharp.WindowsForms\\CookingSharp.WindowsForms.csproj",
-        "Action": "Start",
-        "DebugTarget": "CookingSharp.WindowsForms"
-      },
-      {
         "Path": "CookingSharp.WebAPI\\CookingSharp.WebAPI.csproj",
         "Action": "Start",
         "DebugTarget": "https"
+      },
+      {
+        "Path": "CookingSharp.WindowsForms\\CookingSharp.WindowsForms.csproj",
+        "Action": "Start",
+        "DebugTarget": "CookingSharp.WindowsForms"
       }
     ]
   }

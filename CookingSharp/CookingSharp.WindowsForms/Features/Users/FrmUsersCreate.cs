@@ -1,5 +1,7 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
+using System;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.Users
 {
@@ -13,16 +15,18 @@ namespace CookingSharp.WindowsForms.Users
             _apiClient = apiClient;
         }
 
-
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtBoxName.Text))
+            if (string.IsNullOrWhiteSpace(txtBoxName.Text) ||
+                string.IsNullOrWhiteSpace(txtBoxEmail.Text) ||
+                string.IsNullOrWhiteSpace(txtBoxPassword.Text))
             {
-                MessageBox.Show("El nombre del usuario es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("El nombre, email y contraseña son obligatorios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var newUserDto = new UserDTO
+            // SOLUCIÓN: Usar el DTO específico para la creación de usuarios.
+            var newUserDto = new UserCreateDTO
             {
                 Name = txtBoxName.Text.Trim(),
                 Surname = txtBoxSurname.Text.Trim(),
@@ -32,23 +36,24 @@ namespace CookingSharp.WindowsForms.Users
 
             try
             {
-                var createdUser = await _apiClient.AddAsync(newUserDto);
+                // SOLUCIÓN: Llamar al nuevo método CreateAsync.
+                var createdUser = await _apiClient.CreateAsync(newUserDto);
 
                 if (createdUser != null)
                 {
-                    MessageBox.Show("Usario creada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Usuario creado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo crear el usuario. La API no devolvió el objeto creado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Este mensaje podría aparecer si, por ejemplo, el email ya existe.
+                    MessageBox.Show("No se pudo crear el usuario. Verifique que el email no esté ya en uso.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show($"Ocurrió un error al crear la categoría: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al crear el usuario: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
