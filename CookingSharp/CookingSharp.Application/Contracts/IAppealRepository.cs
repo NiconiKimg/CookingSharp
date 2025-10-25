@@ -1,14 +1,10 @@
-﻿using CookingSharp.Domain;
+﻿using CookingSharp.Domain.Entities;
 
-namespace CookingSharp.Application.Services.Contracts
+namespace CookingSharp.Application.Contracts;
+
+/// <summary>
+/// Contrato para el repositorio de solicitudes (Appeals).
+/// </summary>
+public interface IAppealRepository : IGenericRepository<Appeal>
 {
-    public interface IAppealRepository
-    {
-        Task<Appeal?> GetByIdAsync(int id);
-        Task<IEnumerable<Appeal>> GetAllAsync();
-        Task<Appeal> AddAsync(Appeal appeal);
-        Task UpdateAsync(Appeal appeal);
-        //Task<bool> DeleteAsync(int id);
-        //Task<bool> ExistsWithNameAsync(string name, int? excludeId = null);
-    }
 }

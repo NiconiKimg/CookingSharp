@@ -1,165 +1,119 @@
-﻿using CookingSharp.Application.DTOs;
+﻿using AutoMapper;
+using CookingSharp.Application.Common.Exceptions;
+using CookingSharp.Application.Contracts;
+using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
-using CookingSharp.Domain;
+using CookingSharp.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace CookingSharp.Application.Services;
 
-namespace CookingSharp.Application.Services
+/// <summary>
+/// Implementación del servicio de gestión de recetas.
+/// </summary>
+public class RecipeService : IRecipeService
 {
-    /// <summary>
-    /// Proporciona la lógica de negocio para gestionar las recetas.
-    /// </summary>
-    public class RecipeService
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public RecipeService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IRecipeRepository _recipeRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public RecipeService(IRecipeRepository recipeRepository, IUserRepository userRepository, ICategoryRepository categoryRepository)
+    /// <summary>
+    /// Crea una nueva receta de forma asíncrona.
+    /// </summary>
+    /// <param name="recipeCreateDto">El DTO con los datos de la nueva receta.</param>
+    /// <param name="creatorUserId">El ID del usuario que está creando la receta.</param>
+    /// <returns>El DTO de la receta recién creada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si el usuario creador o alguna categoría no existen.</exception>
+    public async Task<RecipeResponseDTO> CreateAsync(RecipeCreateDTO recipeCreateDto, int creatorUserId)
+    {
+        _ = await _unitOfWork.Users.GetByIdAsync(creatorUserId) ?? throw new NotFoundException(nameof(User), creatorUserId);
+
+        var recipe = new Recipe(recipeCreateDto.Name, recipeCreateDto.Description, creatorUserId);
+
+        foreach (var stepDto in recipeCreateDto.Steps)
         {
-            _recipeRepository = recipeRepository;
-            _userRepository = userRepository;
-            _categoryRepository = categoryRepository;
+            recipe.AddStep(stepDto.Instruction);
         }
 
-        /// <summary>
-        /// Obtiene una receta por su identificador único.
-        /// </summary>
-        public async Task<ResponseRecipeDTO?> GetAsync(int id)
+        foreach (var categoryId in recipeCreateDto.CategoryIds)
         {
-            var recipe = await _recipeRepository.GetByIdAsync(id);
-            if (recipe is null)
-            {
-                return null;
-            }
-            return MapToDto(recipe);
+            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId) ?? throw new BadRequestException($"La categoría con ID '{categoryId}' no existe.");
+            recipe.Categories.Add(category);
         }
 
-        /// <summary>
-        /// Obtiene todas las recetas existentes.
-        /// </summary>
-        public async Task<IEnumerable<ResponseRecipeDTO>> GetAllAsync()
+        await _unitOfWork.Recipes.AddAsync(recipe);
+        await _unitOfWork.CompleteAsync();
+
+        var createdRecipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(recipe.Id);
+        return _mapper.Map<RecipeResponseDTO>(createdRecipe);
+    }
+
+    /// <summary>
+    /// Obtiene todas las recetas con sus detalles de forma asíncrona.
+    /// </summary>
+    /// <returns>Una colección de DTOs de receta.</returns>
+    public async Task<IEnumerable<RecipeResponseDTO>> GetAllAsync()
+    {
+        var recipes = await _unitOfWork.Recipes.GetAllWithDetailsAsync();
+        return _mapper.Map<IEnumerable<RecipeResponseDTO>>(recipes);
+    }
+
+    /// <summary>
+    /// Obtiene una receta por su ID con sus detalles de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la receta a buscar.</param>
+    /// <returns>El DTO de la receta encontrada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra la receta.</exception>
+    public async Task<RecipeResponseDTO?> GetByIdAsync(int id)
+    {
+        var recipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
+        return _mapper.Map<RecipeResponseDTO>(recipe);
+    }
+
+    /// <summary>
+    /// Actualiza una receta existente de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la receta a actualizar.</param>
+    /// <param name="recipeUpdateDto">El DTO con los nuevos datos de la receta.</param>
+    /// <exception cref="NotFoundException">Se lanza si la receta o alguna categoría no existen.</exception>
+    public async Task UpdateAsync(int id, RecipeUpdateDTO recipeUpdateDto)
+    {
+        var recipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
+
+        recipe.UpdateDetails(recipeUpdateDto.Name, recipeUpdateDto.Description);
+
+        recipe.ClearSteps();
+        foreach (var stepDto in recipeUpdateDto.Steps)
         {
-            var recipes = await _recipeRepository.GetAllAsync();
-            return recipes.Select(MapToDto);
+            recipe.AddStep(stepDto.Instruction);
         }
 
-        /// <summary>
-        /// Añade una nueva receta al sistema.
-        /// </summary>
-        /// <returns>El DTO de respuesta de la receta recién creada.</returns>
-        public async Task<ResponseRecipeDTO> AddAsync(CreateRecipeDTO dto)
+        recipe.Categories.Clear();
+        foreach (var categoryId in recipeUpdateDto.CategoryIds)
         {
-            var user = await _userRepository.GetByIdAsync(dto.UserId);
-            if (user is null)
-            {
-                throw new KeyNotFoundException($"Usuario con ID {dto.UserId} no encontrado.");
-            }
-
-            var categories = await ValidateAndGetCategoriesAsync(dto.CategoryIds);
-
-            var recipe = new Recipe(dto.Description, dto.Content, dto.UserId)
-            {
-                Categories = categories
-            };
-
-            var addedRecipe = await _recipeRepository.AddAsync(recipe);
-
-            return MapToDto(addedRecipe);
+            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId) ?? throw new BadRequestException($"La categoría con ID '{categoryId}' no existe.");
+            recipe.Categories.Add(category);
         }
 
-        /// <summary>
-        /// Actualiza una receta existente. Permite actualizaciones parciales.
-        /// </summary>
-        public async Task UpdateAsync(int id, UpdateRecipeDTO dto)
-        {
-            var existingRecipe = await _recipeRepository.GetByIdAsync(id);
-            if (existingRecipe is null)
-            {
-                throw new KeyNotFoundException($"Receta con ID {id} no encontrada.");
-            }
+        _unitOfWork.Recipes.Update(recipe);
+        await _unitOfWork.CompleteAsync();
+    }
 
-            if (!string.IsNullOrEmpty(dto.Description) || !string.IsNullOrEmpty(dto.Content))
-            {
-                var newDescription = dto.Description ?? existingRecipe.Description;
-                var newContent = dto.Content ?? existingRecipe.Content;
-                existingRecipe.Update(newDescription, newContent);
-            }
-
-            if (!string.IsNullOrEmpty(dto.Status))
-            {
-
-                if (dto.Status.Equals(nameof(RecipeStatus.Published), StringComparison.OrdinalIgnoreCase))
-                {
-                    existingRecipe.Publish();
-                }
-                else if (dto.Status.Equals(nameof(RecipeStatus.Archived), StringComparison.OrdinalIgnoreCase))
-                {
-                    existingRecipe.Archive();
-                }
-                else if (dto.Status.Equals(nameof(RecipeStatus.Blocked), StringComparison.OrdinalIgnoreCase))
-                {
-                    existingRecipe.Block();
-                }
-                else if (dto.Status.Equals(nameof(RecipeStatus.Draft), StringComparison.OrdinalIgnoreCase))
-                {
-                    existingRecipe.Unblock();
-                }
-            }
-
-            if (dto.Categories != null)
-            {
-                var categoryIds = dto.Categories.Select(c => c.Id).ToList();
-                existingRecipe.Categories = await ValidateAndGetCategoriesAsync(categoryIds);
-            }
-
-            await _recipeRepository.UpdateAsync(existingRecipe);
-        }
-
-        /// <summary>
-        /// Elimina una receta por su identificador único.
-        /// </summary>
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _recipeRepository.DeleteAsync(id);
-        }
-
-        /// <summary>
-        /// Mapea una entidad de dominio Recipe a su DTO de respuesta.
-        /// </summary>
-        private ResponseRecipeDTO MapToDto(Recipe recipe)
-        {
-            return new ResponseRecipeDTO
-            {
-                Id = recipe.Id,
-                Description = recipe.Description,
-                Content = recipe.Content,
-                Status = recipe.Status.ToString(),
-                AuthorName = recipe.User?.Name ?? "Desconocido",
-                Categories = recipe.Categories?.Select(c => new CategoryDTO
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Description = c.Description
-                }).ToList() ?? new List<CategoryDTO>()
-            };
-        }
-
-        /// <summary>
-        /// Método helper para validar una lista de IDs de categoría y devolver las entidades.
-        /// </summary>
-        private async Task<List<Category>> ValidateAndGetCategoriesAsync(List<int> categoryIds)
-        {
-            var categories = new List<Category>();
-            foreach (var categoryId in categoryIds.Distinct()) // Usamos Distinct para evitar duplicados
-            {
-                var category = await _categoryRepository.GetByIdAsync(categoryId);
-                if (category is null)
-                {
-                    throw new KeyNotFoundException($"Categoría con ID {categoryId} no encontrada.");
-                }
-                categories.Add(category);
-            }
-            return categories;
-        }
+    /// <summary>
+    /// Elimina una receta por su ID de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la receta a eliminar.</param>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra la receta.</exception>
+    public async Task DeleteAsync(int id)
+    {
+        var recipe = await _unitOfWork.Recipes.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
+        _unitOfWork.Recipes.Delete(recipe);
+        await _unitOfWork.CompleteAsync();
     }
 }

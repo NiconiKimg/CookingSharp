@@ -1,112 +1,119 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Application.Services;
+using CookingSharp.Application.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace CookingSharp.WebAPI.Controllers
+namespace CookingSharp.WebAPI.Controllers;
+
+[Authorize]
+public class RecipesController : BaseApiController
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class RecipesController : ControllerBase
+    private readonly IRecipeService _recipeService;
+
+    public RecipesController(IRecipeService recipeService)
     {
-        private readonly RecipeService _recipeService;
-
-        public RecipesController(RecipeService recipeService)
-        {
-            _recipeService = recipeService;
-        }
-
-        #region GET Endpoints
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResponseRecipeDTO>>> GetAll()
-        {
-            var recipes = await _recipeService.GetAllAsync();
-            return Ok(recipes);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseRecipeDTO>> GetById(int id)
-        {
-            var recipe = await _recipeService.GetAsync(id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-            return Ok(recipe);
-        }
-
-        #endregion
-
-        #region POST Endpoints
-
-        [HttpPost]
-        public async Task<ActionResult<ResponseRecipeDTO>> Create([FromBody] CreateRecipeDTO recipeDto)
-        {
-            try
-            {
-
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
-                                ?? throw new Exception("UserId no presente en el token."));
-
-                var createRecipeDto = new CreateRecipeDTO
-                {
-                    Description = recipeDto.Description,
-                    Content = recipeDto.Content,
-                    UserId = userId,
-                    CategoryIds = recipeDto.CategoryIds
-                };
-
-                var createdRecipe = await _recipeService.AddAsync(createRecipeDto);
-                return CreatedAtAction(nameof(GetById), new { id = createdRecipe.Id }, createdRecipe);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region PUT Endpoints
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateRecipeDTO recipeDto)
-        {
-            try
-            {
-                await _recipeService.UpdateAsync(id, recipeDto);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region DELETE Endpoints
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var success = await _recipeService.DeleteAsync(id);
-            if (!success)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
-
-        #endregion
+        _recipeService = recipeService;
     }
+
+    #region --- GET Endpoints ---
+
+    /// <summary>
+    /// Obtiene una lista de todas las recetas (público).
+    /// </summary>
+    [AllowAnonymous] // Permite el acceso sin autenticación
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var recipes = await _recipeService.GetAllAsync();
+        return Ok(recipes);
+    }
+
+    /// <summary>
+    /// Obtiene una receta específica por su ID (público).
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var recipe = await _recipeService.GetByIdAsync(id);
+        return Ok(recipe);
+    }
+
+    #endregion
+
+    #region --- POST Endpoints ---
+
+    /// <summary>
+    /// Crea una nueva receta (solo para Chefs y Admins).
+    /// </summary>
+    [HttpPost]
+    [Authorize(Roles = "Chef,Admin")]
+    public async Task<IActionResult> Create(RecipeCreateDTO recipeCreateDto)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var createdRecipe = await _recipeService.CreateAsync(recipeCreateDto, userId);
+        return CreatedAtAction(nameof(GetById), new { id = createdRecipe.Id }, createdRecipe);
+    }
+
+    #endregion
+
+    #region --- PUT Endpoints ---
+
+    /// <summary>
+    /// Actualiza una receta existente (solo para el autor o un Admin).
+    /// </summary>
+    [HttpPut("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(403)] // Forbidden
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Update(int id, RecipeUpdateDTO recipeUpdateDto)
+    {
+        // 1. Obtener la receta para verificar quién es el autor.
+        var recipe = await _recipeService.GetByIdAsync(id);
+
+        // 2. Obtener la información del usuario que hace la petición desde el token JWT.
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;
+
+        // 3. Lógica de Autorización: Permitir solo si el usuario es el autor O si es Admin.
+        if (recipe.AuthorId != currentUserId && currentUserRole != "Admin")
+        {
+            return Forbid(); // Devuelve un 403 Forbidden si no tiene permisos.
+        }
+
+        // 4. Si la autorización pasa, proceder con la actualización.
+        await _recipeService.UpdateAsync(id, recipeUpdateDto);
+        return NoContent();
+    }
+
+    #endregion
+
+    #region --- DELETE Endpoints ---
+
+    /// <summary>
+    /// Elimina una receta (solo para el autor o un Admin).
+    /// </summary>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(403)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        // Lógica de autorización idéntica a la de Update.
+        var recipe = await _recipeService.GetByIdAsync(id);
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;
+
+        if (recipe.AuthorId != currentUserId && currentUserRole != "Admin")
+        {
+            return Forbid();
+        }
+
+        await _recipeService.DeleteAsync(id);
+        return NoContent();
+    }
+
+    #endregion
 }

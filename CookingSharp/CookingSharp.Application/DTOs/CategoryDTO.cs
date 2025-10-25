@@ -1,15 +1,20 @@
-﻿namespace CookingSharp.Application.DTOs
+﻿namespace CookingSharp.Application.DTOs;
+
+/// <summary>
+/// DTO para devolver información de una categoría.
+/// </summary>
+public class CategoryResponseDTO
 {
-    public class CategoryDTO
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+}
 
-        public override string ToString()
-        {
-            return Name;
-        }
-
-    }
+/// <summary>
+/// DTO para crear o actualizar una categoría.
+/// </summary>
+public class CategoryCreateUpdateDTO
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
 }

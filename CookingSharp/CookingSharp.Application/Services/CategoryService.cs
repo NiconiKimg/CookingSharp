@@ -1,109 +1,102 @@
-﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Domain;
+﻿using AutoMapper;
+using CookingSharp.Application.Common.Exceptions;
+using CookingSharp.Application.Contracts;
+using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
+using CookingSharp.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CookingSharp.Application.Services
+namespace CookingSharp.Application.Services;
+
+/// <summary>
+/// Implementación del servicio de gestión de categorías.
+/// </summary>
+public class CategoryService : ICategoryService
 {
-    /// <summary>
-    /// Proporciona la lógica de negocio para gestionar las categorías.
-    /// </summary>
-    public class CategoryService
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly ICategoryRepository _categoryRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public CategoryService(ICategoryRepository categoryRepository)
+    /// <summary>
+    /// Crea una nueva categoría de forma asíncrona.
+    /// </summary>
+    /// <param name="categoryDto">DTO con los datos de la nueva categoría.</param>
+    /// <returns>El DTO de la categoría recién creada.</returns>
+    /// <exception cref="BadRequestException">Se lanza si el nombre de la categoría ya existe.</exception>
+    public async Task<CategoryResponseDTO> CreateAsync(CategoryCreateUpdateDTO categoryDto)
+    {
+        if (await _unitOfWork.Categories.ExistsWithNameAsync(categoryDto.Name))
         {
-            _categoryRepository = categoryRepository;
+            throw new BadRequestException($"Una categoría con el nombre '{categoryDto.Name}' ya existe.");
         }
 
-        /// <summary>
-        /// Obtiene una categoría por su identificador único.
-        /// </summary>
-        /// <param name="id">El ID de la categoría a buscar.</param>
-        /// <returns>Un DTO de la categoría si se encuentra; de lo contrario, null.</returns>
-        public async Task<CategoryDTO?> GetAsync(int id)
+        var category = new Category(categoryDto.Name, categoryDto.Description);
+
+        await _unitOfWork.Categories.AddAsync(category);
+        await _unitOfWork.CompleteAsync();
+
+        return _mapper.Map<CategoryResponseDTO>(category);
+    }
+
+    /// <summary>
+    /// Obtiene todas las categorías de forma asíncrona.
+    /// </summary>
+    /// <returns>Una colección de DTOs de categoría.</returns>
+    public async Task<IEnumerable<CategoryResponseDTO>> GetAllAsync()
+    {
+        var categories = await _unitOfWork.Categories.GetAllAsync();
+        return _mapper.Map<IEnumerable<CategoryResponseDTO>>(categories);
+    }
+
+    /// <summary>
+    /// Obtiene una categoría por su ID de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la categoría a buscar.</param>
+    /// <returns>El DTO de la categoría encontrada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra la categoría.</exception>
+    public async Task<CategoryResponseDTO?> GetByIdAsync(int id)
+    {
+        var category = await _unitOfWork.Categories.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Category), id);
+        return _mapper.Map<CategoryResponseDTO>(category);
+    }
+
+    /// <summary>
+    /// Actualiza una categoría existente de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la categoría a actualizar.</param>
+    /// <param name="categoryDto">El DTO con los nuevos datos de la categoría.</param>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra la categoría.</exception>
+    /// <exception cref="BadRequestException">Se lanza si el nuevo nombre ya está en uso.</exception>
+    public async Task UpdateAsync(int id, CategoryCreateUpdateDTO categoryDto)
+    {
+        var category = await _unitOfWork.Categories.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Category), id);
+
+        if (await _unitOfWork.Categories.ExistsWithNameAsync(categoryDto.Name, id))
         {
-            var category = await _categoryRepository.GetByIdAsync(id);
-
-            if (category is null)
-            {
-                return null;
-            }
-
-            return new CategoryDTO
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            };
+            throw new BadRequestException($"Una categoría con el nombre '{categoryDto.Name}' ya existe.");
         }
 
-        /// <summary>
-        /// Obtiene todas las categorías existentes.
-        /// </summary>
-        /// <returns>Una colección de DTOs de todas las categorías.</returns>
-        public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
-        {
-            var categories = await _categoryRepository.GetAllAsync();
-            return categories.Select(c => new CategoryDTO
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Description = c.Description
-            });
-        }
+        category.UpdateDetails(categoryDto.Name, categoryDto.Description);
 
-        /// <summary>
-        /// Añade una nueva categoría al sistema.
-        /// </summary>
-        /// <param name="dto">El DTO con la información de la nueva categoría.</param>
-        /// <returns>El DTO de la categoría recién creada con su ID asignado.</returns>
-        public async Task<CategoryDTO> AddAsync(CategoryDTO dto)
-        {
-            if (await _categoryRepository.ExistsWithNameAsync(dto.Name))
-            {
-                throw new ArgumentException("Category with the same name already exists.");
-            }
+        _unitOfWork.Categories.Update(category);
+        await _unitOfWork.CompleteAsync();
+    }
 
-            var category = new Category(0, dto.Name, dto.Description);
-
-            var addedCategory = await _categoryRepository.AddAsync(category);
-
-            dto.Id = addedCategory.Id;
-
-            return dto;
-        }
-
-        /// <summary>
-        /// Actualiza una categoría existente.
-        /// </summary>
-        /// <param name="dto">El DTO con los datos actualizados de la categoría.</param>
-        public async Task UpdateAsync(CategoryDTO dto)
-        {
-            var existingCategory = await _categoryRepository.GetByIdAsync(dto.Id);
-
-            if (existingCategory is null)
-            {
-                throw new KeyNotFoundException($"Category with ID {dto.Id} not found.");
-            }
-            if (await _categoryRepository.ExistsWithNameAsync(dto.Name, dto.Id))
-            {
-                throw new ArgumentException("Category with the same name already exists.");
-            }
-
-            existingCategory.UpdateDetails(dto.Name, dto.Description);
-
-            await _categoryRepository.UpdateAsync(existingCategory);
-        }
-
-        /// <summary>lica
-        /// Elimina una categoría por su identificador único.
-        /// </summary>
-        /// <param name="id">El ID de la categoría a eliminar.</param>
-        /// <returns>Verdadero si la eliminación fue exitosa, falso en caso contrario.</returns>
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _categoryRepository.DeleteAsync(id);
-        }
+    /// <summary>
+    /// Elimina una categoría por su ID de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la categoría a eliminar.</param>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra la categoría.</exception>
+    public async Task DeleteAsync(int id)
+    {
+        var category = await _unitOfWork.Categories.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Category), id);
+        _unitOfWork.Categories.Delete(category);
+        await _unitOfWork.CompleteAsync();
     }
 }

@@ -1,97 +1,80 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Application.Services;
+using CookingSharp.Application.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
-namespace CookingSharp.WebAPI.Controllers
+namespace CookingSharp.WebAPI.Controllers;
+
+public class CategoriesController : BaseApiController
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CategoriesController(CategoryService categoryService) : ControllerBase
+    private readonly ICategoryService _categoryService;
+
+    public CategoriesController(ICategoryService categoryService)
     {
-        #region GET Endpoints
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
-        {
-            var categories = await categoryService.GetAllAsync();
-            return Ok(categories);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDTO>> GetById(int id)
-        {
-            var category = await categoryService.GetAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(category);
-        }
-
-        #endregion
-
-        #region POST Endpoint
-
-        [HttpPost]
-        public async Task<ActionResult<CategoryDTO>> Create([FromBody] CategoryDTO categoryDto)
-        {
-            try
-            {
-                var createdCategory = await categoryService.AddAsync(categoryDto);
-                return CreatedAtAction(nameof(GetById), new { id = createdCategory.Id }, createdCategory);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region PUT Endpoint
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] CategoryDTO categoryDto)
-        {
-            if (id != categoryDto.Id)
-            {
-                return BadRequest("El ID de la URL no coincide con el ID del objeto.");
-            }
-
-            try
-            {
-                await categoryService.UpdateAsync(categoryDto);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region DELETE Endpoint
-
-        [HttpDelete("{id}")] // Responde a: DELETE /api/categories/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var success = await categoryService.DeleteAsync(id);
-
-            if (!success)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-
-        #endregion
+        _categoryService = categoryService;
     }
+
+    #region --- GET Endpoints ---
+
+    /// <summary>
+    /// Obtiene una lista de todas las categorías (público).
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var categories = await _categoryService.GetAllAsync();
+        return Ok(categories);
+    }
+
+    /// <summary>
+    /// Obtiene una categoría específica por su ID (público).
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var category = await _categoryService.GetByIdAsync(id);
+        return Ok(category);
+    }
+
+    #endregion
+
+    #region --- POST, PUT, DELETE Endpoints (Admin Only) ---
+
+    /// <summary>
+    /// Crea una nueva categoría (solo para Admins).
+    /// </summary>
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create(CategoryCreateUpdateDTO categoryDto)
+    {
+        var createdCategory = await _categoryService.CreateAsync(categoryDto);
+        return CreatedAtAction(nameof(GetById), new { id = createdCategory.Id }, createdCategory);
+    }
+
+    /// <summary>
+    /// Actualiza una categoría existente (solo para Admins).
+    /// </summary>
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Update(int id, CategoryCreateUpdateDTO categoryDto)
+    {
+        await _categoryService.UpdateAsync(id, categoryDto);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Elimina una categoría (solo para Admins).
+    /// </summary>
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _categoryService.DeleteAsync(id);
+        return NoContent();
+    }
+
+    #endregion
 }

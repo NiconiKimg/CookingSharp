@@ -1,105 +1,72 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using CookingSharp.Application.DTOs;
-using CookingSharp.Application.Services;
-using CookingSharp.Domain;
+﻿using CookingSharp.Application.DTOs;
+using CookingSharp.Application.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace CookingSharp.WebAPI.Controllers
+namespace CookingSharp.WebAPI.Controllers;
+
+[Authorize]
+public class AppealsController : BaseApiController
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AppealsController(AppealService appealService) : ControllerBase
+    private readonly IAppealService _appealService;
+
+    public AppealsController(IAppealService appealService)
     {
-        #region GET Endpoints
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppealDTO>>> GetAll()
-        {
-            var appeal = await appealService.GetAllAsync();
-            return Ok(appeal);
-        }
-
-
-        [HttpGet("mis-solicitudes")] //appeal/mis-solicitudes
-        public async Task<ActionResult<IEnumerable<AppealDTO>>> GetAllMy()
-        {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
-                                ?? throw new Exception("UserId no presente en el token."));
-
-            var appeal = await appealService.GetAllAsyncMy(userId);
-            return Ok(appeal);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppealDTO>> GetById(int id)
-        {
-            var appeal = await appealService.GetAsync(id);
-
-            if (appeal == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(appeal);
-        }
-
-        #endregion
-
-        #region POST Endpoint
-
-        [Authorize(Roles = "Apprentice")]
-        [HttpPost]
-        public async Task<ActionResult<CategoryDTO>> Create([FromBody] AppealCreateDTO createDTO)
-        {
-            try
-            {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
-                                ?? throw new Exception("UserId no presente en el token."));
-
-                var appealDTO = new AppealDTO
-                {
-                    Description = createDTO.Description,                  
-                    UserId = userId
-                };
-
-                var createdAppeal = await appealService.AddAsync(appealDTO);
-                return CreatedAtAction(nameof(GetById), new { id = createdAppeal.Id }, createdAppeal);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region PUT Endpoint
-
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateAppealDTO appealDTO)
-        {
-
-            try
-            {
-                await appealService.UpdateAsync(id, appealDTO);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        #endregion
+        _appealService = appealService;
     }
+
+    #region --- Admin Endpoints ---
+
+    /// <summary>
+    /// Obtiene todas las solicitudes pendientes (solo para Admins).
+    /// </summary>
+    [HttpGet("pending")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllPending()
+    {
+        var appeals = await _appealService.GetAllPendingAsync();
+        return Ok(appeals);
+    }
+
+    /// <summary>
+    /// Procesa una solicitud, aprobándola o rechazándola (solo para Admins).
+    /// </summary>
+    [HttpPut("{id}/process")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ProcessAppeal(int id, AppealUpdateDTO appealUpdateDto)
+    {
+        await _appealService.ProcessAppealAsync(id, appealUpdateDto);
+        return NoContent();
+    }
+
+    #endregion
+
+    #region --- User Endpoints ---
+
+    /// <summary>
+    /// Obtiene todas las solicitudes hechas por el usuario actual.
+    /// </summary>
+    [HttpGet("my-appeals")]
+    public async Task<IActionResult> GetMyAppeals()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var appeals = await _appealService.GetAppealsByUserAsync(userId);
+        return Ok(appeals);
+    }
+
+    /// <summary>
+    /// Crea una nueva solicitud para convertirse en Chef (solo para Aprendices).
+    /// </summary>
+    [HttpPost]
+    [Authorize(Roles = "Apprentice")]
+    public async Task<IActionResult> Create(AppealCreateDTO appealCreateDto)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var createdAppeal = await _appealService.CreateAsync(appealCreateDto, userId);
+        return Ok(createdAppeal);
+    }
+
+    #endregion
 }

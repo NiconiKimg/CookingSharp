@@ -1,0 +1,32 @@
+﻿using CookingSharp.Application.Contracts;
+using CookingSharp.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace CookingSharp.Infrastructure.Persistence.Repositories;
+
+public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
+{
+    public RecipeRepository(CookingSharpDbContext context) : base(context)
+    {
+    }
+
+    public async Task<IEnumerable<Recipe>> GetAllWithDetailsAsync()
+    {
+        return await _dbSet
+            .Include(r => r.User)
+            .Include(r => r.Steps)
+            .Include(r => r.Categories)
+            .ToListAsync();
+    }
+
+    public async Task<Recipe?> GetByIdWithDetailsAsync(int id)
+    {
+        return await _dbSet
+            .Include(r => r.User)
+            .Include(r => r.Steps)
+            .Include(r => r.Categories)
+            .FirstOrDefaultAsync(r => r.Id == id);
+    }
+}

@@ -1,97 +1,70 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Application.Services;
+using CookingSharp.Application.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
-namespace CookingSharp.WebAPI.Controllers
+namespace CookingSharp.WebAPI.Controllers;
+
+[Authorize(Roles = "Admin")] // Solo los administradores pueden gestionar usuarios
+public class UsersController : BaseApiController
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController(UserService userService) : ControllerBase
+    private readonly IUserService _userService;
+
+    public UsersController(IUserService userService)
     {
-        #region GET Endpoints
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAll()
-        {
-            var users = await userService.GetAllAsync();
-            return Ok(users);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserResponseDTO>> GetById(int id)
-        {
-            var user = await userService.GetAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-
-        #endregion
-
-        #region POST Endpoint
-
-        [HttpPost]
-        public async Task<ActionResult<UserDTO>> Create([FromBody] UserDTO userDto)
-        {
-            try
-            {
-                var createdUser = await userService.AddAsync(userDto);
-                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region PUT Endpoint
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserResponseDTO userDto)
-        {
-            if (id != userDto.Id)
-            {
-                return BadRequest("El ID de la URL no coincide con el ID del objeto.");
-            }
-
-            try
-            {
-                await userService.UpdateAsync(userDto);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region DELETE Endpoint
-
-        [HttpDelete("{id}")] // Responde a: DELETE /api/categories/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var success = await userService.DeleteAsync(id);
-
-            if (!success)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-
-        #endregion
+        _userService = userService;
     }
+
+    #region --- GET Endpoints ---
+
+    /// <summary>
+    /// Obtiene una lista de todos los usuarios.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var users = await _userService.GetAllAsync();
+        return Ok(users);
+    }
+
+    /// <summary>
+    /// Obtiene un usuario específico por su ID.
+    /// </summary>
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var user = await _userService.GetByIdAsync(id);
+        return Ok(user);
+    }
+
+    #endregion
+
+    #region --- PUT Endpoints ---
+
+    /// <summary>
+    /// Actualiza el perfil de un usuario.
+    /// </summary>
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, UserUpdateDTO userUpdateDto)
+    {
+        await _userService.UpdateAsync(id, userUpdateDto);
+        return NoContent(); // Respuesta 204 No Content para indicar éxito sin devolver datos
+    }
+
+    #endregion
+
+    #region --- DELETE Endpoints ---
+
+    /// <summary>
+    /// Elimina un usuario.
+    /// </summary>
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _userService.DeleteAsync(id);
+        return NoContent();
+    }
+
+    #endregion
 }

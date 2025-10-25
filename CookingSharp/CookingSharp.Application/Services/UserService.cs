@@ -1,113 +1,81 @@
-﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Domain;
+﻿using AutoMapper;
+using CookingSharp.Application.Common.Exceptions;
+using CookingSharp.Application.Contracts;
+using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
-using BCrypt.Net;
+using CookingSharp.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CookingSharp.Application.Services
+namespace CookingSharp.Application.Services;
+
+/// <summary>
+/// Implementación del servicio de gestión de usuarios.
+/// </summary>
+public class UserService : IUserService
 {
-    /// <summary>
-    /// Proporciona la lógica de negocio para gestionar los usuarios.
-    /// </summary>
-    public class UserService
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUserRepository _userRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public UserService(IUserRepository userRepository)
+    /// <summary>
+    /// Obtiene todos los usuarios del sistema de forma asíncrona.
+    /// </summary>
+    /// <returns>Una colección de DTOs de respuesta de usuario.</returns>
+    public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
+    {
+        var users = await _unitOfWork.Users.GetAllAsync();
+        return _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+    }
+
+    /// <summary>
+    /// Obtiene un usuario por su ID de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID del usuario a buscar.</param>
+    /// <returns>El DTO del usuario encontrado.</returns>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra ningún usuario con el ID especificado.</exception>
+    public async Task<UserResponseDTO?> GetByIdAsync(int id)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
+        return _mapper.Map<UserResponseDTO>(user);
+    }
+
+    /// <summary>
+    /// Actualiza el perfil de un usuario existente de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID del usuario a actualizar.</param>
+    /// <param name="userUpdateDto">El DTO con los nuevos datos del perfil.</param>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra el usuario.</exception>
+    /// <exception cref="BadRequestException">Se lanza si el nuevo email ya está en uso.</exception>
+    public async Task UpdateAsync(int id, UserUpdateDTO userUpdateDto)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
+
+        if (await _unitOfWork.Users.ExistsWithEmailAsync(userUpdateDto.Email, id))
         {
-            _userRepository = userRepository;
+            throw new BadRequestException($"El email '{userUpdateDto.Email}' ya está en uso por otro usuario.");
         }
 
-        /// <summary>
-        /// Obtiene un usuario por su identificador único.
-        /// </summary>
-        /// <param name="id">El ID del usuario a buscar.</param>
-        /// <returns>Un DTO de respuesta del usuario si se encuentra; de lo contrario, null.</returns>
-        public async Task<UserResponseDTO?> GetAsync(int id)
-        {
-            var user = await _userRepository.GetByIdAsync(id);
-            if (user is null)
-            {
-                return null;
-            }
-            return new UserResponseDTO
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                Role = user.Role.ToString()
-            };
-        }
+        user.UpdateProfile(userUpdateDto.Name, userUpdateDto.Surname, userUpdateDto.Email);
+        _unitOfWork.Users.Update(user);
+        await _unitOfWork.CompleteAsync();
+    }
 
-        /// <summary>
-        /// Obtiene todos los usuarios existentes.
-        /// </summary>
-        /// <returns>Una colección de DTOs de respuesta de todos los usuarios.</returns>
-        public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
-        {
-            var users = await _userRepository.GetAllAsync();
-            return users.Select(u => new UserResponseDTO
-            {
-                Id = u.Id,
-                Name = u.Name,
-                Surname = u.Surname,
-                Email = u.Email,
-                Role = u.Role.ToString()
-            });
-        }
+    /// <summary>
+    /// Elimina un usuario por su ID de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID del usuario a eliminar.</param>
+    /// <exception cref="NotFoundException">Se lanza si no se encuentra el usuario.</exception>
+    public async Task DeleteAsync(int id)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
 
-        /// <summary>
-        /// Actualiza la información del perfil de un usuario existente.
-        /// </summary>
-        /// <param name="dto">El DTO con los datos actualizados del perfil del usuario.</param>
-        public async Task UpdateAsync(UserResponseDTO dto)
-        {
-            var existingUser = await _userRepository.GetByIdAsync(dto.Id);
-            if (existingUser is null)
-            {
-                throw new KeyNotFoundException($"User with ID {dto.Id} not found.");
-            }
-            if (await _userRepository.ExistsWithEmailAsync(dto.Email, dto.Id))
-            {
-                throw new ArgumentException("User with the same email already exists.");
-            }
-
-            existingUser.UpdateProfile(dto.Name, dto.Surname, dto.Email);
-
-            await _userRepository.UpdateAsync(existingUser);
-        }
-
-        /// <summary>
-        /// Elimina un usuario por su identificador único.
-        /// </summary>
-        /// <param name="id">El ID del usuario a eliminar.</param>
-        /// <returns>Verdadero si la eliminación fue exitosa, falso en caso contrario.</returns>
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _userRepository.DeleteAsync(id);
-        }
-
-        public async Task<UserResponseDTO> AddAsync(UserDTO dto)
-        {
-            if (await _userRepository.ExistsWithEmailAsync(dto.Email))
-            {
-                throw new ArgumentException("User with the same email already exists.");
-            }
-
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-
-            var user = new User(0, dto.Name, dto.Surname, dto.Email, hashedPassword);
-
-            var addedUser = await _userRepository.AddAsync(user);
-
-            return new UserResponseDTO
-            {
-                Id = addedUser.Id,
-                Name = addedUser.Name,
-                Surname = addedUser.Surname,
-                Email = addedUser.Email,
-                Role = addedUser.Role.ToString()
-            };
-        }
+        _unitOfWork.Users.Delete(user);
+        await _unitOfWork.CompleteAsync();
     }
 }

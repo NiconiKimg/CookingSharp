@@ -1,135 +1,121 @@
-﻿ using CookingSharp.Application.DTOs;
+﻿using AutoMapper;
+using CookingSharp.Application.Common.Exceptions;
+using CookingSharp.Application.Contracts;
+using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
-using CookingSharp.Domain;
-using System.Data;
-using static CookingSharp.Domain.User;
+using CookingSharp.Domain.Entities;
+using CookingSharp.Domain.Enums;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace CookingSharp.Application.Services
+namespace CookingSharp.Application.Services;
+
+/// <summary>
+/// Implementación del servicio de gestión de solicitudes para ser Chef.
+/// </summary>
+public class AppealService : IAppealService
 {
-    /// <summary>
-    /// Proporciona la lógica de negocio para gestionar las categorías.
-    /// </summary>
-    public class AppealService
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public AppealService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IAppealRepository _appealRepository;
-        private readonly IUserRepository _userRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public AppealService(IAppealRepository appealRepository, IUserRepository userRepository)
+    /// <summary>
+    /// Crea una nueva solicitud para convertirse en Chef de forma asíncrona.
+    /// </summary>
+    /// <param name="appealDto">El DTO con la descripción de la solicitud.</param>
+    /// <param name="applicantUserId">El ID del usuario que realiza la solicitud.</param>
+    /// <returns>El DTO de la solicitud recién creada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si el usuario no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si el usuario no es un Aprendiz.</exception>
+    public async Task<AppealResponseDTO> CreateAsync(AppealCreateDTO appealDto, int applicantUserId)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(applicantUserId) ?? throw new NotFoundException(nameof(User), applicantUserId);
+        if (user.Role != UserRole.Apprentice)
         {
-            _appealRepository = appealRepository;
-            _userRepository = userRepository;
+            throw new BadRequestException("Solo los aprendices pueden solicitar ser chefs.");
         }
 
-        /// <summary>
-        /// Obtiene una categoría por su identificador único.
-        /// </summary>
-        /// <param name="id">El ID de la categoría a buscar.</param>
-        /// <returns>Un DTO de la categoría si se encuentra; de lo contrario, null.</returns>
-        public async Task<AppealDTO?> GetAsync(int id)
+        var appeal = new Appeal(appealDto.Description, applicantUserId);
+
+        await _unitOfWork.Appeals.AddAsync(appeal);
+        await _unitOfWork.CompleteAsync();
+
+        return _mapper.Map<AppealResponseDTO>(appeal);
+    }
+
+    /// <summary>
+    /// Procesa una solicitud, cambiándola a Aprobada o Rechazada, de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la solicitud a procesar.</param>
+    /// <param name="appealUpdateDto">El DTO con el nuevo estado.</param>
+    /// <exception cref="NotFoundException">Se lanza si la solicitud no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si la solicitud ya fue procesada o el estado es inválido.</exception>
+    public async Task ProcessAppealAsync(int id, AppealUpdateDTO appealUpdateDto)
+    {
+        var appeal = await _unitOfWork.Appeals.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Appeal), id);
+
+        if (appeal.Status != AppealStatus.Pending)
         {
-            var appeal = await _appealRepository.GetByIdAsync(id);
-
-            if (appeal is null)
-            {
-                return null;
-            }
-
-            return new AppealDTO
-            {
-                Id = appeal.Id,
-                Description = appeal.Description,
-                Status = appeal.Status.ToString(),
-                UserId = appeal.UserId,
-                UserName = appeal.User?.Name
-            };
+            throw new BadRequestException("Esta solicitud ya ha sido procesada.");
         }
 
-        /// <summary>
-        /// Obtiene todas las solicitudes existentes.
-        /// </summary>
-        /// <returns>Una colección de DTOs de todas las solicitudes.</returns>
-        public async Task<IEnumerable<AppealDTO>> GetAllAsync()
+        if (appealUpdateDto.Status.Equals("Approved", System.StringComparison.OrdinalIgnoreCase))
         {
-            var appeals = await _appealRepository.GetAllAsync();
-            return appeals.Select(a => new AppealDTO
-            {
-                Id = a.Id,
-                Status = a.Status.ToString(),
-                Description = a.Description,
-                UserId = a.UserId,
-                UserName = a.User?.Name
-            });
+            appeal.Approve();
+            var user = await _unitOfWork.Users.GetByIdAsync(appeal.UserId);
+            user?.PromoteToChef(); // Si el usuario existe, lo promueve
+        }
+        else if (appealUpdateDto.Status.Equals("Rejected", System.StringComparison.OrdinalIgnoreCase))
+        {
+            appeal.Reject();
+        }
+        else
+        {
+            throw new BadRequestException("El estado proporcionado no es válido. Use 'Approved' o 'Rejected'.");
         }
 
-        /// <summary>
-        /// Obtiene todas las solicitudes existentes para un id de usuario.
-        /// </summary>
-        /// <returns>Una colección de DTOs de todas las solicitudes para ese usuario.</returns>
-        public async Task<IEnumerable<AppealDTO>> GetAllAsyncMy(int idUsuario)
-        {
+        _unitOfWork.Appeals.Update(appeal);
+        await _unitOfWork.CompleteAsync();
+    }
 
-            var appeals = await _appealRepository.GetAllAsync();
-            return appeals.Select(a => new AppealDTO
-            {
-                Id = a.Id,
-                Status = a.Status.ToString(),
-                Description = a.Description,
-                UserId = a.UserId,
-                UserName = a.User?.Name
-            });
-        }
+    /// <summary>
+    /// Obtiene todas las solicitudes que están actualmente pendientes de revisión.
+    /// </summary>
+    /// <returns>Una colección de DTOs de las solicitudes pendientes.</returns>
+    public async Task<IEnumerable<AppealResponseDTO>> GetAllPendingAsync()
+    {
+        var allAppeals = await _unitOfWork.Appeals.GetAllAsync(); // Idealmente, el repositorio tendría un método específico
+        var pendingAppeals = allAppeals.Where(a => a.Status == AppealStatus.Pending);
+        return _mapper.Map<IEnumerable<AppealResponseDTO>>(pendingAppeals);
+    }
 
-        /// <summary>
-        /// Añade una nueva categoría al sistema.
-        /// </summary>
-        /// <param name="dto">El DTO con la información de la nueva categoría.</param>
-        /// <returns>El DTO de la categoría recién creada con su ID asignado.</returns>
-        public async Task<AppealDTO> AddAsync(AppealDTO dto)
-        {
+    /// <summary>
+    /// Obtiene todas las solicitudes realizadas por un usuario específico.
+    /// </summary>
+    /// <param name="userId">El ID del usuario.</param>
+    /// <returns>Una colección de DTOs de las solicitudes del usuario.</returns>
+    public async Task<IEnumerable<AppealResponseDTO>> GetAppealsByUserAsync(int userId)
+    {
+        var allAppeals = await _unitOfWork.Appeals.GetAllAsync(); // Idealmente, el repositorio tendría un método específico
+        var userAppeals = allAppeals.Where(a => a.UserId == userId);
+        return _mapper.Map<IEnumerable<AppealResponseDTO>>(userAppeals);
+    }
 
-            var userExists = await _userRepository.GetByIdAsync(dto.UserId);
-            if (userExists == null)
-            {
-                throw new KeyNotFoundException($"User with ID {dto.UserId} not found.");
-            }
-
-            var appeal = new Appeal(0, dto.Description, dto.UserId);
-
-            var addedAppeal = await _appealRepository.AddAsync(appeal);
-            dto.Id = addedAppeal.Id;
-
-            return dto;
-        }
-
-        /// <summary>
-        /// Actualiza una solicitud existente.
-        /// </summary>
-        /// <param name="dto">El DTO con los datos actualizados de la solicitud.</param>
-        public async Task UpdateAsync(int appealId, UpdateAppealDTO dto)
-        {
-            var existingAppeal = await _appealRepository.GetByIdAsync(appealId);
-            if (existingAppeal is null)
-            {
-                throw new KeyNotFoundException($"Solicitud con ID {appealId} no encontrada.");
-            }
-
-            existingAppeal.UpdateStatus(dto.Status);
-
-            if (string.Equals(dto.Status, nameof(RoleTypes.Chef), StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(dto.Status, "Approved", StringComparison.OrdinalIgnoreCase)) 
-            {
-                var user = await _userRepository.GetByIdAsync(existingAppeal.UserId);
-                if (user is null)
-                {
-                    throw new KeyNotFoundException($"El usuario con ID {existingAppeal.UserId} asociado a esta solicitud no fue encontrado.");
-                }
-
-                user.PromoteToChef();
-
-                await _userRepository.UpdateAsync(user);
-            }
-
-            await _appealRepository.UpdateAsync(existingAppeal);
-        }
+    /// <summary>
+    /// Obtiene una solicitud por su ID.
+    /// </summary>
+    /// <param name="id">El ID de la solicitud.</param>
+    /// <returns>El DTO de la solicitud encontrada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si la solicitud no existe.</exception>
+    public async Task<AppealResponseDTO?> GetByIdAsync(int id)
+    {
+        var appeal = await _unitOfWork.Appeals.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Appeal), id);
+        return _mapper.Map<AppealResponseDTO>(appeal);
     }
 }

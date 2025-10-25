@@ -1,15 +1,18 @@
-﻿using CookingSharp.Domain;
+﻿using CookingSharp.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CookingSharp.Application.Services.Contracts
+namespace CookingSharp.Application.Contracts;
+
+public interface IRecipeRepository : IGenericRepository<Recipe>
 {
-    public interface IRecipeRepository
-    {
-        Task<Recipe?> GetByIdAsync(int id);
-        Task<IEnumerable<Recipe>> GetAllAsync();
-        Task<Recipe> AddAsync(Recipe recipe);
-        Task UpdateAsync(Recipe recipe);
-        Task<bool> DeleteAsync(int id);
-    }
+    /// <summary>
+    /// Obtiene todas las recetas incluyendo sus datos relacionados (Autor, Pasos, Categorías).
+    /// </summary>
+    Task<IEnumerable<Recipe>> GetAllWithDetailsAsync();
+
+    /// <summary>
+    /// Obtiene una receta por su ID, incluyendo sus datos relacionados.
+    /// </summary>
+    Task<Recipe?> GetByIdWithDetailsAsync(int id);
 }

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CookingSharp.Clients\CookingSharp.Clients.csproj" />
     <ProjectReference Include="..\CookingSharp.Infrastructure\CookingSharp.Infrastructure.csproj" />
   </ItemGroup>
 
