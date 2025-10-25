@@ -1,5 +1,8 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms
 {
@@ -7,29 +10,35 @@ namespace CookingSharp.WindowsForms
     {
         private readonly CategoryApiClient _apiClient;
         private readonly CategoryResponseDTO _categoryToUpdate;
+
         public frmCategoriesUpdate(CategoryApiClient apiClient, CategoryResponseDTO categoryToUpdate)
         {
             InitializeComponent();
             _apiClient = apiClient;
             _categoryToUpdate = categoryToUpdate;
 
+            // Configuración de accesibilidad y UX
+            this.AcceptButton = btnSave;
+            this.CancelButton = btnCancel;
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
+
+            // Cargar los datos al iniciar el formulario
             this.Load += FrmCategoriesUpdate_Load;
         }
 
         private void FrmCategoriesUpdate_Load(object sender, EventArgs e)
         {
-            this.Text = $"Modificar Categoría: {_categoryToUpdate.Name}";
-            txtBoxId.Text = _categoryToUpdate.Id.ToString();
-            txtBoxId.Enabled = false;
+            // Llenar los campos con los datos de la categoría a editar
             txtBoxName.Text = _categoryToUpdate.Name;
             txtBoxDescription.Text = _categoryToUpdate.Description;
         }
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtBoxName.Text))
+            // Validar todos los controles antes de guardar
+            if (!this.ValidateChildren())
             {
-                MessageBox.Show("El nombre de la categoría es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, corrija los errores marcados.", "Errores de Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -47,11 +56,11 @@ namespace CookingSharp.WindowsForms
                 {
                     MessageBox.Show("Categoría actualizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
-                    this.Dispose();
+                    this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo actualizar la categoría (posiblemente fue eliminada).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo actualizar la categoría. Es posible que el nombre ya esté en uso por otra categoría.", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -62,8 +71,47 @@ namespace CookingSharp.WindowsForms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            this.AutoValidate = AutoValidate.Disable;
             this.DialogResult = DialogResult.Cancel;
-            this.Dispose();
+            this.Close();
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.AutoValidate = AutoValidate.Disable;
+            this.Close();
+        }
+
+        #region Validation Events
+
+        private void txtBoxName_Validating(object sender, CancelEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtBoxName.Text))
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(txtBoxName, "El nombre de la categoría es obligatorio.");
+            }
+            else
+            {
+                e.Cancel = false;
+                errorProvider1.SetError(txtBoxName, "");
+            }
+        }
+
+        private void txtBoxDescription_Validating(object sender, CancelEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtBoxDescription.Text))
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(txtBoxDescription, "La descripción es obligatoria.");
+            }
+            else
+            {
+                e.Cancel = false;
+                errorProvider1.SetError(txtBoxDescription, "");
+            }
+        }
+
+        #endregion
     }
 }

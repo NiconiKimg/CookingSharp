@@ -1,13 +1,17 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.CategoriesControl
 {
     public partial class UC_Categories : UserControl
     {
         private readonly CategoryApiClient _apiClient;
-
 
         public UC_Categories(CategoryApiClient apiClient)
         {
@@ -16,9 +20,9 @@ namespace CookingSharp.WindowsForms.CategoriesControl
             this.Load += UCCategories_Load;
         }
 
-
         private async void UCCategories_Load(object sender, EventArgs e)
         {
+            ConfigureGridView();
             await LoadCategories();
         }
 
@@ -27,62 +31,84 @@ namespace CookingSharp.WindowsForms.CategoriesControl
             try
             {
                 var categories = await _apiClient.GetAllAsync();
-
                 dgvCategories.DataSource = categories?.ToList();
-
-                ConfigureGridView();
+                UpdateButtonsState();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show($"Error al cargar las categorías: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ConfigureGridView()
         {
-            if (dgvCategories.Columns.Count == 0) return;
+            dgvCategories.AutoGenerateColumns = false;
+            dgvCategories.Columns.Clear();
 
-            if (dgvCategories.Columns["Id"] != null)
-                dgvCategories.Columns["Id"].Visible = false;
+            dgvCategories.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "NameColumn",
+                DataPropertyName = "Name",
+                HeaderText = "Nombre",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 40,
+                MinimumWidth = 150
+            });
 
-            if (dgvCategories.Columns["Name"] != null)
-                dgvCategories.Columns["Name"].HeaderText = "Nombre";
+            dgvCategories.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "DescriptionColumn",
+                DataPropertyName = "Description",
+                HeaderText = "Descripción",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 60,
+                MinimumWidth = 200
+            });
 
-            if (dgvCategories.Columns["Description"] != null)
-                dgvCategories.Columns["Description"].HeaderText = "Descripción";
-
-            dgvCategories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCategories.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCategories.MultiSelect = false;
             dgvCategories.ReadOnly = true;
             dgvCategories.AllowUserToAddRows = false;
+            dgvCategories.RowHeadersVisible = false;
+            dgvCategories.BackgroundColor = Color.White;
+            dgvCategories.BorderStyle = BorderStyle.None;
 
-            dgvCategories.EnableHeadersVisualStyles = false;
+
             dgvCategories.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
-            dgvCategories.ColumnHeadersDefaultCellStyle.ForeColor = Color.WhiteSmoke;
+            dgvCategories.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvCategories.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvCategories.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvCategories.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvCategories.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvCategories.EnableHeadersVisualStyles = false;
+            dgvCategories.ColumnHeadersHeight = 40;
+
+            dgvCategories.DefaultCellStyle.BackColor = Color.White;
+            dgvCategories.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
+            dgvCategories.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvCategories.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 229, 255);
+            dgvCategories.DefaultCellStyle.SelectionForeColor = Color.FromArgb(21, 21, 21);
+            dgvCategories.DefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvCategories.RowTemplate.Height = 38;
+            dgvCategories.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
+
         }
 
         private async void btnCreateCategory_Click(object sender, EventArgs e)
         {
-
             using (var createForm = Program.ServiceProvider?.GetRequiredService<frmCategoriesCreate>())
             {
-                if (createForm == null) return;
-                createForm.ShowDialog();
+                if (createForm != null && createForm.ShowDialog() == DialogResult.OK)
+                {
+                    await LoadCategories();
+                }
             }
-
-            await LoadCategories();
         }
 
         private async void btnModifyCategory_Click(object sender, EventArgs e)
         {
             var selectedCategory = GetSelectedCategory();
-            if (selectedCategory is null)
-            {
-                MessageBox.Show("Por favor, seleccione una categoría para modificar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            if (selectedCategory == null) return;
 
             var apiClient = Program.ServiceProvider.GetRequiredService<CategoryApiClient>();
 
@@ -98,11 +124,7 @@ namespace CookingSharp.WindowsForms.CategoriesControl
         private async void btnDeleteCategory_Click(object sender, EventArgs e)
         {
             var selectedCategory = GetSelectedCategory();
-            if (selectedCategory is null)
-            {
-                MessageBox.Show("Por favor, seleccione una categoría para eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            if (selectedCategory == null) return;
 
             var confirmResult = MessageBox.Show($"¿Está seguro de que desea eliminar la categoría '{selectedCategory.Name}'?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -117,7 +139,7 @@ namespace CookingSharp.WindowsForms.CategoriesControl
                     }
                     else
                     {
-                        MessageBox.Show("La categoría no pudo ser eliminada (posiblemente ya fue borrada).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("La categoría no pudo ser eliminada (posiblemente ya fue borrada o tiene recetas asociadas).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -134,6 +156,18 @@ namespace CookingSharp.WindowsForms.CategoriesControl
                 return category;
             }
             return null;
+        }
+
+        private void dgvCategories_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateButtonsState();
+        }
+
+        private void UpdateButtonsState()
+        {
+            bool hasSelection = dgvCategories.SelectedRows.Count > 0;
+            btnModifyCategory.Enabled = hasSelection;
+            btnDeleteCategory.Enabled = hasSelection;
         }
     }
 }
