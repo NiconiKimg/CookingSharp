@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.Clients", "CookingSharp.Clients\CookingSharp.Clients.csproj", "{33F8DD68-DD17-4E96-8DC2-0E5E20761DE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingSharp.BlazorApp", "C:\Users\emylu\Desktop\CookingSharp.BlazorApp\CookingSharp.BlazorApp.csproj", "{F4BED3E4-8075-BAE5-D638-016ED8C55E48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{AD5AD8DB-1E5A-4752-B0E9-1ECD05EE38D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,10 @@ Global
 		{33F8DD68-DD17-4E96-8DC2-0E5E20761DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F8DD68-DD17-4E96-8DC2-0E5E20761DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33F8DD68-DD17-4E96-8DC2-0E5E20761DE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4BED3E4-8075-BAE5-D638-016ED8C55E48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4BED3E4-8075-BAE5-D638-016ED8C55E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4BED3E4-8075-BAE5-D638-016ED8C55E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4BED3E4-8075-BAE5-D638-016ED8C55E48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5AD8DB-1E5A-4752-B0E9-1ECD05EE38D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5AD8DB-1E5A-4752-B0E9-1ECD05EE38D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5AD8DB-1E5A-4752-B0E9-1ECD05EE38D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5AD8DB-1E5A-4752-B0E9-1ECD05EE38D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,7 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{08B6363B-766C-4A3E-8527-B79C054EE036} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{F5D665AF-3CD5-4C29-B758-B10B40A23824} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{F4BED3E4-8075-BAE5-D638-016ED8C55E48} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{AD5AD8DB-1E5A-4752-B0E9-1ECD05EE38D4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB0DA8E2-9346-4D12-8550-1CE2F3DB5578}

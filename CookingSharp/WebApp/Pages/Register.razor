@@ -1,0 +1,85 @@
+﻿@page "/register"
+@using WebApp.DTOs
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <div class="d-flex justify-center my-4">
+                    <MudIcon Icon="@Icons.Material.Filled.RestaurantMenu" Color="Color.Primary" Size="Size.Large" />
+                </div>
+                <MudText Typo="Typo.h5" Align="Align.Center">Únete a CookingSharp</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">Crea tu cuenta y comparte tus recetas.</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <EditForm Model="@_model" OnValidSubmit="HandleRegistration">
+                <DataAnnotationsValidator />
+                <MudTextField @bind-Value="_model.Name" For="@(() => _model.Name)" Label="Nombre" Variant="Variant.Outlined" Class="mb-3" />
+                <MudTextField @bind-Value="_model.Surname" For="@(() => _model.Surname)" Label="Apellido" Variant="Variant.Outlined" Class="mb-3" />
+                <MudTextField @bind-Value="_model.Email" For="@(() => _model.Email)" Label="Email" InputType="InputType.Email" Variant="Variant.Outlined" Class="mb-3" />
+                <MudTextField @bind-Value="_model.Password" For="@(() => _model.Password)" Label="Contraseña" InputType="InputType.Password" Variant="Variant.Outlined" Class="mb-3" />
+                
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <MudAlert Severity="Severity.Error" Class="mb-3">@_errorMessage</MudAlert>
+                }
+                
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="Size.Large" Disabled="@_isSubmitting">
+                    @if (_isSubmitting)
+                    {
+                        <MudProgressCircular Indeterminate="true" Size="Size.Small" />
+                    }
+                    else
+                    {
+                        <span>Crear Cuenta</span>
+                    }
+                </MudButton>
+            </EditForm>
+        </MudCardContent>
+        <MudCardActions Class="d-flex justify-center pb-4">
+            <MudText Typo="Typo.body2">
+                ¿Ya tienes cuenta? <MudLink Href="/login">Inicia Sesión</MudLink>
+            </MudText>
+        </MudCardActions>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private readonly UserCreateDTO _model = new();
+    private bool _isSubmitting = false;
+    private string? _errorMessage;
+
+    private async Task HandleRegistration()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            // Hacemos la llamada POST a nuestra API
+            var response = await Http.PostAsJsonAsync("api/auth/register", _model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Si el registro es exitoso, redirigimos al login
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                // Si la API devuelve un error (ej. email ya existe), lo mostramos
+                _errorMessage = $"Error en el registro: {await response.Content.ReadAsStringAsync()}";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Ha ocurrido un error inesperado: {ex.Message}";
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}
