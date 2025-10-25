@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CookingSharp.WindowsForms.CategoriesControl
@@ -78,7 +78,7 @@ namespace CookingSharp.WindowsForms.CategoriesControl
         private async void btnModifyCategory_Click(object sender, EventArgs e)
         {
             var selectedCategory = GetSelectedCategory();
-            if (selectedCategory == null)
+            if (selectedCategory is null)
             {
                 MessageBox.Show("Por favor, seleccione una categoría para modificar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -98,7 +98,7 @@ namespace CookingSharp.WindowsForms.CategoriesControl
         private async void btnDeleteCategory_Click(object sender, EventArgs e)
         {
             var selectedCategory = GetSelectedCategory();
-            if (selectedCategory == null)
+            if (selectedCategory is null)
             {
                 MessageBox.Show("Por favor, seleccione una categoría para eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -127,9 +127,9 @@ namespace CookingSharp.WindowsForms.CategoriesControl
             }
         }
 
-        private CategoryDTO? GetSelectedCategory()
+        private CategoryResponseDTO? GetSelectedCategory()
         {
-            if (dgvCategories.CurrentRow != null && dgvCategories.CurrentRow.DataBoundItem is CategoryDTO category)
+            if (dgvCategories.CurrentRow != null && dgvCategories.CurrentRow.DataBoundItem is CategoryResponseDTO category)
             {
                 return category;
             }

@@ -22,11 +22,3 @@ public class AuthenticationHandler : DelegatingHandler
         return base.SendAsync(request, cancellationToken);
     }
 }
-
-/// <summary>
-/// Clase estática simple para gestionar el estado de la sesión del cliente.
-/// </summary>
-public static class SessionManager
-{
-    public static string? JwtToken { get; set; }
-}

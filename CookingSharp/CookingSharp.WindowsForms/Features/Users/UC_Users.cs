@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using CookingSharp.WindowsForms.Users;
 using Microsoft.Extensions.DependencyInjection;
 

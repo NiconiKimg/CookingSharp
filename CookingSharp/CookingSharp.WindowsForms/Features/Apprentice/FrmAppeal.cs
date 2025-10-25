@@ -1,14 +1,6 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using CookingSharp.Clients;
+
 
 namespace CookingSharp.WindowsForms.Features.Apprentice
 {
@@ -39,7 +31,7 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             // 3. Enviar la solicitud a la API
             try
             {
-                var createdAppeal = await _apiClient.AddAsync(newAppealDto);
+                var createdAppeal = await _apiClient.CreateAppealAsync(newAppealDto);
 
                 if (createdAppeal != null)
                 {

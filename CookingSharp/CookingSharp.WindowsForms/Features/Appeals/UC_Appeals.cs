@@ -23,7 +23,7 @@ namespace CookingSharp.WindowsForms.AppealsControl
         {
             try
             {
-                var appeals = await _apiClient.GetAllAsync();
+                var appeals = await _apiClient.GetAllPendingAsync();
 
                 dgvAppeals.DataSource = appeals?.ToList();
 
@@ -75,7 +75,7 @@ namespace CookingSharp.WindowsForms.AppealsControl
         private async Task ProcessAppeal(string newStatus)
         {
             var selectedAppeal = GetSelectedAppeal();
-            if (selectedAppeal == null)
+            if (selectedAppeal is null)
             {
                 MessageBox.Show("Por favor, seleccione una solicitud para procesar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -94,8 +94,8 @@ namespace CookingSharp.WindowsForms.AppealsControl
             {
                 try
                 {
-                    var appealToUpdate = new UpdateAppealDTO { Status = newStatus };
-                    await _apiClient.UpdateAsync(selectedAppeal.Id, appealToUpdate);
+                    var appealToUpdate = new AppealUpdateDTO { Status = newStatus };
+                    await _apiClient.ProcessAppealAsync(selectedAppeal.Id, appealToUpdate);
                     await LoadAppeals();
                 }
                 catch (Exception ex)
@@ -105,9 +105,9 @@ namespace CookingSharp.WindowsForms.AppealsControl
             }
         }
 
-        private AppealDTO? GetSelectedAppeal()
+        private AppealResponseDTO? GetSelectedAppeal()
         {
-            if (dgvAppeals.CurrentRow != null && dgvAppeals.CurrentRow.DataBoundItem is AppealDTO appeal)
+            if (dgvAppeals.CurrentRow != null && dgvAppeals.CurrentRow.DataBoundItem is AppealResponseDTO appeal)
             {
                 return appeal;
             }

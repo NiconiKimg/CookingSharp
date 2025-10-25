@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 
 namespace CookingSharp.WindowsForms
 {
@@ -21,7 +21,7 @@ namespace CookingSharp.WindowsForms
                 return;
             }
 
-            var newCategoryDto = new CategoryDTO
+            var newCategoryDto = new CategoryCreateUpdateDTO
             {
                 Name = txtBoxName.Text.Trim(),
                 Description = txtBoxDescription.Text.Trim()
@@ -29,7 +29,7 @@ namespace CookingSharp.WindowsForms
 
             try
             {
-                var createdCategory = await _apiClient.AddAsync(newCategoryDto);
+                var createdCategory = await _apiClient.CreateAsync(newCategoryDto);
 
                 if (createdCategory != null)
                 {

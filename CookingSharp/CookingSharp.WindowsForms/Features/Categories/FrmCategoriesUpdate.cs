@@ -1,14 +1,13 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 
 namespace CookingSharp.WindowsForms
 {
     public partial class frmCategoriesUpdate : Form
     {
         private readonly CategoryApiClient _apiClient;
-        private readonly CategoryDTO _categoryToUpdate;
-
-        public frmCategoriesUpdate(CategoryApiClient apiClient, CategoryDTO categoryToUpdate)
+        private readonly CategoryResponseDTO _categoryToUpdate;
+        public frmCategoriesUpdate(CategoryApiClient apiClient, CategoryResponseDTO categoryToUpdate)
         {
             InitializeComponent();
             _apiClient = apiClient;
@@ -34,12 +33,15 @@ namespace CookingSharp.WindowsForms
                 return;
             }
 
-            _categoryToUpdate.Name = txtBoxName.Text.Trim();
-            _categoryToUpdate.Description = txtBoxDescription.Text.Trim();
+            var categoryUpdateDto = new CategoryCreateUpdateDTO
+            {
+                Name = txtBoxName.Text.Trim(),
+                Description = txtBoxDescription.Text.Trim()
+            };
 
             try
             {
-                bool success = await _apiClient.UpdateAsync(_categoryToUpdate);
+                bool success = await _apiClient.UpdateAsync(_categoryToUpdate.Id, categoryUpdateDto);
 
                 if (success)
                 {

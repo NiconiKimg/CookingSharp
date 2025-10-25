@@ -1,4 +1,4 @@
-﻿namespace CookingSharp.WindowsForms
+﻿namespace CookingSharp.WindowsForms.Features.Authentication
 {
     partial class FrmLogin
     {

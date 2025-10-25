@@ -38,6 +38,12 @@ public class RecipeApiClient
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<bool> UpdateStatusAsync(int id, RecipeStatusUpdateDTO dto)
+    {
+        var response = await _httpClient.PatchAsJsonAsync($"{Endpoint}/{id}/status", dto);
+        return response.IsSuccessStatusCode;
+    }
+
     public async Task<bool> DeleteAsync(int id)
     {
         var response = await _httpClient.DeleteAsync($"{Endpoint}/{id}");

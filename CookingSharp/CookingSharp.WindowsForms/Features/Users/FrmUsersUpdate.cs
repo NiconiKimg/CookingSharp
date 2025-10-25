@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 
 
 namespace CookingSharp.WindowsForms.Users
@@ -34,18 +34,26 @@ namespace CookingSharp.WindowsForms.Users
                 return;
             }
 
-            _userToUpdate.Id = _userToUpdate.Id;
-            _userToUpdate.Name = txtBoxName.Text.Trim();
-            _userToUpdate.Surname = txtBoxSurname.Text.Trim();
-            _userToUpdate.Email = txtBoxEmail.Text.Trim();
+            var userUpdateDto = new UserUpdateDTO
+            {
+                Name = txtBoxName.Text.Trim(),
+                Surname = txtBoxSurname.Text.Trim(),
+                Email = txtBoxEmail.Text.Trim()
+            };
 
             try
             {
-                await _apiClient.UpdateAsync(_userToUpdate);
-
-                MessageBox.Show("Usuario actualizado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.DialogResult = DialogResult.OK;
-                this.Dispose();
+                bool success = await _apiClient.UpdateAsync(_userToUpdate.Id, userUpdateDto);
+                if (success)
+                {
+                    MessageBox.Show("Usuario actualizado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Dispose();
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo actualizar el usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
