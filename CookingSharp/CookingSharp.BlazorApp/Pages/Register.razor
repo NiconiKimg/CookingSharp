@@ -1,0 +1,373 @@
+﻿@page "/register"
+@layout EmptyLayout
+@using System.ComponentModel.DataAnnotations
+@using CookingSharp.BlazorApp.Services
+@using CookingSharp.BlazorApp.Shared
+@using Microsoft.AspNetCore.Components.Forms
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <img src="/images/logo.png" alt="CookingSharp" class="logo" />
+            <h1>Crear Cuenta</h1>
+            <p class="subtitle">Únete a nuestra comunidad de cocineros</p>
+        </div>
+
+        <EditForm Model="@registerModel" OnValidSubmit="HandleRegister" class="register-form">
+            <DataAnnotationsValidator />
+            
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">
+                    <span class="error-icon">⚠️</span>
+                    @errorMessage
+                </div>
+            }
+
+            @if (registrationSuccess)
+            {
+                <div class="alert alert-success">
+                    <span class="success-icon">✓</span>
+                    ¡Registro exitoso! Redirigiendo...
+                </div>
+            }
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">Nombre</label>
+                    <InputText id="firstName" @bind-Value="registerModel.FirstName" class="form-control" placeholder="Juan" />
+                    <ValidationMessage For="@(() => registerModel.FirstName)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Apellido</label>
+                    <InputText id="lastName" @bind-Value="registerModel.LastName" class="form-control" placeholder="Pérez" />
+                    <ValidationMessage For="@(() => registerModel.LastName)" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText id="email" @bind-Value="registerModel.Email" class="form-control" placeholder="tu@email.com" />
+                <ValidationMessage For="@(() => registerModel.Email)" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <InputText id="password" type="password" @bind-Value="registerModel.Password" class="form-control" placeholder="••••••••" />
+                <ValidationMessage For="@(() => registerModel.Password)" />
+                <small class="form-text">Mínimo 6 caracteres</small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Contraseña</label>
+                <InputText id="confirmPassword" type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control" placeholder="••••••••" />
+                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-container">
+                    <InputCheckbox @bind-Value="registerModel.AcceptTerms" />
+                    <span>Acepto los <a href="/terms" target="_blank">términos y condiciones</a></span>
+                </label>
+                <ValidationMessage For="@(() => registerModel.AcceptTerms)" />
+            </div>
+
+            <button type="submit" class="btn-register" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner"></span>
+                    <span>Registrando...</span>
+                }
+                else
+                {
+                    <span>Crear Cuenta</span>
+                }
+            </button>
+        </EditForm>
+
+        <div class="register-footer">
+            <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .register-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+    }
+
+    .register-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+        width: 100%;
+        max-width: 550px;
+        animation: slideIn 0.5s ease-out;
+        margin: 20px 0;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+    }
+
+    .register-header h1 {
+        font-size: 28px;
+        color: #333;
+        margin: 0 0 10px 0;
+        font-weight: 700;
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .register-form {
+        margin-top: 30px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-text {
+        display: block;
+        margin-top: 5px;
+        color: #999;
+        font-size: 12px;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: flex-start;
+        cursor: pointer;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+        margin-right: 8px;
+        margin-top: 3px;
+    }
+
+    .checkbox-container a {
+        color: #667eea;
+        text-decoration: none;
+    }
+
+    .checkbox-container a:hover {
+        text-decoration: underline;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .btn-register:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-register:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @@keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .register-footer {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .register-footer p {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .register-footer a {
+        color: #667eea;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .register-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-danger {
+        background-color: #fee;
+        color: #c33;
+        border: 1px solid #fcc;
+    }
+
+    .alert-success {
+        background-color: #efe;
+        color: #3c3;
+        border: 1px solid #cfc;
+    }
+
+    .error-icon, .success-icon {
+        font-size: 18px;
+    }
+
+    .validation-message {
+        color: #c33;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    @@media (max-width: 600px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+@code {
+    private RegisterModel registerModel = new();
+    private string errorMessage = string.Empty;
+    private bool isLoading = false;
+    private bool registrationSuccess = false;
+
+    private async Task HandleRegister()
+    {
+        try
+
+        
+       {
+            isLoading = true;
+            errorMessage = string.Empty;
+
+            // 🚧 BYPASS TEMPORAL
+            registrationSuccess = true;
+            await Task.Delay(1000);
+            Navigation.NavigateTo("/login");
+            return;
+            // 🚧 FIN BYPASS
+            isLoading = true;
+            errorMessage = string.Empty;
+
+            if (registerModel.Password != registerModel.ConfirmPassword)
+            {
+                errorMessage = "Las contraseñas no coinciden";
+                return;
+            }
+
+            var result = await AuthService.Register(registerModel);
+
+            if (result.Success)
+            {
+                registrationSuccess = true;
+                await Task.Delay(2000);
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                errorMessage = result.Message;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al conectar con el servidor. Intenta nuevamente.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
