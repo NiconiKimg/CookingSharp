@@ -17,10 +17,12 @@
         public string AuthorName { get; set; } = string.Empty;
         public ICollection<RecipeStepResponseDTO> Steps { get; set; } = new List<RecipeStepResponseDTO>();
         public ICollection<CategoryResponseDTO> Categories { get; set; } = new List<CategoryResponseDTO>();
+        public double AverageRating { get; set; }
+        public int RatingsCount { get; set; }
     }
 
     /// <summary>
-    /// DTO para recibir los detalles de un paso de una receta.
+    /// DTO para recibir los detalles de un paso de una receta.s
     /// </summary>
     public class RecipeStepResponseDTO
     {
@@ -68,6 +70,8 @@
         public string Status { get; set; } = string.Empty;
         public string AuthorName { get; set; } = string.Empty;
         public ICollection<CategoryResponseDTO> Categories { get; set; } = new List<CategoryResponseDTO>();
+        public double AverageRating { get; set; }
+        public int RatingsCount { get; set; }
     }
 
     /// <summary>

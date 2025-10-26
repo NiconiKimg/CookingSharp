@@ -14,6 +14,8 @@ public class RecipeSummaryDTO
     public int AuthorId { get; set; }
     public string AuthorName { get; set; }
     public ICollection<CategoryResponseDTO> Categories { get; set; }
+    public double AverageRating { get; set; }
+    public int RatingsCount { get; set; }
 }
 
 /// <summary>
@@ -29,6 +31,8 @@ public class RecipeResponseDTO
     public string AuthorName { get; set; }
     public ICollection<RecipeStepResponseDTO> Steps { get; set; }
     public ICollection<CategoryResponseDTO> Categories { get; set; }
+    public double AverageRating { get; set; }
+    public int RatingsCount { get; set; }
 }
 
 /// <summary>
