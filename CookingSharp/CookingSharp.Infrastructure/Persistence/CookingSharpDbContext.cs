@@ -19,7 +19,7 @@ public class CookingSharpDbContext : DbContext
     public DbSet<RecipeStep> RecipeSteps { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<Rating> Ratings { get; set; }
+    public DbSet<RecipeRating> Ratings { get; set; }
     public DbSet<Menu> Menus { get; set; }
     public DbSet<Appeal> Appeals { get; set; }
 

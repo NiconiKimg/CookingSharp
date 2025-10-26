@@ -6,7 +6,7 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories;
 /// <summary>
 /// Implementación del repositorio para la entidad Rating.
 /// </summary>
-public class RatingRepository : GenericRepository<Rating>, IRatingRepository
+public class RatingRepository : GenericRepository<RecipeRating>, IRatingRepository
 {
     public RatingRepository(CookingSharpDbContext context) : base(context)
     {
