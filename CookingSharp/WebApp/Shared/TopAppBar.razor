@@ -1,4 +1,6 @@
-﻿@using WebApp.Auth
+﻿@* Asumo que este archivo está en la carpeta Shared *@
+@implements IDisposable
+@using WebApp.Auth
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using System.Net.Http.Json
@@ -14,7 +16,7 @@
 
 
 <MudAppBar Elevation="1">
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="OnDrawerToggle" />
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => OnDrawerToggle.InvokeAsync())" />
     <MudText Typo="Typo.h6" Class="ml-4">Cooking#</MudText>
     <MudSpacer />
     
@@ -24,7 +26,7 @@
             <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="Logout" Class="ml-2" />
         </Authorized>
         <NotAuthorized>
-            <MudButton Href="login" Color="Color.Inherit">Login</MudButton>
+            <MudButton Href="/login" Color="Color.Inherit">Login</MudButton>
         </NotAuthorized>
     </AuthorizeView>
 </MudAppBar>
@@ -63,35 +65,16 @@
             return;
         }
 
-        var currentUser = UserState.CurrentUser;
-        if (currentUser == null) return;
-
-        if (currentUser.Role == "Admin")
-        {
-            try
-            {
-                var dto = await Http.GetFromJsonAsync<UserResponseDTO>($"api/users/{currentUser.Id}");
-                if (dto != null)
-                {
-                    _displayName = $"{dto.Name} {dto.Surname}".Trim();
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"TopAppBar: Error al obtener detalles del admin: {ex.Message}");
-            }
-        }
         _displayName = user.FindFirst(ClaimTypes.Name)?.Value
                        ?? user.FindFirst(ClaimTypes.Email)?.Value
-                       ?? user.Identity?.Name;
+                       ?? "Usuario";
     }
 
     private async Task Logout()
     {
         var customAuthStateProvider = (CustomAuthStateProvider)AuthenticationStateProvider;
         await customAuthStateProvider.MarkUserAsLoggedOut();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/login");
     }
 
     public void Dispose()

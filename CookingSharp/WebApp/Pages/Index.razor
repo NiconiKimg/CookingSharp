@@ -1,45 +1,32 @@
 ﻿@page "/"
-@using WebApp.DTOs
-@using System.Net.Http.Json
-@inject HttpClient Http
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
 
-    <div style="text-align: center; margin-bottom: 40px;">
-        <MudText Typo="Typo.h2" GutterBottom="true">Bienvenido a CookingSharp</MudText>
-        <MudText Typo="Typo.h5" Color="Color.Dark" Style="opacity: 0.7;">Tu recetario colaborativo para gestionar y compartir tus creaciones culinarias.</MudText>
+    <MudPaper Width="100%" Elevation="0" Variant="Variant.Filled" Style="min-height: 45vh;" 
+              Class="d-flex flex-column justify-center align-center pa-6 rounded-lg">
+        
+        <MudIcon Icon="@Icons.Material.Filled.RestaurantMenu" Color="Color.Primary" Size="Size.Large" Class="mb-4" />
+
+        <MudText Typo="Typo.h2" Align="Align.Center" GutterBottom="true">Bienvenido a CookingSharp</MudText>
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Dark" Style="opacity: 0.7; max-width: 600px;">
+            Tu recetario colaborativo para gestionar y compartir tus creaciones culinarias.
+        </MudText>
+
+    </MudPaper>
+
+    <MudDivider Class="my-8" />
+
+    <div class="d-flex flex-column align-center">
+        <MudText Typo="Typo.h4" GutterBottom="true">Próximamente...</MudText>
+        <MudText Typo="Typo.body1" Color="Color.Dark" Style="opacity: 0.8;">
+            Aquí se mostrarán las recetas y menús mejor valorados por la comunidad.
+        </MudText>
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="mt-6" />
     </div>
-
-    @if (recipes == null)
-    {
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-    }
-    else
-    {
-        <MudGrid Spacing="3">
-            @foreach (var recipe in recipes)
-            {
-                <MudItem xs="12" sm="6" md="4">
-                    <RecipeCard Recipe="recipe" />
-                </MudItem>
-            }
-        </MudGrid>
-    }
 
 </MudContainer>
 
 @code {
-    private RecipeSummaryDTO[]? recipes;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            recipes = await Http.GetFromJsonAsync<RecipeSummaryDTO[]>("api/recipes");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener recetas: {ex.Message}");
-        }
-    }
+    // El bloque de código está vacío por ahora.
+    // La lógica para cargar los menús y recetas mejor valorados se añadirá aquí más adelante.
 }
