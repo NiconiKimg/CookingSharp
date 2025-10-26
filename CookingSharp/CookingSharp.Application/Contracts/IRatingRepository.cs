@@ -5,6 +5,6 @@ namespace CookingSharp.Application.Contracts;
 /// <summary>
 /// Contrato para el repositorio de valoraciones.
 /// </summary>
-public interface IRatingRepository : IGenericRepository<Rating>
+public interface IRatingRepository : IGenericRepository<RecipeRating>
 {
 }

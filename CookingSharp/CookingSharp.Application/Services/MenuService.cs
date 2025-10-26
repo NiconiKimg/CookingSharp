@@ -4,9 +4,7 @@ using CookingSharp.Application.Contracts;
 using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain.Entities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace CookingSharp.Application.Services;
 

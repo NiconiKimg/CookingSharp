@@ -26,7 +26,8 @@ public class Menu
     public int UserId { get; private set; }
 
     public User User { get; private set; }
-    public ICollection<Recipe> Recipes { get; private set; } = new List<Recipe>();
+    public ICollection<Recipe> Recipes { get; private set; } = [];
+    public ICollection<MenuRating> Ratings { get; private set; } = new List<MenuRating>();
 
     private Menu() { }
 
