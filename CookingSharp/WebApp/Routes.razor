@@ -1,0 +1,28 @@
+﻿@using WebApp.Shared.Layout
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <MudText Align="Align.Center" Class="mt-16">
+                    <MudText Typo="Typo.h4">Acceso Denegado</MudText>
+                    <MudText>No tienes permiso para ver esta página. Por favor, <MudLink Href="login">inicia sesión</MudLink>.</MudText>
+                </MudText>
+            </NotAuthorized>
+            <Authorizing>
+                <div style="position:absolute; top:30vh; width:100%; text-align:center">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                </div>
+            </Authorizing>
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>No encontrado</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <MudText Align="Align.Center" Class="mt-16">
+                <MudText Typo="Typo.h3">¡Oops!</MudText>
+                <MudText>La página que buscas no existe.</MudText>
+            </MudText>
+        </LayoutView>
+    </NotFound>
+</Router>

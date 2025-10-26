@@ -10,13 +10,14 @@ namespace WebApp.Auth
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
-        private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+        private readonly UserStateService _userStateService;
+        private readonly ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
 
-        // Inyectar el nuevo servicio
-        public CustomAuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+        public CustomAuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, UserStateService userStateService)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
+            _userStateService = userStateService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -25,14 +26,19 @@ namespace WebApp.Auth
 
             if (string.IsNullOrWhiteSpace(token))
             {
+                _userStateService.SetUser(_anonymous);
                 return new AuthenticationState(_anonymous);
             }
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             var claims = ParseClaimsFromJwt(token);
-            var identity = new ClaimsIdentity(claims, "jwt");
+
+            var identity = new ClaimsIdentity(claims, "jwt", ClaimTypes.Name, ClaimTypes.Role);
+
             var user = new ClaimsPrincipal(identity);
+
+            _userStateService.SetUser(user);
 
             return new AuthenticationState(user);
         }
@@ -40,12 +46,16 @@ namespace WebApp.Auth
         public async Task MarkUserAsAuthenticated(string token)
         {
             var claims = ParseClaimsFromJwt(token);
-            var identity = new ClaimsIdentity(claims, "jwt");
+
+            var identity = new ClaimsIdentity(claims, "jwt", ClaimTypes.Name, ClaimTypes.Role);
+
             var user = new ClaimsPrincipal(identity);
 
             await _localStorage.SetItemAsync("authToken", token);
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
+            _userStateService.SetUser(user);
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
@@ -53,8 +63,8 @@ namespace WebApp.Auth
         public async Task MarkUserAsLoggedOut()
         {
             await _localStorage.RemoveItemAsync("authToken");
-
             _httpClient.DefaultRequestHeaders.Authorization = null;
+            _userStateService.SetUser(_anonymous);
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
         }
 
@@ -63,38 +73,42 @@ namespace WebApp.Auth
             var claims = new List<Claim>();
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonBytes);
 
             if (keyValuePairs != null)
             {
-                if (keyValuePairs.TryGetValue("role", out var roles))
+                if (keyValuePairs.TryGetValue(ClaimTypes.Role, out var roleElement) ||
+                    keyValuePairs.TryGetValue("role", out roleElement))
                 {
-                    if (roles is JsonElement rolesElement && rolesElement.ValueKind == JsonValueKind.Array)
+                    if (roleElement.ValueKind == JsonValueKind.String)
                     {
-                        foreach (var role in rolesElement.EnumerateArray())
-                        {
-                            claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
-                        }
+                        claims.Add(new Claim(ClaimTypes.Role, roleElement.GetString() ?? ""));
                     }
-                    else
+                    else if (roleElement.ValueKind == JsonValueKind.Array)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
+                        foreach (var role in roleElement.EnumerateArray())
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, role.GetString() ?? ""));
+                        }
                     }
                 }
 
-                var claimMappings = new Dictionary<string, string>
+                if (keyValuePairs.TryGetValue(ClaimTypes.NameIdentifier, out var subElement) ||
+                    keyValuePairs.TryGetValue("sub", out subElement))
                 {
-                    { "sub", ClaimTypes.NameIdentifier },
-                    { "email", ClaimTypes.Email },
-                    { "unique_name", ClaimTypes.Name }
-                };
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, subElement.GetString() ?? ""));
+                }
 
-                foreach (var kvp in keyValuePairs)
+                if (keyValuePairs.TryGetValue(ClaimTypes.Email, out var emailElement) ||
+                    keyValuePairs.TryGetValue("email", out emailElement))
                 {
-                    if (claimMappings.ContainsKey(kvp.Key))
-                    {
-                        claims.Add(new Claim(claimMappings[kvp.Key], kvp.Value.ToString()));
-                    }
+                    claims.Add(new Claim(ClaimTypes.Email, emailElement.GetString() ?? ""));
+                }
+
+                if (keyValuePairs.TryGetValue(ClaimTypes.Name, out var nameElement) ||
+                    keyValuePairs.TryGetValue("unique_name", out nameElement))
+                {
+                    claims.Add(new Claim(ClaimTypes.Name, nameElement.GetString() ?? ""));
                 }
             }
             return claims;

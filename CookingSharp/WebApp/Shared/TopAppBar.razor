@@ -1,0 +1,101 @@
+﻿@using WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using System.Net.Http.Json
+@using System.Net.Http.Headers
+@using WebApp.DTOs
+@using WebApp.Services
+
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@inject UserStateService UserState
+
+
+<MudAppBar Elevation="1">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="OnDrawerToggle" />
+    <MudText Typo="Typo.h6" Class="ml-4">Cooking#</MudText>
+    <MudSpacer />
+    
+    <AuthorizeView>
+        <Authorized>
+            <MudText Typo="Typo.body1">Hola, @_displayName</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="Logout" Class="ml-2" />
+        </Authorized>
+        <NotAuthorized>
+            <MudButton Href="login" Color="Color.Inherit">Login</MudButton>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudAppBar>
+
+@code {
+    [Parameter]
+    public EventCallback OnDrawerToggle { get; set; }
+
+    private string? _displayName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged += AuthStateChanged;
+        await LoadDisplayNameAsync();
+    }
+
+    private async void AuthStateChanged(Task<AuthenticationState> authStateTask)
+    {
+        await InvokeAsync(async () =>
+        {
+            await LoadDisplayNameAsync();
+            StateHasChanged();
+        });
+    }
+
+    private async Task LoadDisplayNameAsync()
+    {
+        _displayName = "Usuario";
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            _displayName = null;
+            return;
+        }
+
+        var currentUser = UserState.CurrentUser;
+        if (currentUser == null) return;
+
+        if (currentUser.Role == "Admin")
+        {
+            try
+            {
+                var dto = await Http.GetFromJsonAsync<UserResponseDTO>($"api/users/{currentUser.Id}");
+                if (dto != null)
+                {
+                    _displayName = $"{dto.Name} {dto.Surname}".Trim();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"TopAppBar: Error al obtener detalles del admin: {ex.Message}");
+            }
+        }
+        _displayName = user.FindFirst(ClaimTypes.Name)?.Value
+                       ?? user.FindFirst(ClaimTypes.Email)?.Value
+                       ?? user.Identity?.Name;
+    }
+
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthStateProvider)AuthenticationStateProvider;
+        await customAuthStateProvider.MarkUserAsLoggedOut();
+        NavigationManager.NavigateTo("/");
+    }
+
+    public void Dispose()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged -= AuthStateChanged;
+    }
+}
