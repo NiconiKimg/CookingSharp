@@ -1,31 +1,47 @@
 ﻿@using WebApp.DTOs
 @using MudBlazor
 
-<MudCard Outlined="true">
-    <MudCardMedia Image="@ImageUrl" Height="200" />
-    <MudCardContent>
-        <MudText Typo="Typo.h5">@Recipe.Name</MudText>
-        <MudText Typo="Typo.body2" Class="mb-2">por: @Recipe.AuthorName</MudText>
-        <MudText Typo="Typo.body2">@Recipe.Description</MudText>
-    </MudCardContent>
-    <MudCardActions>
-        @if (Recipe.Categories != null)
-        {
-            foreach (var category in Recipe.Categories)
+<a href="/recipe/@Recipe.Id" style="text-decoration: none;">
+    <MudCard Outlined="true" Class="mud-elevation-1 hover-elevation-4 transition-transform-fast d-flex flex-column" Style="height: 100%;">
+        <MudCardMedia Image="@ImageUrl" Height="200" />
+        <MudCardContent Style="flex-grow: 1;">
+            <MudText Typo="Typo.h5">@Recipe.Name</MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">por: @Recipe.AuthorName</MudText>
+            
+            <div class="d-flex align-center mb-2">
+                <MudRating SelectedValue="(int)Math.Round(Recipe.AverageRating)" ReadOnly="true" Size="Size.Small" />
+                @if (Recipe.RatingsCount > 0)
+                {
+                    <MudText Typo="Typo.caption" Class="ml-2">
+                        @Recipe.AverageRating.ToString("0.0") (@Recipe.RatingsCount @(Recipe.RatingsCount == 1 ? "valoración" : "valoraciones"))
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.caption" Class="ml-2">Sin valorar</MudText>
+                }
+            </div>
+
+            <MudText Typo="Typo.body2">@Recipe.Description</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            @if (Recipe.Categories != null)
             {
-                <MudChip Color="Color.Primary"
-                         Size="Size.Small"
-                         Label="true"
-                         T="string">@category.Name</MudChip>
+                foreach (var category in Recipe.Categories)
+                {
+                    <MudChip Color="Color.Primary"
+                             Size="Size.Small"
+                             Label="true"
+                             T="string">@category.Name</MudChip>
+                }
             }
-        }
-    </MudCardActions>
-</MudCard>
+        </MudCardActions>
+    </MudCard>
+</a>
 
 @code {
     [Parameter]
     public RecipeSummaryDTO Recipe { get; set; }
 
-    // Usaremos una imagen de marcador de posición por ahora
     private string ImageUrl => $"https://via.placeholder.com/400x250.png?text={Uri.EscapeDataString(Recipe.Name)}";
 }

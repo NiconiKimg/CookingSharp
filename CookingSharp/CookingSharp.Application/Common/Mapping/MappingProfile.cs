@@ -18,14 +18,18 @@ public class MappingProfile : Profile
         // Recipe Mappings
         CreateMap<Recipe, RecipeSummaryDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
-            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id));
+            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id))
+            .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0))
+            .ForMember(dest => dest.RatingsCount, opt => opt.MapFrom(src => src.Ratings.Count));
 
         CreateMap<Recipe, RecipeResponseDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
-            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id));
+            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id))
+            .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0))
+            .ForMember(dest => dest.RatingsCount, opt => opt.MapFrom(src => src.Ratings.Count));
 
         CreateMap<RecipeStep, RecipeStepResponseDTO>();
-        CreateMap<RecipeStepCreateDTO, RecipeStep>(); // Asumiendo que se mapea a una entidad temporal
+        CreateMap<RecipeStepCreateDTO, RecipeStep>();
 
         // Comment Mappings
         CreateMap<Comment, CommentResponseDTO>()
