@@ -8,11 +8,9 @@ namespace CookingSharp.WindowsForms.Features.Authentication
     public partial class FrmLogin : Form
     {
         private readonly AuthApiClient _authApiClient;
+        private int _loginAttempts = 0;
+        private const int MAX_ATTEMPTS = 3;
 
-        /// <summary>
-        /// Constructor que recibe el cliente de la API de autenticación
-        /// a través de la inyección de dependencias configurada en Program.cs.
-        /// </summary>
         public FrmLogin(AuthApiClient authApiClient)
         {
             InitializeComponent();
@@ -25,10 +23,6 @@ namespace CookingSharp.WindowsForms.Features.Authentication
             this.Close();
         }
 
-        /// <summary>
-        /// Maneja el evento de clic del botón Acceder.
-        /// Se declara como 'async void' para poder realizar llamadas a la API sin congelar la interfaz de usuario.
-        /// </summary>
         private async void btnAcceder_Click(object sender, EventArgs e)
         {
             btnAcceder.Enabled = false;
@@ -42,31 +36,57 @@ namespace CookingSharp.WindowsForms.Features.Authentication
                     Password = txtPassword.Text
                 };
 
-                Console.WriteLine("previo");
                 var response = await _authApiClient.LoginAsync(loginDto);
-                
+
                 if (response != null && !string.IsNullOrEmpty(response.Token))
                 {
+                    // Login exitoso
                     SessionManager.JwtToken = response.Token;
-
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.DialogResult = DialogResult.Cancel;
+                    // Login fallido por credenciales incorrectas
+                    HandleFailedLogin();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show($"Ocurrió un error inesperado:\n\n{ex.ToString()}", "Error Detallado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.DialogResult = DialogResult.Cancel;
+                // Login fallido por error de conexión u otro problema
+                HandleFailedLogin();
             }
             finally
             {
-                btnAcceder.Enabled = true;
-                btnAcceder.Text = "Acceder";
+                // Asegurarse de que el formulario no ha sido cerrado antes de actualizar los controles.
+                if (!this.IsDisposed)
+                {
+                    btnAcceder.Enabled = true;
+                    btnAcceder.Text = "Acceder";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gestiona la lógica para un intento de login fallido.
+        /// Incrementa el contador, informa al usuario y cierra la aplicación si se supera el límite.
+        /// </summary>
+        private void HandleFailedLogin()
+        {
+            _loginAttempts++;
+            int remainingAttempts = MAX_ATTEMPTS - _loginAttempts;
+
+            if (remainingAttempts > 0)
+            {
+                MessageBox.Show($"Credenciales inválidas o error de conexión. Quedan {remainingAttempts} intento(s).", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPassword.Clear();
+                txtPassword.Focus();
+            }
+            else
+            {
+                MessageBox.Show("Ha superado el número máximo de intentos. La aplicación se cerrará.", "Acceso Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Cancel; // Esto finalizará el bucle en Program.cs
+                this.Close();
             }
         }
     }

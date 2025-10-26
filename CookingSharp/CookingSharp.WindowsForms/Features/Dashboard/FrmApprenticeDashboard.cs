@@ -1,4 +1,5 @@
-﻿using CookingSharp.WindowsForms.Features.Apprentice;
+﻿using CookingSharp.Clients;
+using CookingSharp.WindowsForms.Features.Apprentice;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
@@ -11,31 +12,14 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         {
             InitializeComponent();
             this.Load += FrmApprenticeDashboard_Load;
+            this.btnUserOptions.Cursor = Cursors.Hand;
         }
 
         private void FrmApprenticeDashboard_Load(object sender, EventArgs e)
         {
-            // Cargar la vista de recetas por defecto al iniciar
             LoadRecipesView();
-
-            // Personalizar el encabezado con la información del usuario
-            lblUserEmail.Text = Clients.SessionManager.GetUserEmail();
-            lblUserRole.Text = Clients.SessionManager.GetUserRole();
-        }
-
-        private void LoadControl<T>() where T : UserControl
-        {
-            var control = Program.ServiceProvider?.GetRequiredService<T>();
-
-            if (control == null)
-            {
-                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}.", "Error de Configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            pnlMainContent.Controls.Clear();
-            control.Dock = DockStyle.Fill;
-            pnlMainContent.Controls.Add(control);
+            lblUserEmail.Text = SessionManager.GetUserEmail();
+            lblUserRole.Text = SessionManager.GetUserRole();
         }
 
         private void LoadRecipesView()
@@ -60,8 +44,34 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            // El logo también sirve para volver a la vista principal
             LoadRecipesView();
+        }
+
+        /// <summary>
+        /// Maneja el evento de clic en el botón de opciones de usuario para iniciar el proceso de cierre de sesión.
+        /// </summary>
+        private void btnUserOptions_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("¿Está seguro de que desea cerrar la sesión?", "Confirmar Cierre de Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirmResult == DialogResult.Yes)
+            {
+                SessionManager.Logout();
+                this.Close();
+            }
+        }
+
+        private void LoadControl<T>() where T : UserControl
+        {
+            var control = Program.ServiceProvider?.GetRequiredService<T>();
+            if (control == null)
+            {
+                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}.", "Error de Configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            pnlMainContent.Controls.Clear();
+            control.Dock = DockStyle.Fill;
+            pnlMainContent.Controls.Add(control);
         }
     }
 }

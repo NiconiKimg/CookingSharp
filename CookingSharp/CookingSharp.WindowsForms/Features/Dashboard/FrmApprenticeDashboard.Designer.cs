@@ -17,382 +17,374 @@
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmApprenticeDashboard));
-            this.tlpMainLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.tlpHeaderLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpHeaderLeft = new System.Windows.Forms.TableLayoutPanel();
-            this.picLogo = new System.Windows.Forms.PictureBox();
-            this.lblAppName = new System.Windows.Forms.Label();
-            this.lblSubtittleNav = new System.Windows.Forms.Label();
-            this.tlpHeaderRight = new System.Windows.Forms.TableLayoutPanel();
-            this.picUser = new System.Windows.Forms.PictureBox();
-            this.tlpUserDetails = new System.Windows.Forms.TableLayoutPanel();
-            this.lblUserRole = new System.Windows.Forms.Label();
-            this.lblUserEmail = new System.Windows.Forms.Label();
-            this.btnUserOptions = new System.Windows.Forms.Button();
-            this.pnlNavigation = new System.Windows.Forms.Panel();
-            this.tlpNavigation = new System.Windows.Forms.TableLayoutPanel();
-            this.lblMenuExplorarTitle = new System.Windows.Forms.Label();
-            this.btnNavRecetas = new System.Windows.Forms.Button();
-            this.lblMenuPersonalTitle = new System.Windows.Forms.Label();
-            this.btnNavSolicitudes = new System.Windows.Forms.Button();
-            this.pnlMainContent = new System.Windows.Forms.Panel();
-            this.tlpMainLayout.SuspendLayout();
-            this.pnlHeader.SuspendLayout();
-            this.tlpHeaderLayout.SuspendLayout();
-            this.tlpHeaderLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
-            this.tlpHeaderRight.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picUser)).BeginInit();
-            this.tlpUserDetails.SuspendLayout();
-            this.pnlNavigation.SuspendLayout();
-            this.tlpNavigation.SuspendLayout();
-            this.SuspendLayout();
+            tlpMainLayout = new TableLayoutPanel();
+            pnlHeader = new Panel();
+            tlpHeaderLayout = new TableLayoutPanel();
+            tlpHeaderLeft = new TableLayoutPanel();
+            picLogo = new PictureBox();
+            lblAppName = new Label();
+            lblSubtittleNav = new Label();
+            tlpHeaderRight = new TableLayoutPanel();
+            picUser = new PictureBox();
+            tlpUserDetails = new TableLayoutPanel();
+            lblUserRole = new Label();
+            lblUserEmail = new Label();
+            btnUserOptions = new Button();
+            pnlNavigation = new Panel();
+            tlpNavigation = new TableLayoutPanel();
+            lblMenuExplorarTitle = new Label();
+            btnNavRecetas = new Button();
+            lblMenuPersonalTitle = new Label();
+            btnNavSolicitudes = new Button();
+            pnlMainContent = new Panel();
+            tlpMainLayout.SuspendLayout();
+            pnlHeader.SuspendLayout();
+            tlpHeaderLayout.SuspendLayout();
+            tlpHeaderLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
+            tlpHeaderRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picUser).BeginInit();
+            tlpUserDetails.SuspendLayout();
+            pnlNavigation.SuspendLayout();
+            tlpNavigation.SuspendLayout();
+            SuspendLayout();
             // 
             // tlpMainLayout
             // 
-            this.tlpMainLayout.BackColor = System.Drawing.Color.Transparent;
-            this.tlpMainLayout.ColumnCount = 2;
-            this.tlpMainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.tlpMainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainLayout.Controls.Add(this.pnlHeader, 0, 0);
-            this.tlpMainLayout.Controls.Add(this.pnlNavigation, 0, 1);
-            this.tlpMainLayout.Controls.Add(this.pnlMainContent, 1, 1);
-            this.tlpMainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMainLayout.Location = new System.Drawing.Point(0, 0);
-            this.tlpMainLayout.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpMainLayout.Name = "tlpMainLayout";
-            this.tlpMainLayout.RowCount = 2;
-            this.tlpMainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
-            this.tlpMainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainLayout.Size = new System.Drawing.Size(1264, 729);
-            this.tlpMainLayout.TabIndex = 2;
+            tlpMainLayout.BackColor = Color.Transparent;
+            tlpMainLayout.ColumnCount = 2;
+            tlpMainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 250F));
+            tlpMainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpMainLayout.Controls.Add(pnlHeader, 0, 0);
+            tlpMainLayout.Controls.Add(pnlNavigation, 0, 1);
+            tlpMainLayout.Controls.Add(pnlMainContent, 1, 1);
+            tlpMainLayout.Dock = DockStyle.Fill;
+            tlpMainLayout.Location = new Point(0, 0);
+            tlpMainLayout.Margin = new Padding(0);
+            tlpMainLayout.Name = "tlpMainLayout";
+            tlpMainLayout.RowCount = 2;
+            tlpMainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
+            tlpMainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpMainLayout.Size = new Size(1264, 826);
+            tlpMainLayout.TabIndex = 2;
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(34)))), ((int)(((byte)(45)))));
-            this.tlpMainLayout.SetColumnSpan(this.pnlHeader, 2);
-            this.pnlHeader.Controls.Add(this.tlpHeaderLayout);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1264, 62);
-            this.pnlHeader.TabIndex = 0;
+            pnlHeader.BackColor = Color.FromArgb(26, 34, 45);
+            tlpMainLayout.SetColumnSpan(pnlHeader, 2);
+            pnlHeader.Controls.Add(tlpHeaderLayout);
+            pnlHeader.Dock = DockStyle.Fill;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1264, 70);
+            pnlHeader.TabIndex = 0;
             // 
             // tlpHeaderLayout
             // 
-            this.tlpHeaderLayout.BackColor = System.Drawing.Color.Transparent;
-            this.tlpHeaderLayout.ColumnCount = 3;
-            this.tlpHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderLayout.Controls.Add(this.tlpHeaderLeft, 0, 0);
-            this.tlpHeaderLayout.Controls.Add(this.tlpHeaderRight, 2, 0);
-            this.tlpHeaderLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpHeaderLayout.Location = new System.Drawing.Point(0, 0);
-            this.tlpHeaderLayout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tlpHeaderLayout.Name = "tlpHeaderLayout";
-            this.tlpHeaderLayout.RowCount = 1;
-            this.tlpHeaderLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderLayout.Size = new System.Drawing.Size(1264, 62);
-            this.tlpHeaderLayout.TabIndex = 0;
+            tlpHeaderLayout.BackColor = Color.Transparent;
+            tlpHeaderLayout.ColumnCount = 3;
+            tlpHeaderLayout.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpHeaderLayout.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderLayout.Controls.Add(tlpHeaderLeft, 0, 0);
+            tlpHeaderLayout.Controls.Add(tlpHeaderRight, 2, 0);
+            tlpHeaderLayout.Dock = DockStyle.Fill;
+            tlpHeaderLayout.Location = new Point(0, 0);
+            tlpHeaderLayout.Margin = new Padding(2);
+            tlpHeaderLayout.Name = "tlpHeaderLayout";
+            tlpHeaderLayout.RowCount = 1;
+            tlpHeaderLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpHeaderLayout.Size = new Size(1264, 70);
+            tlpHeaderLayout.TabIndex = 0;
             // 
             // tlpHeaderLeft
             // 
-            this.tlpHeaderLeft.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.tlpHeaderLeft.AutoSize = true;
-            this.tlpHeaderLeft.ColumnCount = 3;
-            this.tlpHeaderLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderLeft.Controls.Add(this.picLogo, 0, 0);
-            this.tlpHeaderLeft.Controls.Add(this.lblAppName, 1, 0);
-            this.tlpHeaderLeft.Controls.Add(this.lblSubtittleNav, 2, 0);
-            this.tlpHeaderLeft.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.tlpHeaderLeft.Location = new System.Drawing.Point(3, 15);
-            this.tlpHeaderLeft.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tlpHeaderLeft.Name = "tlpHeaderLeft";
-            this.tlpHeaderLeft.RowCount = 1;
-            this.tlpHeaderLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderLeft.Size = new System.Drawing.Size(262, 32);
-            this.tlpHeaderLeft.TabIndex = 2;
+            tlpHeaderLeft.Anchor = AnchorStyles.Left;
+            tlpHeaderLeft.AutoSize = true;
+            tlpHeaderLeft.ColumnCount = 3;
+            tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderLeft.Controls.Add(picLogo, 0, 0);
+            tlpHeaderLeft.Controls.Add(lblAppName, 1, 0);
+            tlpHeaderLeft.Controls.Add(lblSubtittleNav, 2, 0);
+            tlpHeaderLeft.GrowStyle = TableLayoutPanelGrowStyle.AddColumns;
+            tlpHeaderLeft.Location = new Point(3, 17);
+            tlpHeaderLeft.Margin = new Padding(3, 2, 3, 2);
+            tlpHeaderLeft.Name = "tlpHeaderLeft";
+            tlpHeaderLeft.RowCount = 1;
+            tlpHeaderLeft.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpHeaderLeft.Size = new Size(247, 36);
+            tlpHeaderLeft.TabIndex = 2;
             // 
             // picLogo
             // 
-            this.picLogo.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picLogo.Image = global::CookingSharp.WindowsForms.Properties.Resources.logo;
-            this.picLogo.Location = new System.Drawing.Point(2, 2);
-            this.picLogo.Margin = new System.Windows.Forms.Padding(2);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(32, 28);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
-            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
+            picLogo.Anchor = AnchorStyles.Left;
+            picLogo.Cursor = Cursors.Hand;
+            picLogo.Image = Properties.Resources.logo;
+            picLogo.Location = new Point(2, 2);
+            picLogo.Margin = new Padding(2);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(32, 32);
+            picLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            picLogo.TabIndex = 0;
+            picLogo.TabStop = false;
+            picLogo.Click += picLogo_Click;
             // 
             // lblAppName
             // 
-            this.lblAppName.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblAppName.AutoSize = true;
-            this.lblAppName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAppName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblAppName.Location = new System.Drawing.Point(46, 5);
-            this.lblAppName.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.lblAppName.Name = "lblAppName";
-            this.lblAppName.Size = new System.Drawing.Size(83, 21);
-            this.lblAppName.TabIndex = 1;
-            this.lblAppName.Text = "Cooking#";
+            lblAppName.Anchor = AnchorStyles.Left;
+            lblAppName.AutoSize = true;
+            lblAppName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblAppName.ForeColor = Color.WhiteSmoke;
+            lblAppName.Location = new Point(46, 7);
+            lblAppName.Margin = new Padding(10, 0, 0, 0);
+            lblAppName.Name = "lblAppName";
+            lblAppName.Size = new Size(83, 21);
+            lblAppName.TabIndex = 1;
+            lblAppName.Text = "Cooking#";
             // 
             // lblSubtittleNav
             // 
-            this.lblSubtittleNav.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblSubtittleNav.AutoSize = true;
-            this.lblSubtittleNav.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblSubtittleNav.Location = new System.Drawing.Point(131, 8);
-            this.lblSubtittleNav.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblSubtittleNav.Name = "lblSubtittleNav";
-            this.lblSubtittleNav.Size = new System.Drawing.Size(129, 15);
-            this.lblSubtittleNav.TabIndex = 2;
-            this.lblSubtittleNav.Text = "Panel de Aprendiz";
+            lblSubtittleNav.Anchor = AnchorStyles.None;
+            lblSubtittleNav.AutoSize = true;
+            lblSubtittleNav.ForeColor = Color.WhiteSmoke;
+            lblSubtittleNav.Location = new Point(131, 9);
+            lblSubtittleNav.Margin = new Padding(2, 0, 2, 0);
+            lblSubtittleNav.Name = "lblSubtittleNav";
+            lblSubtittleNav.Size = new Size(114, 17);
+            lblSubtittleNav.TabIndex = 2;
+            lblSubtittleNav.Text = "Panel de Aprendiz";
             // 
             // tlpHeaderRight
             // 
-            this.tlpHeaderRight.ColumnCount = 3;
-            this.tlpHeaderRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpHeaderRight.Controls.Add(this.picUser, 0, 0);
-            this.tlpHeaderRight.Controls.Add(this.tlpUserDetails, 1, 0);
-            this.tlpHeaderRight.Controls.Add(this.btnUserOptions, 2, 0);
-            this.tlpHeaderRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tlpHeaderRight.Location = new System.Drawing.Point(1061, 2);
-            this.tlpHeaderRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tlpHeaderRight.Name = "tlpHeaderRight";
-            this.tlpHeaderRight.RowCount = 1;
-            this.tlpHeaderRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderRight.Size = new System.Drawing.Size(200, 58);
-            this.tlpHeaderRight.TabIndex = 0;
+            tlpHeaderRight.ColumnCount = 3;
+            tlpHeaderRight.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpHeaderRight.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderRight.Controls.Add(picUser, 0, 0);
+            tlpHeaderRight.Controls.Add(tlpUserDetails, 1, 0);
+            tlpHeaderRight.Controls.Add(btnUserOptions, 2, 0);
+            tlpHeaderRight.Dock = DockStyle.Right;
+            tlpHeaderRight.Location = new Point(1061, 2);
+            tlpHeaderRight.Margin = new Padding(3, 2, 3, 2);
+            tlpHeaderRight.Name = "tlpHeaderRight";
+            tlpHeaderRight.RowCount = 1;
+            tlpHeaderRight.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpHeaderRight.Size = new Size(200, 66);
+            tlpHeaderRight.TabIndex = 0;
             // 
             // picUser
             // 
-            this.picUser.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picUser.Cursor = System.Windows.Forms.Cursors.No;
-            this.picUser.Image = ((System.Drawing.Image)(resources.GetObject("picUser.Image")));
-            this.picUser.Location = new System.Drawing.Point(3, 12);
-            this.picUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.picUser.Name = "picUser";
-            this.picUser.Size = new System.Drawing.Size(40, 34);
-            this.picUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picUser.TabIndex = 0;
-            this.picUser.TabStop = false;
+            picUser.Anchor = AnchorStyles.None;
+            picUser.Location = new Point(3, 13);
+            picUser.Margin = new Padding(3, 2, 3, 2);
+            picUser.Name = "picUser";
+            picUser.Size = new Size(40, 39);
+            picUser.SizeMode = PictureBoxSizeMode.StretchImage;
+            picUser.TabIndex = 0;
+            picUser.TabStop = false;
             // 
             // tlpUserDetails
             // 
-            this.tlpUserDetails.ColumnCount = 1;
-            this.tlpUserDetails.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUserDetails.Controls.Add(this.lblUserRole, 0, 0);
-            this.tlpUserDetails.Controls.Add(this.lblUserEmail, 0, 1);
-            this.tlpUserDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpUserDetails.Location = new System.Drawing.Point(49, 2);
-            this.tlpUserDetails.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tlpUserDetails.Name = "tlpUserDetails";
-            this.tlpUserDetails.RowCount = 2;
-            this.tlpUserDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUserDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUserDetails.Size = new System.Drawing.Size(112, 54);
-            this.tlpUserDetails.TabIndex = 1;
+            tlpUserDetails.ColumnCount = 1;
+            tlpUserDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlpUserDetails.Controls.Add(lblUserRole, 0, 0);
+            tlpUserDetails.Controls.Add(lblUserEmail, 0, 1);
+            tlpUserDetails.Dock = DockStyle.Fill;
+            tlpUserDetails.Location = new Point(49, 2);
+            tlpUserDetails.Margin = new Padding(3, 2, 3, 2);
+            tlpUserDetails.Name = "tlpUserDetails";
+            tlpUserDetails.RowCount = 2;
+            tlpUserDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpUserDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpUserDetails.Size = new Size(112, 62);
+            tlpUserDetails.TabIndex = 1;
             // 
             // lblUserRole
             // 
-            this.lblUserRole.AutoSize = true;
-            this.lblUserRole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblUserRole.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserRole.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblUserRole.Location = new System.Drawing.Point(3, 0);
-            this.lblUserRole.Name = "lblUserRole";
-            this.lblUserRole.Size = new System.Drawing.Size(106, 27);
-            this.lblUserRole.TabIndex = 0;
-            this.lblUserRole.Text = "Aprendiz";
-            this.lblUserRole.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblUserRole.AutoSize = true;
+            lblUserRole.Dock = DockStyle.Fill;
+            lblUserRole.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUserRole.ForeColor = Color.WhiteSmoke;
+            lblUserRole.Location = new Point(3, 0);
+            lblUserRole.Name = "lblUserRole";
+            lblUserRole.Size = new Size(106, 31);
+            lblUserRole.TabIndex = 0;
+            lblUserRole.Text = "Aprendiz";
+            lblUserRole.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblUserEmail
             // 
-            this.lblUserEmail.AutoEllipsis = true;
-            this.lblUserEmail.AutoSize = true;
-            this.lblUserEmail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblUserEmail.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserEmail.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblUserEmail.Location = new System.Drawing.Point(3, 27);
-            this.lblUserEmail.Name = "lblUserEmail";
-            this.lblUserEmail.Size = new System.Drawing.Size(106, 27);
-            this.lblUserEmail.TabIndex = 1;
-            this.lblUserEmail.Text = "aprendiz@email.com";
-            this.lblUserEmail.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblUserEmail.AutoEllipsis = true;
+            lblUserEmail.AutoSize = true;
+            lblUserEmail.Dock = DockStyle.Fill;
+            lblUserEmail.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUserEmail.ForeColor = Color.Gainsboro;
+            lblUserEmail.Location = new Point(3, 31);
+            lblUserEmail.Name = "lblUserEmail";
+            lblUserEmail.Size = new Size(106, 31);
+            lblUserEmail.TabIndex = 1;
+            lblUserEmail.Text = "aprendiz@email.com";
+            lblUserEmail.TextAlign = ContentAlignment.MiddleRight;
             // 
             // btnUserOptions
             // 
-            this.btnUserOptions.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnUserOptions.Cursor = System.Windows.Forms.Cursors.No;
-            this.btnUserOptions.FlatAppearance.BorderSize = 0;
-            this.btnUserOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUserOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnUserOptions.Image")));
-            this.btnUserOptions.Location = new System.Drawing.Point(167, 16);
-            this.btnUserOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnUserOptions.Name = "btnUserOptions";
-            this.btnUserOptions.Size = new System.Drawing.Size(30, 26);
-            this.btnUserOptions.TabIndex = 2;
-            this.btnUserOptions.UseVisualStyleBackColor = true;
+            btnUserOptions.Anchor = AnchorStyles.None;
+            btnUserOptions.FlatAppearance.BorderSize = 0;
+            btnUserOptions.FlatStyle = FlatStyle.Flat;
+            btnUserOptions.Image = Properties.Resources.closeSessionIcon;
+            btnUserOptions.Location = new Point(167, 18);
+            btnUserOptions.Margin = new Padding(3, 2, 3, 2);
+            btnUserOptions.Name = "btnUserOptions";
+            btnUserOptions.Size = new Size(30, 29);
+            btnUserOptions.TabIndex = 2;
+            btnUserOptions.UseVisualStyleBackColor = true;
+            btnUserOptions.Click += btnUserOptions_Click;
             // 
             // pnlNavigation
             // 
-            this.pnlNavigation.AutoScroll = true;
-            this.pnlNavigation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
-            this.pnlNavigation.Controls.Add(this.tlpNavigation);
-            this.pnlNavigation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlNavigation.Location = new System.Drawing.Point(0, 62);
-            this.pnlNavigation.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlNavigation.Name = "pnlNavigation";
-            this.pnlNavigation.Size = new System.Drawing.Size(250, 667);
-            this.pnlNavigation.TabIndex = 1;
+            pnlNavigation.AutoScroll = true;
+            pnlNavigation.BackColor = Color.FromArgb(31, 41, 55);
+            pnlNavigation.Controls.Add(tlpNavigation);
+            pnlNavigation.Dock = DockStyle.Fill;
+            pnlNavigation.Location = new Point(0, 70);
+            pnlNavigation.Margin = new Padding(0);
+            pnlNavigation.Name = "pnlNavigation";
+            pnlNavigation.Size = new Size(250, 756);
+            pnlNavigation.TabIndex = 1;
             // 
             // tlpNavigation
             // 
-            this.tlpNavigation.AutoSize = true;
-            this.tlpNavigation.BackColor = System.Drawing.Color.Transparent;
-            this.tlpNavigation.ColumnCount = 1;
-            this.tlpNavigation.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpNavigation.Controls.Add(this.lblMenuExplorarTitle, 0, 0);
-            this.tlpNavigation.Controls.Add(this.btnNavRecetas, 0, 1);
-            this.tlpNavigation.Controls.Add(this.lblMenuPersonalTitle, 0, 2);
-            this.tlpNavigation.Controls.Add(this.btnNavSolicitudes, 0, 3);
-            this.tlpNavigation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tlpNavigation.Location = new System.Drawing.Point(0, 0);
-            this.tlpNavigation.Margin = new System.Windows.Forms.Padding(2);
-            this.tlpNavigation.Name = "tlpNavigation";
-            this.tlpNavigation.RowCount = 4;
-            this.tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpNavigation.Size = new System.Drawing.Size(250, 150);
-            this.tlpNavigation.TabIndex = 2;
+            tlpNavigation.AutoSize = true;
+            tlpNavigation.BackColor = Color.Transparent;
+            tlpNavigation.ColumnCount = 1;
+            tlpNavigation.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpNavigation.Controls.Add(lblMenuExplorarTitle, 0, 0);
+            tlpNavigation.Controls.Add(btnNavRecetas, 0, 1);
+            tlpNavigation.Controls.Add(lblMenuPersonalTitle, 0, 2);
+            tlpNavigation.Controls.Add(btnNavSolicitudes, 0, 3);
+            tlpNavigation.Dock = DockStyle.Top;
+            tlpNavigation.Location = new Point(0, 0);
+            tlpNavigation.Margin = new Padding(2);
+            tlpNavigation.Name = "tlpNavigation";
+            tlpNavigation.RowCount = 4;
+            tlpNavigation.RowStyles.Add(new RowStyle());
+            tlpNavigation.RowStyles.Add(new RowStyle());
+            tlpNavigation.RowStyles.Add(new RowStyle());
+            tlpNavigation.RowStyles.Add(new RowStyle());
+            tlpNavigation.Size = new Size(250, 166);
+            tlpNavigation.TabIndex = 2;
             // 
             // lblMenuExplorarTitle
             // 
-            this.lblMenuExplorarTitle.AutoSize = true;
-            this.lblMenuExplorarTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMenuExplorarTitle.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMenuExplorarTitle.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblMenuExplorarTitle.Location = new System.Drawing.Point(3, 0);
-            this.lblMenuExplorarTitle.Name = "lblMenuExplorarTitle";
-            this.lblMenuExplorarTitle.Padding = new System.Windows.Forms.Padding(10, 17, 0, 4);
-            this.lblMenuExplorarTitle.Size = new System.Drawing.Size(244, 34);
-            this.lblMenuExplorarTitle.TabIndex = 1;
-            this.lblMenuExplorarTitle.Text = "EXPLORAR";
-            this.lblMenuExplorarTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblMenuExplorarTitle.AutoSize = true;
+            lblMenuExplorarTitle.Dock = DockStyle.Fill;
+            lblMenuExplorarTitle.Font = new Font("Segoe UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMenuExplorarTitle.ForeColor = Color.Gainsboro;
+            lblMenuExplorarTitle.Location = new Point(3, 0);
+            lblMenuExplorarTitle.Name = "lblMenuExplorarTitle";
+            lblMenuExplorarTitle.Padding = new Padding(10, 19, 0, 5);
+            lblMenuExplorarTitle.Size = new Size(244, 37);
+            lblMenuExplorarTitle.TabIndex = 1;
+            lblMenuExplorarTitle.Text = "EXPLORAR";
+            lblMenuExplorarTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // btnNavRecetas
             // 
-            this.btnNavRecetas.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNavRecetas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnNavRecetas.FlatAppearance.BorderSize = 0;
-            this.btnNavRecetas.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
-            this.btnNavRecetas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
-            this.btnNavRecetas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNavRecetas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnNavRecetas.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnNavRecetas.Image = global::CookingSharp.WindowsForms.Properties.Resources.recipesIcon;
-            this.btnNavRecetas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNavRecetas.Location = new System.Drawing.Point(3, 36);
-            this.btnNavRecetas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnNavRecetas.Name = "btnNavRecetas";
-            this.btnNavRecetas.Size = new System.Drawing.Size(244, 35);
-            this.btnNavRecetas.TabIndex = 2;
-            this.btnNavRecetas.Text = "    Recetas";
-            this.btnNavRecetas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNavRecetas.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnNavRecetas.UseVisualStyleBackColor = true;
-            this.btnNavRecetas.Click += new System.EventHandler(this.btnNavRecetas_Click);
+            btnNavRecetas.Cursor = Cursors.Hand;
+            btnNavRecetas.Dock = DockStyle.Fill;
+            btnNavRecetas.FlatAppearance.BorderSize = 0;
+            btnNavRecetas.FlatStyle = FlatStyle.Flat;
+            btnNavRecetas.Font = new Font("Segoe UI", 10F);
+            btnNavRecetas.ForeColor = Color.WhiteSmoke;
+            btnNavRecetas.Image = Properties.Resources.recipesIcon;
+            btnNavRecetas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnNavRecetas.Location = new Point(3, 39);
+            btnNavRecetas.Margin = new Padding(3, 2, 3, 2);
+            btnNavRecetas.Name = "btnNavRecetas";
+            btnNavRecetas.Size = new Size(244, 40);
+            btnNavRecetas.TabIndex = 2;
+            btnNavRecetas.Text = "    Recetas";
+            btnNavRecetas.TextAlign = ContentAlignment.MiddleLeft;
+            btnNavRecetas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnNavRecetas.UseVisualStyleBackColor = true;
+            btnNavRecetas.Click += btnNavRecetas_Click;
             // 
             // lblMenuPersonalTitle
             // 
-            this.lblMenuPersonalTitle.AutoSize = true;
-            this.lblMenuPersonalTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMenuPersonalTitle.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMenuPersonalTitle.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblMenuPersonalTitle.Location = new System.Drawing.Point(3, 73);
-            this.lblMenuPersonalTitle.Name = "lblMenuPersonalTitle";
-            this.lblMenuPersonalTitle.Padding = new System.Windows.Forms.Padding(10, 17, 0, 4);
-            this.lblMenuPersonalTitle.Size = new System.Drawing.Size(244, 34);
-            this.lblMenuPersonalTitle.TabIndex = 3;
-            this.lblMenuPersonalTitle.Text = "PERSONAL";
-            this.lblMenuPersonalTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblMenuPersonalTitle.AutoSize = true;
+            lblMenuPersonalTitle.Dock = DockStyle.Fill;
+            lblMenuPersonalTitle.Font = new Font("Segoe UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMenuPersonalTitle.ForeColor = Color.Gainsboro;
+            lblMenuPersonalTitle.Location = new Point(3, 81);
+            lblMenuPersonalTitle.Name = "lblMenuPersonalTitle";
+            lblMenuPersonalTitle.Padding = new Padding(10, 19, 0, 5);
+            lblMenuPersonalTitle.Size = new Size(244, 37);
+            lblMenuPersonalTitle.TabIndex = 3;
+            lblMenuPersonalTitle.Text = "PERSONAL";
+            lblMenuPersonalTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // btnNavSolicitudes
             // 
-            this.btnNavSolicitudes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNavSolicitudes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnNavSolicitudes.FlatAppearance.BorderSize = 0;
-            this.btnNavSolicitudes.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
-            this.btnNavSolicitudes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
-            this.btnNavSolicitudes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNavSolicitudes.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnNavSolicitudes.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnNavSolicitudes.Image = global::CookingSharp.WindowsForms.Properties.Resources.measurementUnitIcon;
-            this.btnNavSolicitudes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNavSolicitudes.Location = new System.Drawing.Point(3, 109);
-            this.btnNavSolicitudes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnNavSolicitudes.Name = "btnNavSolicitudes";
-            this.btnNavSolicitudes.Size = new System.Drawing.Size(244, 39);
-            this.btnNavSolicitudes.TabIndex = 5;
-            this.btnNavSolicitudes.Text = "    Mis Solicitudes";
-            this.btnNavSolicitudes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNavSolicitudes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnNavSolicitudes.UseVisualStyleBackColor = true;
-            this.btnNavSolicitudes.Click += new System.EventHandler(this.btnNavSolicitudes_Click);
+            btnNavSolicitudes.Cursor = Cursors.Hand;
+            btnNavSolicitudes.Dock = DockStyle.Fill;
+            btnNavSolicitudes.FlatAppearance.BorderSize = 0;
+            btnNavSolicitudes.FlatStyle = FlatStyle.Flat;
+            btnNavSolicitudes.Font = new Font("Segoe UI", 10F);
+            btnNavSolicitudes.ForeColor = Color.WhiteSmoke;
+            btnNavSolicitudes.Image = Properties.Resources.measurementUnitIcon;
+            btnNavSolicitudes.ImageAlign = ContentAlignment.MiddleLeft;
+            btnNavSolicitudes.Location = new Point(3, 120);
+            btnNavSolicitudes.Margin = new Padding(3, 2, 3, 2);
+            btnNavSolicitudes.Name = "btnNavSolicitudes";
+            btnNavSolicitudes.Size = new Size(244, 44);
+            btnNavSolicitudes.TabIndex = 5;
+            btnNavSolicitudes.Text = "    Mis Solicitudes";
+            btnNavSolicitudes.TextAlign = ContentAlignment.MiddleLeft;
+            btnNavSolicitudes.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnNavSolicitudes.UseVisualStyleBackColor = true;
+            btnNavSolicitudes.Click += btnNavSolicitudes_Click;
             // 
             // pnlMainContent
             // 
-            this.pnlMainContent.BackColor = System.Drawing.Color.White;
-            this.pnlMainContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMainContent.Location = new System.Drawing.Point(252, 64);
-            this.pnlMainContent.Margin = new System.Windows.Forms.Padding(2);
-            this.pnlMainContent.Name = "pnlMainContent";
-            this.pnlMainContent.Padding = new System.Windows.Forms.Padding(14, 13, 14, 13);
-            this.pnlMainContent.Size = new System.Drawing.Size(1010, 663);
-            this.pnlMainContent.TabIndex = 2;
+            pnlMainContent.BackColor = Color.White;
+            pnlMainContent.Dock = DockStyle.Fill;
+            pnlMainContent.Location = new Point(252, 72);
+            pnlMainContent.Margin = new Padding(2);
+            pnlMainContent.Name = "pnlMainContent";
+            pnlMainContent.Padding = new Padding(14, 15, 14, 15);
+            pnlMainContent.Size = new Size(1010, 752);
+            pnlMainContent.TabIndex = 2;
             // 
             // FrmApprenticeDashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1264, 729);
-            this.Controls.Add(this.tlpMainLayout);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1280, 768);
-            this.Name = "FrmApprenticeDashboard";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cooking # - Panel de Aprendiz";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.tlpMainLayout.ResumeLayout(false);
-            this.pnlHeader.ResumeLayout(false);
-            this.tlpHeaderLayout.ResumeLayout(false);
-            this.tlpHeaderLayout.PerformLayout();
-            this.tlpHeaderLeft.ResumeLayout(false);
-            this.tlpHeaderLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
-            this.tlpHeaderRight.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picUser)).EndInit();
-            this.tlpUserDetails.ResumeLayout(false);
-            this.tlpUserDetails.PerformLayout();
-            this.pnlNavigation.ResumeLayout(false);
-            this.pnlNavigation.PerformLayout();
-            this.tlpNavigation.ResumeLayout(false);
-            this.tlpNavigation.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1264, 826);
+            Controls.Add(tlpMainLayout);
+            MinimumSize = new Size(1280, 865);
+            Name = "FrmApprenticeDashboard";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Cooking # - Panel de Aprendiz";
+            WindowState = FormWindowState.Maximized;
+            tlpMainLayout.ResumeLayout(false);
+            pnlHeader.ResumeLayout(false);
+            tlpHeaderLayout.ResumeLayout(false);
+            tlpHeaderLayout.PerformLayout();
+            tlpHeaderLeft.ResumeLayout(false);
+            tlpHeaderLeft.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            tlpHeaderRight.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picUser).EndInit();
+            tlpUserDetails.ResumeLayout(false);
+            tlpUserDetails.PerformLayout();
+            pnlNavigation.ResumeLayout(false);
+            pnlNavigation.PerformLayout();
+            tlpNavigation.ResumeLayout(false);
+            tlpNavigation.PerformLayout();
+            ResumeLayout(false);
 
         }
 
@@ -418,5 +410,7 @@
         internal System.Windows.Forms.Panel pnlMainContent;
         internal System.Windows.Forms.Label lblMenuPersonalTitle;
         internal System.Windows.Forms.Button btnNavSolicitudes;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripUser;
+        private System.Windows.Forms.ToolStripMenuItem cerraSesiónToolStripMenuItem;
     }
 }

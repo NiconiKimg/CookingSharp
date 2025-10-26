@@ -1,8 +1,3 @@
-/// <summary>
-/// Archivo principal de la aplicación Windows Forms.
-/// Responsable de configurar la inyección de dependencias,
-/// gestionar el flujo de autenticación y lanzar el panel de control correspondiente al rol del usuario.
-/// </summary>
 using CookingSharp.Clients;
 using CookingSharp.WindowsForms.AppealsControl;
 using CookingSharp.WindowsForms.CategoriesControl;
@@ -19,6 +14,10 @@ using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms
 {
+    /// <summary>
+    /// Clase principal de la aplicación. Responsable de la configuración
+    /// y del control del flujo principal (login, dashboards, logout).
+    /// </summary>
     internal static class Program
     {
         /// <summary>
@@ -38,32 +37,32 @@ namespace CookingSharp.WindowsForms
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider();
 
-            // Iniciar el flujo de la aplicación con el formulario de Login
-            using (var loginForm = ServiceProvider.GetRequiredService<FrmLogin>())
+            while (true)
             {
-                if (loginForm.ShowDialog() == DialogResult.OK)
+                SessionManager.Logout();
+
+                using (var loginForm = ServiceProvider.GetRequiredService<FrmLogin>())
                 {
-                    // Si el login es exitoso, determinar qué panel mostrar basado en el rol del usuario
-                    LaunchDashboardBasedOnRole();
-                }
-                else
-                {
-                    // Si el login se cancela o falla, cerrar la aplicación
-                    System.Windows.Forms.Application.Exit();
+                    var loginResult = loginForm.ShowDialog();
+
+                    if (loginResult == DialogResult.OK)
+                    {
+                        LaunchDashboardBasedOnRole();
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Configura el contenedor de inyección de dependencias.
+        /// Configura el contenedor de inyección de dependencias (DI) para la aplicación.
         /// </summary>
         private static void ConfigureServices(IServiceCollection services)
         {
-            // URL base de la API. En un proyecto real, esto debería leerse desde un archivo de configuración.
             const string baseApiAddress = "https://localhost:7111";
-
-            // Usar el método de extensión del proyecto Clients para registrar todos los ApiClients
-            // de forma centralizada y correcta. Esto incluye el AuthenticationHandler.
             services.AddApiClients(baseApiAddress);
 
             services.AddTransient<FrmLogin>();
@@ -77,7 +76,6 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<frmAppeal>();
             services.AddTransient<FrmRecipe>();
 
-
             services.AddTransient<UC_AdminPanel>();
             services.AddTransient<UC_Categories>();
             services.AddTransient<UC_Users>();
@@ -89,7 +87,7 @@ namespace CookingSharp.WindowsForms
         }
 
         /// <summary>
-        /// Lanza el panel de control (Dashboard) apropiado según el rol del usuario autenticado.
+        /// Determina el rol del usuario autenticado y lanza el dashboard correspondiente.
         /// </summary>
         private static void LaunchDashboardBasedOnRole()
         {
@@ -110,8 +108,8 @@ namespace CookingSharp.WindowsForms
                     mainForm = ServiceProvider.GetRequiredService<FrmApprenticeDashboard>();
                     break;
                 default:
-                    MessageBox.Show("Rol de usuario no reconocido. La aplicación se cerrará.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    System.Windows.Forms.Application.Exit();
+                    MessageBox.Show("Rol de usuario no reconocido. Volviendo a la pantalla de inicio.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    SessionManager.Logout();
                     return;
             }
 

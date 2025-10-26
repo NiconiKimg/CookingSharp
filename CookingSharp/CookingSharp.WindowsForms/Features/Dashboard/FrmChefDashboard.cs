@@ -1,5 +1,8 @@
-﻿using CookingSharp.WindowsForms.Features.Chef;
+﻿using CookingSharp.Clients;
+using CookingSharp.WindowsForms.Features.Chef;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.Features.Dashboard
 {
@@ -9,40 +12,17 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         {
             InitializeComponent();
             this.Load += FrmChefDashboard_Load;
+            this.btnUserOptions.Cursor = Cursors.Hand;
         }
 
         private void FrmChefDashboard_Load(object sender, EventArgs e)
         {
-            // Cargar la vista principal por defecto al iniciar
             LoadRecipesView();
 
-            // Personalizar el header con la información del usuario logueado
-            lblUserEmail.Text = Clients.SessionManager.GetUserEmail();
-            lblUserRole.Text = Clients.SessionManager.GetUserRole();
+            lblUserEmail.Text = SessionManager.GetUserEmail();
+            lblUserRole.Text = SessionManager.GetUserRole();
         }
 
-        /// <summary>
-        /// Método genérico para cargar un UserControl en el panel principal.
-        /// </summary>
-        /// <typeparam name="T">El tipo de UserControl a cargar.</typeparam>
-        private void LoadControl<T>() where T : UserControl
-        {
-            var control = Program.ServiceProvider?.GetRequiredService<T>();
-
-            if (control == null)
-            {
-                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}.", "Error de Configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            pnlMainContent.Controls.Clear();
-            control.Dock = DockStyle.Fill;
-            pnlMainContent.Controls.Add(control);
-        }
-
-        /// <summary>
-        /// Carga el UserControl que muestra las recetas del Chef.
-        /// </summary>
         private void LoadRecipesView()
         {
             LoadControl<UC_RecipesChef>();
@@ -55,8 +35,35 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            // El logo también puede servir para volver al inicio
             LoadRecipesView();
+        }
+
+        /// <summary>
+        /// Maneja el evento de clic en el botón de opciones de usuario para iniciar el proceso de cierre de sesión.
+        /// </summary>
+        private void btnUserOptions_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("¿Está seguro de que desea cerrar la sesión?", "Confirmar Cierre de Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirmResult == DialogResult.Yes)
+            {
+                SessionManager.Logout();
+                this.Close();
+            }
+        }
+
+        private void LoadControl<T>() where T : UserControl
+        {
+            var control = Program.ServiceProvider?.GetRequiredService<T>();
+
+            if (control == null)
+            {
+                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}.", "Error de Configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            pnlMainContent.Controls.Clear();
+            control.Dock = DockStyle.Fill;
+            pnlMainContent.Controls.Add(control);
         }
     }
 }
