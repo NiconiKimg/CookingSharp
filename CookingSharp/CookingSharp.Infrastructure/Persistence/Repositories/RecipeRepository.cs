@@ -16,8 +16,9 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
     {
         return await _dbSet
             .Include(r => r.User)
-            .Include(r => r.Steps)
             .Include(r => r.Categories)
+            //.Where(r => r.Status == Published) 
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -28,5 +29,14 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             .Include(r => r.Steps)
             .Include(r => r.Categories)
             .FirstOrDefaultAsync(r => r.Id == id);
+    }
+
+    public async Task<IEnumerable<Recipe>> GetByUserIdWithDetailsAsync(int userId)
+    {
+        return await _dbSet
+            .Include(r => r.User)
+            .Include(r => r.Categories)
+            .Where(r => r.UserId == userId)
+            .ToListAsync();
     }
 }

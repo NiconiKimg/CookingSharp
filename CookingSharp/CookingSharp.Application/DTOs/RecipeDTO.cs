@@ -3,6 +3,20 @@
 namespace CookingSharp.Application.DTOs;
 
 /// <summary>
+/// DTO ligero para mostrar un resumen de la receta en listas. No incluye pasos.
+/// </summary>
+public class RecipeSummaryDTO
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
+    public int AuthorId { get; set; }
+    public string AuthorName { get; set; }
+    public ICollection<CategoryResponseDTO> Categories { get; set; }
+}
+
+/// <summary>
 /// DTO completo para devolver una receta, incluyendo sus pasos y categorías.
 /// </summary>
 public class RecipeResponseDTO

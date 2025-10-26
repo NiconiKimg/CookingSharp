@@ -1,0 +1,183 @@
+﻿@page "/recipes/edit/{RecipeId:int}"
+@using System.ComponentModel.DataAnnotations
+@using WebApp.DTOs
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@attribute [Authorize(Roles = "Chef, Admin")]
+
+@if (_recipeModel == null)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h4" GutterBottom="true">Editar Receta</MudText>
+    <MudText Class="mb-4">Ajusta los detalles de tu creación culinaria.</MudText>
+
+    <EditForm EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <!-- ... (El resto del formulario es idéntico a CreateRecipe.razor) ... -->
+            <MudItem xs="12">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField @bind-Value="_recipeModel.Name" For="@(() => _recipeModel.Name)" Label="Nombre de la Receta" Variant="Variant.Outlined" Immediate="true" />
+                        <MudTextField @bind-Value="_recipeModel.Description" For="@(() => _recipeModel.Description)" Label="Descripción" Variant="Variant.Outlined" Lines="4" Class="mt-4" />
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudCard>
+                    <MudCardHeader><CardHeaderContent><MudText Typo="Typo.h6">Categorías</MudText></CardHeaderContent></MudCardHeader>
+                    <MudCardContent>
+                        <MudPaper Height="200px" Class="overflow-y-auto pa-2">
+                            @foreach (var category in _availableCategories)
+                            {
+                                <MudCheckBox T="bool" Label="@category.Name" Checked="@(_recipeModel.CategoryIds.Contains(category.Id))"
+                                             CheckedChanged="@((bool isChecked) => OnCategoryChecked(category.Id, isChecked))" />
+                            }
+                        </MudPaper>
+                        <ValidationMessage For="@(() => _recipeModel.CategoryIds)" />
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudCard>
+                    <MudCardHeader><CardHeaderContent><MudText Typo="Typo.h6">Pasos</MudText></CardHeaderContent></MudCardHeader>
+                    <MudCardContent>
+                        <div class="d-flex">
+                            <MudTextField @bind-Value="_newStep" Label="Añadir un nuevo paso" Variant="Variant.Outlined" Class="flex-grow-1" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="AddStep" Color="Color.Primary" Class="ml-2 mt-1" />
+                        </div>
+                        <MudPaper Height="135px" Class="overflow-y-auto pa-2 mt-2">
+                            <MudList T="string" Clickable="false">
+                                @foreach (var step in _recipeModel.Steps)
+                                {
+                                    <MudListItem T="string">
+                                        <div class="d-flex align-center">
+                                            <MudText Class="flex-grow-1">@step</MudText>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => RemoveStep(step))" />
+                                        </div>
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        </MudPaper>
+                        <ValidationMessage For="@(() => _recipeModel.Steps)" />
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" Class="d-flex justify-end gap-4 mt-4">
+                <MudButton Variant="Variant.Filled" OnClick="GoBack">Cancelar</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Guardar Cambios</MudButton>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int RecipeId { get; set; }
+
+    private RecipeEditModel? _recipeModel;
+    private EditContext _editContext;
+    private List<CategoryResponseDTO> _availableCategories = new();
+    private string _newStep = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var categoryTask = Http.GetFromJsonAsync<List<CategoryResponseDTO>>("api/categories");
+            var recipeTask = Http.GetFromJsonAsync<RecipeResponseDTO>($"api/recipes/{RecipeId}");
+
+            await Task.WhenAll(categoryTask, recipeTask);
+
+            var recipeData = recipeTask.Result;
+            _availableCategories = categoryTask.Result ?? new();
+
+            if (recipeData != null)
+            {
+                _recipeModel = new RecipeEditModel
+                {
+                    Name = recipeData.Name,
+                    Description = recipeData.Description,
+                    CategoryIds = recipeData.Categories.Select(c => c.Id).ToList(),
+                    Steps = recipeData.Steps.OrderBy(s => s.StepNumber).Select(s => s.Instruction).ToList()
+                };
+                _editContext = new EditContext(_recipeModel);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar la receta: {ex.Message}", Severity.Error);
+        }
+    }
+
+
+    private async Task HandleValidSubmit()
+    {
+        var dto = new RecipeUpdateDTO
+        {
+            Name = _recipeModel.Name,
+            Description = _recipeModel.Description,
+            CategoryIds = _recipeModel.CategoryIds,
+            Steps = _recipeModel.Steps.Select(s => new RecipeStepCreateDTO { Instruction = s }).ToList()
+        };
+
+        try
+        {
+            var response = await Http.PutAsJsonAsync($"api/recipes/{RecipeId}", dto);
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("Receta actualizada con éxito.", Severity.Success);
+                NavigationManager.NavigateTo("/my-recipes");
+            }
+            else
+            {
+                Snackbar.Add("Error al actualizar la receta.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void GoBack() => NavigationManager.NavigateTo("/my-recipes");
+
+    #region Clases de Modelo y Métodos de Ayuda
+    public class RecipeEditModel
+    {
+        [Required] public string Name { get; set; } = "";
+        [Required] public string Description { get; set; } = "";
+        public List<int> CategoryIds { get; set; } = new();
+        public List<string> Steps { get; set; } = new();
+    }
+
+    private void OnCategoryChecked(int categoryId, bool isChecked)
+    {
+        if (isChecked) { if (!_recipeModel.CategoryIds.Contains(categoryId)) _recipeModel.CategoryIds.Add(categoryId); }
+        else { _recipeModel.CategoryIds.Remove(categoryId); }
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.CategoryIds)));
+        StateHasChanged();
+    }
+
+    private void AddStep()
+    {
+        if (!string.IsNullOrWhiteSpace(_newStep))
+        {
+            _recipeModel.Steps.Add(_newStep);
+            _newStep = "";
+            _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.Steps)));
+        }
+    }
+
+    private void RemoveStep(string step)
+    {
+        _recipeModel.Steps.Remove(step);
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.Steps)));
+    }
+    #endregion
+}

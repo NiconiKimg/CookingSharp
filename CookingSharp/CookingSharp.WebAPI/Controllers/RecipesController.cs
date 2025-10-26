@@ -22,7 +22,7 @@ public class RecipesController : BaseApiController
     /// <summary>
     /// Obtiene una lista de todas las recetas (público).
     /// </summary>
-    [AllowAnonymous] // Permite el acceso sin autenticación
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -30,15 +30,36 @@ public class RecipesController : BaseApiController
         return Ok(recipes);
     }
 
+    [AllowAnonymous]
+    [HttpGet("summaries")]
+    public async Task<IActionResult> GetAllSummaries()
+    {
+        var recipeSummaries = await _recipeService.GetAllSummariesAsync();
+        return Ok(recipeSummaries);
+    }
+
+
     /// <summary>
     /// Obtiene una receta específica por su ID (público).
     /// </summary>
     [AllowAnonymous]
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var recipe = await _recipeService.GetByIdAsync(id);
         return Ok(recipe);
+    }
+
+    /// <summary>
+    /// Obtiene todas las recetas creadas por el usuario autenticado.
+    /// </summary>
+    [HttpGet("my-recipes")]
+    [Authorize(Roles = "Chef,Admin")]
+    public async Task<IActionResult> GetMyRecipes()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var recipes = await _recipeService.GetRecipesByUserIdAsync(userId);
+        return Ok(recipes);
     }
 
     #endregion

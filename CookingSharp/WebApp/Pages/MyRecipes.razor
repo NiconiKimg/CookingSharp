@@ -1,0 +1,120 @@
+﻿@page "/my-recipes"
+@using WebApp.DTOs
+@using System.Security.Claims
+@using System.Threading
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@attribute [Authorize(Roles = "Chef, Admin")]
+
+<MudText Typo="Typo.h3" GutterBottom="true">Mis Recetas</MudText>
+<MudText Class="mb-6">Aquí puedes gestionar todas las recetas que has creado.</MudText>
+
+<MudTable T="RecipeResponseDTO"
+          ServerData="ServerReload"
+          Dense="true" Hover="true" @ref="_table" Striped="true">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/recipes/create">
+            Crear Nueva Receta
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="text-align:right">Acciones</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nombre">@context.Name</MudTd>
+        <MudTd DataLabel="Estado">
+            <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small">@context.Status</MudChip>
+        </MudTd>
+        <MudTd DataLabel="Acciones" Style="text-align:right">
+            @if (context.Status == "Draft")
+            {
+                <MudButton OnClick="@(() => PublishRecipe(context))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" Class="ml-2">Publicar</MudButton>
+            }
+            <MudButton OnClick="@(() => EditRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Default" Size="Size.Small" Class="ml-2">Editar</MudButton>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No has creado ninguna receta todavía.</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Cargando tus recetas...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private MudTable<RecipeResponseDTO> _table;
+    private IEnumerable<RecipeResponseDTO> _recipes = new List<RecipeResponseDTO>();
+    private int _totalItems;
+
+    private async Task<TableData<RecipeResponseDTO>> ServerReload(TableState state, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<List<RecipeResponseDTO>>("api/recipes/my-recipes", cancellationToken);
+            _recipes = response ?? new List<RecipeResponseDTO>();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar tus recetas: {ex.Message}", Severity.Error);
+            _recipes = new List<RecipeResponseDTO>();
+        }
+
+        _totalItems = _recipes.Count();
+        return new TableData<RecipeResponseDTO>() { TotalItems = _totalItems, Items = _recipes };
+    }
+
+    private Color GetStatusColor(string status) => status switch
+    {
+        "Published" => Color.Success,
+        "Draft" => Color.Default,
+        "Blocked" => Color.Error,
+        _ => Color.Info
+    };
+
+    private void EditRecipe(int recipeId)
+    {
+        NavigationManager.NavigateTo($"/recipes/edit/{recipeId}");
+    }
+
+    private async Task PublishRecipe(RecipeResponseDTO recipe)
+    {
+        var parameters = new DialogParameters
+        {
+            ["ContentText"] = $"¿Estás seguro de que quieres publicar la receta '{recipe.Name}'? Una vez publicada, será visible para todos los usuarios.",
+            ["ButtonText"] = "Publicar",
+            ["Color"] = Color.Success
+        };
+
+        var dialog = DialogService.Show<MudMessageBox>("Confirmar Publicación", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            var dto = new { Status = "Published" };
+            try
+            {
+                var response = await Http.PatchAsJsonAsync($"api/recipes/{recipe.Id}/status", dto);
+                if (response.IsSuccessStatusCode)
+                {
+                    Snackbar.Add("¡Receta publicada con éxito!", Severity.Success);
+                    await _table.ReloadServerData();
+                }
+                else
+                {
+                    Snackbar.Add("Error al publicar la receta.", Severity.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+            }
+        }
+    }
+}

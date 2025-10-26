@@ -1,0 +1,156 @@
+﻿@page "/recipes"
+@using System.ComponentModel.DataAnnotations
+@using WebApp.DTOs
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudText Typo="Typo.h3" GutterBottom="true">Explorar Recetas</MudText>
+    <MudText Class="mb-6">Encuentra inspiración buscando entre todas las recetas de la comunidad.</MudText>
+
+    @if (_isLoading)
+    {
+        <MudPaper Outlined="true" Class="pa-4 mb-6">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="60px" />
+        </MudPaper>
+    }
+    else
+    {
+        <MudPaper Outlined="true" Class="pa-4 mb-6">
+            <MudGrid Spacing="3">
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Buscar por nombre de receta" Variant="Variant.Outlined" Value="nameFilter" ValueChanged="OnNameFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" DebounceInterval="300" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Buscar por creador" Variant="Variant.Outlined" Value="creatorFilter" ValueChanged="OnCreatorFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" DebounceInterval="300" />
+                </MudItem>
+                <MudItem xs="12" sm="12" md="4">
+                    <MudSelect T="int?" Label="Filtrar por categoría" Variant="Variant.Outlined" Value="selectedCategoryId" ValueChanged="OnCategoryFilterChanged">
+                        <MudSelectItem T="int?" Value="null">Todas las categorías</MudSelectItem>
+                        @if (_allCategories != null && _allCategories.Any())
+                        {
+                            @foreach (var category in _allCategories)
+                            {
+                                <MudSelectItem T="int?" Value="@category.Id">@category.Name</MudSelectItem>
+                            }
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    }
+
+    @if (_isLoading)
+    {
+        <MudGrid Class="mt-6 d-flex justify-center">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </MudGrid>
+    }
+    else if (!_filteredRecipes.Any())
+    {
+        <MudAlert Severity="Severity.Info" Class="mt-6">No se encontraron recetas que coincidan con los filtros aplicados.</MudAlert>
+    }
+    else
+    {
+        <MudGrid Spacing="4">
+            @foreach (var recipe in _filteredRecipes)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <RecipeCard Recipe="recipe" />
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private List<RecipeSummaryDTO>? _allRecipes;
+    private List<RecipeSummaryDTO> _filteredRecipes = new();
+    private List<CategoryResponseDTO>? _allCategories;
+
+    private string nameFilter = "";
+    private string creatorFilter = "";
+    private int? selectedCategoryId = null;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("Página de Recetas: Iniciando la carga de datos...");
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        _isLoading = true;
+        try
+        {
+            Console.WriteLine("Intentando obtener categorías desde 'api/categories'...");
+            _allCategories = await Http.GetFromJsonAsync<List<CategoryResponseDTO>>("api/categories");
+            Console.WriteLine($"Éxito: Se recibieron {_allCategories?.Count ?? 0} categorías.");
+
+            Console.WriteLine("Intentando obtener recetas desde 'api/recipes'...");
+            _allRecipes = await Http.GetFromJsonAsync<List<RecipeSummaryDTO>>("api/recipes/summaries");
+            Console.WriteLine($"Éxito: Se recibieron {_allRecipes?.Count ?? 0} recetas.");
+
+            ApplyFilters();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"ERROR FATAL al cargar datos: {ex.ToString()}");
+            Snackbar.Add($"Error al cargar los datos: {ex.Message}", Severity.Error);
+            _allRecipes = new List<RecipeSummaryDTO>();
+            _allCategories = new List<CategoryResponseDTO>();
+        }
+        finally
+        {
+            _isLoading = false;
+            Console.WriteLine("Carga de datos finalizada.");
+        }
+    }
+
+    private void ApplyFilters()
+    {
+        if (_allRecipes == null)
+        {
+            _filteredRecipes = new List<RecipeSummaryDTO>();
+            return;
+        }
+
+        IEnumerable<RecipeSummaryDTO> recipes = _allRecipes;
+
+        if (!string.IsNullOrWhiteSpace(nameFilter))
+        {
+            recipes = recipes.Where(r => r.Name.Contains(nameFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(creatorFilter))
+        {
+            recipes = recipes.Where(r => r.AuthorName.Contains(creatorFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (selectedCategoryId.HasValue)
+        {
+            recipes = recipes.Where(r => r.Categories.Any(c => c.Id == selectedCategoryId.Value));
+        }
+
+        _filteredRecipes = recipes.ToList();
+    }
+
+    private void OnNameFilterChanged(string value)
+    {
+        nameFilter = value;
+        ApplyFilters();
+    }
+
+    private void OnCreatorFilterChanged(string value)
+    {
+        creatorFilter = value;
+        ApplyFilters();
+    }
+
+    private void OnCategoryFilterChanged(int? value)
+    {
+        selectedCategoryId = value;
+        ApplyFilters();
+    }
+}

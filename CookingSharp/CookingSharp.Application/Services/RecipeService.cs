@@ -4,8 +4,7 @@ using CookingSharp.Application.Contracts;
 using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CookingSharp.Domain.Enums;
 
 namespace CookingSharp.Application.Services;
 
@@ -65,6 +64,19 @@ public class RecipeService : IRecipeService
     }
 
     /// <summary>
+    /// Obtiene una versión reducidad de todas las recetas de forma asíncrona.
+    /// </summary>
+    /// <returns>Una colección de DTOs de receta.</returns>
+    public async Task<IEnumerable<RecipeSummaryDTO>> GetAllSummariesAsync()
+    {
+        var recipes = await _unitOfWork.Recipes.GetAllWithDetailsAsync();
+
+        var publishedRecipes = recipes.Where(r => r.Status == RecipeStatus.Published);
+
+        return _mapper.Map<IEnumerable<RecipeSummaryDTO>>(recipes);
+    }
+
+    /// <summary>
     /// Obtiene una receta por su ID con sus detalles de forma asíncrona.
     /// </summary>
     /// <param name="id">El ID de la receta a buscar.</param>
@@ -74,6 +86,17 @@ public class RecipeService : IRecipeService
     {
         var recipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
         return _mapper.Map<RecipeResponseDTO>(recipe);
+    }
+
+    /// <summary>
+    /// Obtiene una receta por el ID del autor con sus detalles de forma asíncrona.
+    /// </summary>
+    /// <param name="id">El ID de la receta a buscar.</param>
+    /// <returns>El DTO de la receta encontrada.</returns>
+    public async Task<IEnumerable<RecipeSummaryDTO>> GetRecipesByUserIdAsync(int userId)
+    {
+        var recipes = await _unitOfWork.Recipes.GetByUserIdWithDetailsAsync(userId);
+        return _mapper.Map<IEnumerable<RecipeSummaryDTO>>(recipes);
     }
 
     /// <summary>

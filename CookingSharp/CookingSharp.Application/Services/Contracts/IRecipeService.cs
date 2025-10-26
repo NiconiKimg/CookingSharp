@@ -10,7 +10,9 @@ namespace CookingSharp.Application.Services.Contracts;
 public interface IRecipeService
 {
     Task<IEnumerable<RecipeResponseDTO>> GetAllAsync();
-    Task<RecipeResponseDTO?> GetByIdAsync(int id);
+    Task<IEnumerable<RecipeSummaryDTO>> GetAllSummariesAsync();
+    Task<IEnumerable<RecipeSummaryDTO>> GetRecipesByUserIdAsync(int userId);
+    Task<RecipeResponseDTO> GetByIdAsync(int id);
 
     /// <summary>
     /// Crea una nueva receta.

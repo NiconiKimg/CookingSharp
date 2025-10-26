@@ -29,13 +29,13 @@
 </MudContainer>
 
 @code {
-    private RecipeResponseDTO[]? recipes;
+    private RecipeSummaryDTO[]? recipes;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            recipes = await Http.GetFromJsonAsync<RecipeResponseDTO[]>("api/recipes");
+            recipes = await Http.GetFromJsonAsync<RecipeSummaryDTO[]>("api/recipes");
         }
         catch (Exception ex)
         {

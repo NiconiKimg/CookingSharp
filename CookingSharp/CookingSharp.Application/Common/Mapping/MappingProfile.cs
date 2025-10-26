@@ -16,6 +16,10 @@ public class MappingProfile : Profile
         CreateMap<CategoryCreateUpdateDTO, Category>();
 
         // Recipe Mappings
+        CreateMap<Recipe, RecipeSummaryDTO>()
+            .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
+            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id));
+
         CreateMap<Recipe, RecipeResponseDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
             .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id));
