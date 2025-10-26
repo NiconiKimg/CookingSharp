@@ -12,7 +12,6 @@ namespace WebApp.Auth
         private readonly ILocalStorageService _localStorage;
         private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
 
-        // Inyectar el nuevo servicio
         public CustomAuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
@@ -63,22 +62,29 @@ namespace WebApp.Auth
             var claims = new List<Claim>();
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonBytes);
 
             if (keyValuePairs != null)
             {
-                if (keyValuePairs.TryGetValue("role", out var roles))
+                if (keyValuePairs.TryGetValue("role", out var rolesElement)
+                    || keyValuePairs.TryGetValue("roles", out rolesElement)
+                    || keyValuePairs.TryGetValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", out rolesElement))
                 {
-                    if (roles is JsonElement rolesElement && rolesElement.ValueKind == JsonValueKind.Array)
+                    if (rolesElement.ValueKind == JsonValueKind.Array)
                     {
                         foreach (var role in rolesElement.EnumerateArray())
                         {
-                            claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+                            var roleValue = role.ValueKind == JsonValueKind.String ? role.GetString() : role.ToString();
+                            if (!string.IsNullOrEmpty(roleValue))
+                                claims.Add(new Claim(ClaimTypes.Role, roleValue));
                         }
                     }
-                    else
+                    else if (rolesElement.ValueKind == JsonValueKind.String)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
+                        var roleValue = rolesElement.GetString();
+                        if (!string.IsNullOrEmpty(roleValue))
+                            claims.Add(new Claim(ClaimTypes.Role, roleValue));
                     }
                 }
 
@@ -93,7 +99,9 @@ namespace WebApp.Auth
                 {
                     if (claimMappings.ContainsKey(kvp.Key))
                     {
-                        claims.Add(new Claim(claimMappings[kvp.Key], kvp.Value.ToString()));
+                        string value = kvp.Value.ValueKind == JsonValueKind.String ? kvp.Value.GetString() : kvp.Value.ToString();
+                        if (!string.IsNullOrEmpty(value))
+                            claims.Add(new Claim(claimMappings[kvp.Key], value));
                     }
                 }
             }
