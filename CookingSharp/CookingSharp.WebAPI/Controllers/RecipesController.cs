@@ -62,6 +62,18 @@ public class RecipesController : BaseApiController
         return Ok(recipes);
     }
 
+    /// <summary>
+    /// Obtiene el número total de recetas en el sistema.
+    /// </summary>
+    [HttpGet("count")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(int), 200)]
+    public async Task<IActionResult> GetCount()
+    {
+        var count = await _recipeService.GetTotalCountAsync();
+        return Ok(count);
+    }
+
     #endregion
 
     #region --- POST Endpoints ---

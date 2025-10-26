@@ -5,50 +5,63 @@
 @inject ISnackbar Snackbar
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    
     <MudText Typo="Typo.h3" GutterBottom="true">Explorar Recetas</MudText>
     <MudText Class="mb-6">Encuentra inspiración buscando entre todas las recetas de la comunidad.</MudText>
 
-    @if (_isLoading)
-    {
-        <MudPaper Outlined="true" Class="pa-4 mb-6">
-            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="60px" />
-        </MudPaper>
-    }
-    else
-    {
-        <MudPaper Outlined="true" Class="pa-4 mb-6">
-            <MudGrid Spacing="3">
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Buscar por nombre de receta" Variant="Variant.Outlined" Value="nameFilter" ValueChanged="OnNameFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" DebounceInterval="300" />
-                </MudItem>
-                <MudItem xs="12" sm="6" md="4">
-                    <MudTextField T="string" Label="Buscar por creador" Variant="Variant.Outlined" Value="creatorFilter" ValueChanged="OnCreatorFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" DebounceInterval="300" />
-                </MudItem>
-                <MudItem xs="12" sm="12" md="4">
-                    <MudSelect T="int?" Label="Filtrar por categoría" Variant="Variant.Outlined" Value="selectedCategoryId" ValueChanged="OnCategoryFilterChanged">
-                        <MudSelectItem T="int?" Value="null">Todas las categorías</MudSelectItem>
-                        @if (_allCategories != null && _allCategories.Any())
-                        {
-                            @foreach (var category in _allCategories)
+    <MudCard Elevation="3" Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <div class="d-flex align-center gap-2">
+                    <MudIcon Icon="@Icons.Material.Filled.FilterList" Color="Color.Primary" />
+                    <MudText Typo="Typo.h6">Filtros de Búsqueda</MudText>
+                </div>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            @if (_isLoading)
+            {
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="60px" />
+            }
+            else
+            {
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudTextField T="string" Label="Buscar por nombre de receta" Variant="Variant.Outlined" Value="nameFilter" ValueChanged="OnNameFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" DebounceInterval="300" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudTextField T="string" Label="Buscar por creador" Variant="Variant.Outlined" Value="creatorFilter" ValueChanged="OnCreatorFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" DebounceInterval="300" />
+                    </MudItem>
+                    <MudItem xs="12" sm="12" md="4">
+                        <MudSelect T="int?" Label="Filtrar por categoría" Variant="Variant.Outlined" Value="selectedCategoryId" ValueChanged="OnCategoryFilterChanged">
+                            <MudSelectItem T="int?" Value="null">Todas las categorías</MudSelectItem>
+                            @if (_allCategories != null && _allCategories.Any())
                             {
-                                <MudSelectItem T="int?" Value="@category.Id">@category.Name</MudSelectItem>
+                                @foreach (var category in _allCategories)
+                                {
+                                    <MudSelectItem T="int?" Value="@category.Id">@category.Name</MudSelectItem>
+                                }
                             }
-                        }
-                    </MudSelect>
-                </MudItem>
-            </MudGrid>
-        </MudPaper>
-    }
+                        </MudSelect>
+                    </MudItem>
+                </MudGrid>
+            }
+        </MudCardContent>
+    </MudCard>
+
+    <MudDivider Class="my-6" />
 
     @if (_isLoading)
     {
-        <MudGrid Class="mt-6 d-flex justify-center">
-            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-        </MudGrid>
+        <div class="d-flex justify-center mt-6">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        </div>
     }
     else if (!_filteredRecipes.Any())
     {
-        <MudAlert Severity="Severity.Info" Class="mt-6">No se encontraron recetas que coincidan con los filtros aplicados.</MudAlert>
+        <MudAlert Severity="Severity.Info" Class="mt-6" Icon="@Icons.Material.Filled.Info">
+            No se encontraron recetas que coincidan con los filtros aplicados.
+        </MudAlert>
     }
     else
     {
@@ -75,7 +88,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("Página de Recetas: Iniciando la carga de datos...");
         await LoadData();
     }
 
@@ -84,19 +96,12 @@
         _isLoading = true;
         try
         {
-            Console.WriteLine("Intentando obtener categorías desde 'api/categories'...");
             _allCategories = await Http.GetFromJsonAsync<List<CategoryResponseDTO>>("api/categories");
-            Console.WriteLine($"Éxito: Se recibieron {_allCategories?.Count ?? 0} categorías.");
-
-            Console.WriteLine("Intentando obtener recetas desde 'api/recipes'...");
             _allRecipes = await Http.GetFromJsonAsync<List<RecipeSummaryDTO>>("api/recipes/summaries");
-            Console.WriteLine($"Éxito: Se recibieron {_allRecipes?.Count ?? 0} recetas.");
-
             ApplyFilters();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"ERROR FATAL al cargar datos: {ex.ToString()}");
             Snackbar.Add($"Error al cargar los datos: {ex.Message}", Severity.Error);
             _allRecipes = new List<RecipeSummaryDTO>();
             _allCategories = new List<CategoryResponseDTO>();
@@ -104,7 +109,6 @@
         finally
         {
             _isLoading = false;
-            Console.WriteLine("Carga de datos finalizada.");
         }
     }
 

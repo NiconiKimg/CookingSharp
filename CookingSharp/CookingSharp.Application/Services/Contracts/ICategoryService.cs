@@ -14,4 +14,10 @@ public interface ICategoryService
     Task<CategoryResponseDTO> CreateAsync(CategoryCreateUpdateDTO categoryCreateUpdateDto);
     Task UpdateAsync(int id, CategoryCreateUpdateDTO categoryCreateUpdateDto);
     Task DeleteAsync(int id);
+
+    /// <summary>
+    /// Obtiene el número total de categorías.
+    /// </summary>
+    /// <returns>El conteo total de categorías.</returns>
+    Task<int> GetTotalCountAsync();
 }

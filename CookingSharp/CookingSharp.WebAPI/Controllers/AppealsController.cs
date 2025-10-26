@@ -69,4 +69,16 @@ public class AppealsController : BaseApiController
     }
 
     #endregion
+
+    /// <summary>
+    /// Obtiene el número de solicitudes pendientes de revisión (solo para Admins).
+    /// </summary>
+    [HttpGet("pending/count")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(int), 200)]
+    public async Task<IActionResult> GetPendingCount()
+    {
+        var count = await _appealService.GetPendingCountAsync();
+        return Ok(count);
+    }
 }

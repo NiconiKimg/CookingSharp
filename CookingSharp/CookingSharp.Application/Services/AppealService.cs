@@ -118,5 +118,14 @@ namespace CookingSharp.Application.Services
             var appeal = await _unitOfWork.Appeals.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Appeal), id);
             return _mapper.Map<AppealResponseDTO>(appeal);
         }
+
+        /// <summary>
+        /// Obtiene el número de solicitudes que están actualmente pendientes de revisión.
+        /// </summary>
+        /// <returns>El número total de solicitudes pendientes.</returns>
+        public async Task<int> GetPendingCountAsync()
+        {
+            return await _unitOfWork.Appeals.CountPendingAsync();
+        }
     }
 }
