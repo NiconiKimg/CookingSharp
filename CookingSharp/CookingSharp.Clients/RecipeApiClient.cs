@@ -49,4 +49,19 @@ public class RecipeApiClient
         var response = await _httpClient.DeleteAsync($"{Endpoint}/{id}");
         return response.IsSuccessStatusCode;
     }
+
+    /// <summary>
+    /// Obtiene el número total de recetas.
+    /// </summary>
+    public async Task<int> GetCountAsync()
+    {
+        try
+        {
+            return await _httpClient.GetFromJsonAsync<int>($"{Endpoint}/count");
+        }
+        catch
+        {
+            return 0;
+        }
+    }
 }

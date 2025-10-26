@@ -43,4 +43,16 @@ public class CategoryApiClient
         var response = await _httpClient.DeleteAsync($"{Endpoint}/{id}");
         return response.IsSuccessStatusCode;
     }
+
+    public async Task<int> GetCountAsync()
+    {
+        try
+        {
+            return await _httpClient.GetFromJsonAsync<int>($"{Endpoint}/count");
+        }
+        catch
+        {
+            return 0;
+        }
+    }
 }

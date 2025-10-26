@@ -38,4 +38,19 @@ public class AppealApiClient
         var response = await _httpClient.PostAsJsonAsync(Endpoint, dto);
         return response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<AppealResponseDTO>() : null;
     }
+
+    /// <summary>
+    /// Obtiene el número de solicitudes pendientes de revisión.
+    /// </summary>
+    public async Task<int> GetPendingCountAsync()
+    {
+        try
+        {
+            return await _httpClient.GetFromJsonAsync<int>($"{Endpoint}/pending/count");
+        }
+        catch
+        {
+            return 0;
+        }
+    }
 }

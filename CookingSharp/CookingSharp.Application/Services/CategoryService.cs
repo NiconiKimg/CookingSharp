@@ -99,4 +99,13 @@ public class CategoryService : ICategoryService
         _unitOfWork.Categories.Delete(category);
         await _unitOfWork.CompleteAsync();
     }
+
+    /// <summary>
+    /// Obtiene el número total de categorías de forma asíncrona.
+    /// </summary>
+    /// <returns>El número total de categorías.</returns>
+    public async Task<int> GetTotalCountAsync()
+    {
+        return await _unitOfWork.Categories.CountAsync();
+    }
 }

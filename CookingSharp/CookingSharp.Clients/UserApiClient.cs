@@ -19,10 +19,7 @@ namespace CookingSharp.Clients
 
         /// <summary>
         /// Crea un nuevo usuario llamando al endpoint de registro.
-        /// Este método es utilizado por los administradores para crear nuevas cuentas.
         /// </summary>
-        /// <param name="dto">El DTO con la información del nuevo usuario.</param>
-        /// <returns>El DTO del usuario creado si la operación es exitosa; de lo contrario, null.</returns>
         public async Task<UserResponseDTO?> CreateAsync(UserCreateDTO dto)
         {
             var response = await _httpClient.PostAsJsonAsync($"{AuthEndpoint}/register", dto);
@@ -31,22 +28,50 @@ namespace CookingSharp.Clients
                 : null;
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los usuarios.
+        /// </summary>
         public async Task<IEnumerable<UserResponseDTO>?> GetAllAsync()
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<UserResponseDTO>>(UserEndpoint);
         }
 
+        /// <summary>
+        /// Obtiene un usuario por su ID.
+        /// </summary>
         public async Task<UserResponseDTO?> GetByIdAsync(int id)
         {
             return await _httpClient.GetFromJsonAsync<UserResponseDTO>($"{UserEndpoint}/{id}");
         }
 
+        /// <summary>
+        /// Obtiene el número total de usuarios registrados.
+        /// </summary>
+        public async Task<int> GetCountAsync()
+        {
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<int>($"{UserEndpoint}/count");
+            }
+            catch
+            {
+                // En caso de error (ej. API no disponible), devuelve 0 para no romper la interfaz.
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Actualiza el perfil de un usuario.
+        /// </summary>
         public async Task<bool> UpdateAsync(int id, UserUpdateDTO dto)
         {
             var response = await _httpClient.PutAsJsonAsync($"{UserEndpoint}/{id}", dto);
             return response.IsSuccessStatusCode;
         }
 
+        /// <summary>
+        /// Elimina un usuario.
+        /// </summary>
         public async Task<bool> DeleteAsync(int id)
         {
             var response = await _httpClient.DeleteAsync($"{UserEndpoint}/{id}");

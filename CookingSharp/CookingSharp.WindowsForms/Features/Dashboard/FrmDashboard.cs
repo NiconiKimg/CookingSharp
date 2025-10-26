@@ -33,6 +33,8 @@ namespace CookingSharp.WindowsForms
             LoadCategoriesControl();
         }
 
+
+
         private void btnNavUsuarios_Click(object sender, EventArgs e)
         {
             LoadUsersControl();
@@ -48,9 +50,6 @@ namespace CookingSharp.WindowsForms
             LoadRecipesControl();
         }
 
-        /// <summary>
-        /// Maneja el evento de clic en el botón de opciones de usuario para iniciar el proceso de cierre de sesión.
-        /// </summary>
         private void btnUserOptions_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("¿Está seguro de que desea cerrar la sesión?", "Confirmar Cierre de Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -60,6 +59,14 @@ namespace CookingSharp.WindowsForms
                 SessionManager.Logout();
                 this.Close();
             }
+        }
+
+        /// <summary>
+        /// Permite que los User Controls hijos soliciten la navegación a la sección de Solicitudes.
+        /// </summary>
+        public void NavigateToAppeals()
+        {
+            LoadAppealsControl();
         }
 
         #region Métodos de Ayuda para Cargar Controles

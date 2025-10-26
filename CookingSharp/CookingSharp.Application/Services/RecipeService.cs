@@ -139,4 +139,14 @@ public class RecipeService : IRecipeService
         _unitOfWork.Recipes.Delete(recipe);
         await _unitOfWork.CompleteAsync();
     }
+
+    /// <summary>
+    /// Obtiene el número total de recetas de forma asíncrona.
+    /// </summary>
+    /// <returns>El número total de recetas.</returns>
+    public async Task<int> GetTotalCountAsync()
+    {
+        return await _unitOfWork.Recipes.CountAsync();
+    }
+
 }

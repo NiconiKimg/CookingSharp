@@ -39,6 +39,18 @@ public class CategoriesController : BaseApiController
         return Ok(category);
     }
 
+    /// <summary>
+    /// Obtiene el número total de categorías.
+    /// </summary>
+    [HttpGet("count")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(int), 200)]
+    public async Task<IActionResult> GetCount()
+    {
+        var count = await _categoryService.GetTotalCountAsync();
+        return Ok(count);
+    }
+
     #endregion
 
     #region --- POST, PUT, DELETE Endpoints (Admin Only) ---

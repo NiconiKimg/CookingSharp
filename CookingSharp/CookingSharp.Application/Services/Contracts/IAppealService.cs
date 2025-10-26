@@ -35,4 +35,10 @@ public interface IAppealService
     /// <param name="id">El ID de la solicitud a procesar.</param>
     /// <param name="appealUpdateDto">El DTO con el nuevo estado.</param>
     Task ProcessAppealAsync(int id, AppealUpdateDTO appealUpdateDto);
+
+    /// <summary>
+    /// Obtiene el número de solicitudes pendientes de revisión.
+    /// </summary>
+    /// <returns>El conteo de solicitudes pendientes.</returns>
+    Task<int> GetPendingCountAsync();
 }
