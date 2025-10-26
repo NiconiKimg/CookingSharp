@@ -18,13 +18,14 @@ public class CategoriesController : BaseApiController
     #region --- GET Endpoints ---
 
     /// <summary>
-    /// Obtiene una lista de todas las categorías (público).
+    /// Obtiene una lista de todas las categorías, opcionalmente filtrada por nombre (público).
     /// </summary>
+    /// <param name="search">Término de búsqueda para filtrar por nombre.</param>
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? search = null)
     {
-        var categories = await _categoryService.GetAllAsync();
+        var categories = await _categoryService.GetAllAsync(search);
         return Ok(categories);
     }
 
