@@ -1,7 +1,10 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
-using Microsoft.Extensions.DependencyInjection;
-using System.Data;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.RecipesControl
 {
@@ -18,7 +21,9 @@ namespace CookingSharp.WindowsForms.RecipesControl
 
         private async void UCRecipes_Load(object sender, EventArgs e)
         {
+            ConfigureGridView();
             await LoadRecipes();
+            DisplayRecipeDetails(null);
         }
 
         private async Task LoadRecipes()
@@ -27,7 +32,7 @@ namespace CookingSharp.WindowsForms.RecipesControl
             {
                 var recipes = await _apiClient.GetAllAsync();
                 dgvRecipes.DataSource = recipes?.ToList();
-                ConfigureGridView();
+                UpdateButtonsState();
             }
             catch (Exception ex)
             {
@@ -37,38 +42,81 @@ namespace CookingSharp.WindowsForms.RecipesControl
 
         private void ConfigureGridView()
         {
-            if (dgvRecipes.Columns.Count == 0) return;
+            dgvRecipes.AutoGenerateColumns = false;
+            dgvRecipes.Columns.Clear();
 
-            if (dgvRecipes.Columns["Id"] != null)
-                dgvRecipes.Columns["Id"].Visible = false;
+            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "NameColumn",
+                DataPropertyName = "Name",
+                HeaderText = "Nombre",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 40,
+                MinimumWidth = 200
+            });
 
-            if (dgvRecipes.Columns["Content"] != null)
-                dgvRecipes.Columns["Content"].Visible = false;
+            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "AuthorNameColumn",
+                DataPropertyName = "AuthorName",
+                HeaderText = "Autor",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 150
+            });
 
-            if (dgvRecipes.Columns["Categories"] != null)
-                dgvRecipes.Columns["Categories"].Visible = false;
+            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "StatusColumn",
+                DataPropertyName = "Status",
+                HeaderText = "Estado",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 120
+            });
 
-            if (dgvRecipes.Columns["Description"] != null)
-                dgvRecipes.Columns["Description"].HeaderText = "Descripción";
-
-            if (dgvRecipes.Columns["AuthorName"] != null)
-                dgvRecipes.Columns["AuthorName"].HeaderText = "Autor";
-
-            if (dgvRecipes.Columns["Status"] != null)
-                dgvRecipes.Columns["Status"].HeaderText = "Estado";
-
-            dgvRecipes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvRecipes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRecipes.MultiSelect = false;
             dgvRecipes.ReadOnly = true;
             dgvRecipes.AllowUserToAddRows = false;
+            dgvRecipes.RowHeadersVisible = false;
+            dgvRecipes.BackgroundColor = Color.White;
+            dgvRecipes.BorderStyle = BorderStyle.None;
 
-            dgvRecipes.EnableHeadersVisualStyles = false;
             dgvRecipes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
-            dgvRecipes.ColumnHeadersDefaultCellStyle.ForeColor = Color.WhiteSmoke;
+            dgvRecipes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvRecipes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvRecipes.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvRecipes.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvRecipes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvRecipes.EnableHeadersVisualStyles = false;
+            dgvRecipes.ColumnHeadersHeight = 40;
+
+            dgvRecipes.DefaultCellStyle.BackColor = Color.White;
+            dgvRecipes.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
+            dgvRecipes.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvRecipes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 229, 255);
+            dgvRecipes.DefaultCellStyle.SelectionForeColor = Color.FromArgb(21, 21, 21);
+            dgvRecipes.DefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvRecipes.RowTemplate.Height = 38;
+            dgvRecipes.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
         }
 
-        #region Botones de Estado (Block/Unblock)
+        private void DisplayRecipeDetails(RecipeResponseDTO? recipe)
+        {
+            if (recipe == null)
+            {
+                lblDetailName.Text = "Seleccione una receta";
+                lblDetailDescription.Text = "Los detalles de la receta seleccionada se mostrarán aquí.";
+                lstDetailCategories.DataSource = null;
+                lstDetailSteps.DataSource = null;
+            }
+            else
+            {
+                lblDetailName.Text = recipe.Name;
+                lblDetailDescription.Text = recipe.Description;
+                lstDetailCategories.DataSource = recipe.Categories.Select(c => c.Name).ToList();
+                lstDetailSteps.DataSource = recipe.Steps.OrderBy(s => s.StepNumber).Select(s => $"{s.StepNumber}. {s.Instruction}").ToList();
+            }
+        }
 
         private async void btnBlockRecipe_Click(object sender, EventArgs e)
         {
@@ -77,34 +125,28 @@ namespace CookingSharp.WindowsForms.RecipesControl
 
         private async void btnUnblockRecipe_Click(object sender, EventArgs e)
         {
-            await ProcessRecipeStatusChange("Draft");
+            await ProcessRecipeStatusChange("Published");
         }
 
         private async Task ProcessRecipeStatusChange(string newStatus)
         {
             var selectedRecipe = GetSelectedRecipe();
-            if (selectedRecipe is null)
-            {
-                MessageBox.Show("Por favor, seleccione una receta.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (selectedRecipe.Status.Equals(newStatus, StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show($"La receta ya se encuentra en estado '{newStatus}'.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            if (selectedRecipe is null) return;
 
             string action = newStatus == "Blocked" ? "bloquear" : "desbloquear";
-            var confirmResult = MessageBox.Show($"¿Está seguro de que desea {action} esta receta?", $"Confirmar Acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (selectedRecipe.Status.Equals(newStatus, StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show($"La receta ya se encuentra en estado '{newStatus}'.", "Acción no requerida", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var confirmResult = MessageBox.Show($"¿Está seguro de que desea {action} esta receta?", "Confirmar Acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirmResult == DialogResult.Yes)
             {
                 try
                 {
-
                     var updateDto = new RecipeStatusUpdateDTO { Status = newStatus };
-
                     bool success = await _apiClient.UpdateStatusAsync(selectedRecipe.Id, updateDto);
                     if (success)
                     {
@@ -112,8 +154,7 @@ namespace CookingSharp.WindowsForms.RecipesControl
                     }
                     else
                     {
-                        MessageBox.Show($"No se pudo {action} la receta. Es posible que los datos enviados no sean válidos.", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                        MessageBox.Show($"No se pudo {action} la receta.", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -123,8 +164,6 @@ namespace CookingSharp.WindowsForms.RecipesControl
             }
         }
 
-        #endregion
-
         private RecipeResponseDTO? GetSelectedRecipe()
         {
             if (dgvRecipes.CurrentRow != null && dgvRecipes.CurrentRow.DataBoundItem is RecipeResponseDTO recipe)
@@ -132,6 +171,20 @@ namespace CookingSharp.WindowsForms.RecipesControl
                 return recipe;
             }
             return null;
+        }
+
+        private void dgvRecipes_SelectionChanged(object sender, EventArgs e)
+        {
+            var selectedRecipe = GetSelectedRecipe();
+            DisplayRecipeDetails(selectedRecipe);
+            UpdateButtonsState();
+        }
+
+        private void UpdateButtonsState()
+        {
+            bool hasSelection = dgvRecipes.SelectedRows.Count > 0;
+            btnBlockRecipe.Enabled = hasSelection;
+            btnUnblockRecipe.Enabled = hasSelection;
         }
     }
 }
