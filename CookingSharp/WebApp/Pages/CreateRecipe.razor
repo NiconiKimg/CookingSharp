@@ -130,9 +130,9 @@
             _recipeModel.CategoryIds.Remove(categoryId);
         }
 
-        var fieldIdentifier = new FieldIdentifier(_recipeModel, nameof(_recipeModel.CategoryIds));
-        _editContext.NotifyFieldChanged(fieldIdentifier);
-        _editContext.Validate();
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.CategoryIds)));
+
+        StateHasChanged();
     }
 
     private void AddStep()
@@ -153,6 +153,18 @@
 
     private async Task HandleValidSubmit()
     {
+        if (_recipeModel.CategoryIds.Count == 0)
+        {
+            Snackbar.Add("Debes seleccionar al menos una categoría.", Severity.Warning);
+            return;
+        }
+
+        if (_recipeModel.Steps.Count == 0)
+        {
+            Snackbar.Add("La receta debe tener al menos un paso.", Severity.Warning);
+            return;
+        }
+
         var dto = new RecipeCreateDTO
         {
             Name = _recipeModel.Name,
@@ -197,10 +209,7 @@
         [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres.")]
         public string Description { get; set; } = "";
 
-        [MinLength(1, ErrorMessage = "Debes seleccionar al menos una categoría.")]
         public List<int> CategoryIds { get; set; } = new();
-
-        [MinLength(1, ErrorMessage = "La receta debe tener al menos un paso.")]
         public List<string> Steps { get; set; } = new();
     }
 }

@@ -10,12 +10,14 @@ namespace WebApp.Auth
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
-        private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+        private readonly UserStateService _userStateService;
+        private readonly ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
 
-        public CustomAuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+        public CustomAuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, UserStateService userStateService)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
+            _userStateService = userStateService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -24,14 +26,19 @@ namespace WebApp.Auth
 
             if (string.IsNullOrWhiteSpace(token))
             {
+                _userStateService.SetUser(_anonymous);
                 return new AuthenticationState(_anonymous);
             }
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             var claims = ParseClaimsFromJwt(token);
-            var identity = new ClaimsIdentity(claims, "jwt");
+
+            var identity = new ClaimsIdentity(claims, "jwt", ClaimTypes.Name, ClaimTypes.Role);
+
             var user = new ClaimsPrincipal(identity);
+
+            _userStateService.SetUser(user);
 
             return new AuthenticationState(user);
         }
@@ -39,12 +46,16 @@ namespace WebApp.Auth
         public async Task MarkUserAsAuthenticated(string token)
         {
             var claims = ParseClaimsFromJwt(token);
-            var identity = new ClaimsIdentity(claims, "jwt");
+
+            var identity = new ClaimsIdentity(claims, "jwt", ClaimTypes.Name, ClaimTypes.Role);
+
             var user = new ClaimsPrincipal(identity);
 
             await _localStorage.SetItemAsync("authToken", token);
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
+            _userStateService.SetUser(user);
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
@@ -52,8 +63,8 @@ namespace WebApp.Auth
         public async Task MarkUserAsLoggedOut()
         {
             await _localStorage.RemoveItemAsync("authToken");
-
             _httpClient.DefaultRequestHeaders.Authorization = null;
+            _userStateService.SetUser(_anonymous);
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
         }
 
@@ -62,47 +73,42 @@ namespace WebApp.Auth
             var claims = new List<Claim>();
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonBytes);
 
             if (keyValuePairs != null)
             {
-                if (keyValuePairs.TryGetValue("role", out var rolesElement)
-                    || keyValuePairs.TryGetValue("roles", out rolesElement)
-                    || keyValuePairs.TryGetValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", out rolesElement))
+                if (keyValuePairs.TryGetValue(ClaimTypes.Role, out var roleElement) ||
+                    keyValuePairs.TryGetValue("role", out roleElement))
                 {
-                    if (rolesElement.ValueKind == JsonValueKind.Array)
+                    if (roleElement.ValueKind == JsonValueKind.String)
                     {
-                        foreach (var role in rolesElement.EnumerateArray())
-                        {
-                            var roleValue = role.ValueKind == JsonValueKind.String ? role.GetString() : role.ToString();
-                            if (!string.IsNullOrEmpty(roleValue))
-                                claims.Add(new Claim(ClaimTypes.Role, roleValue));
-                        }
+                        claims.Add(new Claim(ClaimTypes.Role, roleElement.GetString() ?? ""));
                     }
-                    else if (rolesElement.ValueKind == JsonValueKind.String)
+                    else if (roleElement.ValueKind == JsonValueKind.Array)
                     {
-                        var roleValue = rolesElement.GetString();
-                        if (!string.IsNullOrEmpty(roleValue))
-                            claims.Add(new Claim(ClaimTypes.Role, roleValue));
+                        foreach (var role in roleElement.EnumerateArray())
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, role.GetString() ?? ""));
+                        }
                     }
                 }
 
-                var claimMappings = new Dictionary<string, string>
+                if (keyValuePairs.TryGetValue(ClaimTypes.NameIdentifier, out var subElement) ||
+                    keyValuePairs.TryGetValue("sub", out subElement))
                 {
-                    { "sub", ClaimTypes.NameIdentifier },
-                    { "email", ClaimTypes.Email },
-                    { "unique_name", ClaimTypes.Name }
-                };
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, subElement.GetString() ?? ""));
+                }
 
-                foreach (var kvp in keyValuePairs)
+                if (keyValuePairs.TryGetValue(ClaimTypes.Email, out var emailElement) ||
+                    keyValuePairs.TryGetValue("email", out emailElement))
                 {
-                    if (claimMappings.ContainsKey(kvp.Key))
-                    {
-                        string value = kvp.Value.ValueKind == JsonValueKind.String ? kvp.Value.GetString() : kvp.Value.ToString();
-                        if (!string.IsNullOrEmpty(value))
-                            claims.Add(new Claim(claimMappings[kvp.Key], value));
-                    }
+                    claims.Add(new Claim(ClaimTypes.Email, emailElement.GetString() ?? ""));
+                }
+
+                if (keyValuePairs.TryGetValue(ClaimTypes.Name, out var nameElement) ||
+                    keyValuePairs.TryGetValue("unique_name", out nameElement))
+                {
+                    claims.Add(new Claim(ClaimTypes.Name, nameElement.GetString() ?? ""));
                 }
             }
             return claims;
