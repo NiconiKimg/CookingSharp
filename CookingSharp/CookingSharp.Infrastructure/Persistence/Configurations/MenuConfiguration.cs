@@ -20,15 +20,18 @@ public class MenuConfiguration : IEntityTypeConfiguration<Menu>
             .IsRequired()
             .HasMaxLength(500);
 
-        // Relación Uno-a-Muchos: Un Usuario tiene muchos Menús
         builder.HasOne(m => m.User)
             .WithMany(u => u.Menus)
             .HasForeignKey(m => m.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Relación Muchos-a-Muchos: Un Menú tiene muchas Recetas
         builder.HasMany(m => m.Recipes)
             .WithMany(r => r.Menus)
-            .UsingEntity(j => j.ToTable("MenuRecipes")); 
+            .UsingEntity(j => j.ToTable("MenuRecipes"));
+
+        builder.HasMany(m => m.Ratings)
+            .WithOne(r => r.Menu)
+            .HasForeignKey(r => r.MenuId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

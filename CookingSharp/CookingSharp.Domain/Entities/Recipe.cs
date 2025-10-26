@@ -46,7 +46,7 @@ public class Recipe
     public User User { get; private set; }
     public ICollection<Category> Categories { get; private set; } = new List<Category>();
     public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
-    public ICollection<Rating> Ratings { get; private set; } = new List<Rating>();
+    public ICollection<RecipeRating> Ratings { get; private set; } = new List<RecipeRating>();
     public ICollection<Menu> Menus { get; private set; } = new List<Menu>();
 
     private Recipe() { }

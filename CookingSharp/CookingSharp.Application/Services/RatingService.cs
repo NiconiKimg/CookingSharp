@@ -42,7 +42,7 @@ public class RatingService : IRatingService
         if (existingRating is null)
         {
             // Crear nueva valoración
-            var newRating = new Rating(ratingDto.Stars, userId, recipeId);
+            var newRating = new RecipeRating(ratingDto.Stars, userId, recipeId);
             await _unitOfWork.Ratings.AddAsync(newRating);
         }
         else
