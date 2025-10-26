@@ -1,4 +1,36 @@
-﻿<MudNavMenu>
+﻿@using MudBlazor
+@using WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Inicio</MudNavLink>
-    <MudNavLink Href="login" Icon="@Icons.Material.Filled.Login">Login</MudNavLink>
+    <MudNavLink Href="recipes" Icon="@Icons.Material.Filled.MenuBook">Recetas</MudNavLink>
+
+    <AuthorizeView Roles="Chef">
+        <MudNavLink Href="recipes/create" Icon="@Icons.Material.Filled.Add">Crear Receta</MudNavLink>
+    </AuthorizeView>
+
+    <MudNavLink Href="categories" Icon="@Icons.Material.Filled.Category">Categorías</MudNavLink>
+    
+    <MudDivider Class="my-2" />
+
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink OnClick="Logout" Icon="@Icons.Material.Filled.Logout">Cerrar Sesión</MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="login" Icon="@Icons.Material.Filled.Login">Iniciar Sesión</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
 </MudNavMenu>
+
+@code {
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthStateProvider)AuthStateProvider;
+        await customAuthStateProvider.MarkUserAsLoggedOut();
+        NavManager.NavigateTo("/");
+    }
+}

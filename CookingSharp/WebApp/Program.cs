@@ -1,20 +1,23 @@
-
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using WebApp;
+using WebApp.Auth;
+using WebApp.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// IMPORTANTE: Cambia esta URL por la URL base de tu API
-var apiBaseUrl = "https://localhost:7123";
+var apiBaseUrl = "https://localhost:7111";
 
-// Configura el HttpClient para que apunte a tu API
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseUrl) });
 
-// Añade los servicios de MudBlazor
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+
 builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();

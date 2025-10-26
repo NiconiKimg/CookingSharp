@@ -11,6 +11,11 @@
         "Path": "CookingSharp.WindowsForms\\CookingSharp.WindowsForms.csproj",
         "Action": "Start",
         "DebugTarget": "CookingSharp.WindowsForms"
+      },
+      {
+        "Path": "WebApp\\WebApp.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
       }
     ]
   }

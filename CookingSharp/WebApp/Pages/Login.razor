@@ -1,7 +1,10 @@
 ﻿@page "/login"
 @using WebApp.DTOs
+@using WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
 @inject HttpClient Http
-@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
     <MudCard>
@@ -61,17 +64,17 @@
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<LoginResponseDTO>();
-                
-                // Aquí es donde guardaremos el token. Por ahora, solo navegamos.
-                // TODO: Implementar el guardado del token y actualizar el estado de autenticación.
-                Console.WriteLine($"Login exitoso. Token: {result?.Token}");
+                if (result != null && !string.IsNullOrWhiteSpace(result.Token))
+                {
+                    var customAuthStateProvider = (CustomAuthStateProvider)AuthStateProvider;
+                    customAuthStateProvider.MarkUserAsAuthenticated(result.Token);
 
-                Navigation.NavigateTo("/welcome");
+                    NavManager.NavigateTo("/");
+                    return;
+                }
             }
-            else
-            {
-                _errorMessage = "Email o contraseña incorrectos.";
-            }
+
+            _errorMessage = "Email o contraseña incorrectos.";
         }
         catch (Exception ex)
         {

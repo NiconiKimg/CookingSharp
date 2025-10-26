@@ -1,0 +1,31 @@
+﻿@using WebApp.DTOs
+@using MudBlazor
+
+<MudCard Outlined="true">
+    <MudCardMedia Image="@ImageUrl" Height="200" />
+    <MudCardContent>
+        <MudText Typo="Typo.h5">@Recipe.Name</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">por: @Recipe.AuthorName</MudText>
+        <MudText Typo="Typo.body2">@Recipe.Description</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        @if (Recipe.Categories != null)
+        {
+            foreach (var category in Recipe.Categories)
+            {
+                <MudChip Color="Color.Primary"
+                         Size="Size.Small"
+                         Label="true"
+                         T="string">@category.Name</MudChip>
+            }
+        }
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter]
+    public RecipeResponseDTO Recipe { get; set; }
+
+    // Usaremos una imagen de marcador de posición por ahora
+    private string ImageUrl => $"https://via.placeholder.com/400x250.png?text={Uri.EscapeDataString(Recipe.Name)}";
+}
