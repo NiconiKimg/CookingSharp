@@ -20,7 +20,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
             .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0))
-            .ForMember(dest => dest.RatingsCount, opt => opt.MapFrom(src => src.Ratings.Count));
+            .ForMember(dest => dest.RatingsCount, opt => opt.MapFrom(src => src.Ratings.Count))
+            .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories));
 
         CreateMap<Recipe, RecipeResponseDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
