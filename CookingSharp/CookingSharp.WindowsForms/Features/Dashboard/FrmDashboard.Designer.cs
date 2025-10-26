@@ -48,11 +48,7 @@
             btnNavRecetas = new Button();
             btnNavUsuarios = new Button();
             btnNavSolicitudes = new Button();
-            btnNavDificultades = new Button();
             btnNavCategorias = new Button();
-            lblMenuModeracionTitle = new Label();
-            btnNavAprobacionRecetas = new Button();
-            btnNavAprobacionIngredientes = new Button();
             pnlMainContent = new Panel();
             tlpMainLayout.SuspendLayout();
             pnlHeader.SuspendLayout();
@@ -119,21 +115,20 @@
             // 
             tlpHeaderLeft.Anchor = AnchorStyles.Left;
             tlpHeaderLeft.AutoSize = true;
-            tlpHeaderLeft.ColumnCount = 4;
-            tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
+            tlpHeaderLeft.ColumnCount = 3;
             tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
             tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
             tlpHeaderLeft.ColumnStyles.Add(new ColumnStyle());
             tlpHeaderLeft.Controls.Add(picLogo, 0, 0);
             tlpHeaderLeft.Controls.Add(lblAppName, 1, 0);
-            tlpHeaderLeft.Controls.Add(lblSubtittleNav, 3, 0);
+            tlpHeaderLeft.Controls.Add(lblSubtittleNav, 2, 0);
             tlpHeaderLeft.GrowStyle = TableLayoutPanelGrowStyle.AddColumns;
             tlpHeaderLeft.Location = new Point(3, 15);
             tlpHeaderLeft.Margin = new Padding(3, 2, 3, 2);
             tlpHeaderLeft.Name = "tlpHeaderLeft";
             tlpHeaderLeft.RowCount = 1;
             tlpHeaderLeft.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlpHeaderLeft.Size = new Size(267, 32);
+            tlpHeaderLeft.Size = new Size(262, 32);
             tlpHeaderLeft.TabIndex = 2;
             // 
             // picLogo
@@ -171,9 +166,9 @@
             lblSubtittleNav.Location = new Point(131, 8);
             lblSubtittleNav.Margin = new Padding(2, 0, 2, 0);
             lblSubtittleNav.Name = "lblSubtittleNav";
-            lblSubtittleNav.Size = new Size(134, 15);
+            lblSubtittleNav.Size = new Size(129, 15);
             lblSubtittleNav.TabIndex = 2;
-            lblSubtittleNav.Text = "Panel de administración";
+            lblSubtittleNav.Text = "Panel de Administración";
             // 
             // tlpHeaderRight
             // 
@@ -196,7 +191,6 @@
             // picUser
             // 
             picUser.Anchor = AnchorStyles.None;
-            picUser.Cursor = Cursors.No;
             picUser.Image = (Image)resources.GetObject("picUser.Image");
             picUser.Location = new Point(3, 12);
             picUser.Margin = new Padding(3, 2, 3, 2);
@@ -209,7 +203,6 @@
             // tlpUserDetails
             // 
             tlpUserDetails.ColumnCount = 1;
-            tlpUserDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tlpUserDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tlpUserDetails.Controls.Add(lblUserRole, 0, 0);
             tlpUserDetails.Controls.Add(lblUserEmail, 0, 1);
@@ -253,7 +246,6 @@
             // btnUserOptions
             // 
             btnUserOptions.Anchor = AnchorStyles.None;
-            btnUserOptions.Cursor = Cursors.No;
             btnUserOptions.FlatAppearance.BorderSize = 0;
             btnUserOptions.FlatStyle = FlatStyle.Flat;
             btnUserOptions.Image = (Image)resources.GetObject("btnUserOptions.Image");
@@ -263,6 +255,7 @@
             btnUserOptions.Size = new Size(30, 26);
             btnUserOptions.TabIndex = 2;
             btnUserOptions.UseVisualStyleBackColor = true;
+            btnUserOptions.Click += btnUserOptions_Click;
             // 
             // pnlNavigation
             // 
@@ -286,32 +279,18 @@
             tlpNavigation.Controls.Add(btnNavRecetas, 0, 1);
             tlpNavigation.Controls.Add(btnNavUsuarios, 0, 2);
             tlpNavigation.Controls.Add(btnNavSolicitudes, 0, 3);
-            tlpNavigation.Controls.Add(btnNavDificultades, 0, 4);
-            tlpNavigation.Controls.Add(btnNavCategorias, 0, 5);
-            tlpNavigation.Controls.Add(lblMenuModeracionTitle, 0, 6);
-            tlpNavigation.Controls.Add(btnNavAprobacionRecetas, 0, 7);
-            tlpNavigation.Controls.Add(btnNavAprobacionIngredientes, 0, 9);
+            tlpNavigation.Controls.Add(btnNavCategorias, 0, 4);
             tlpNavigation.Dock = DockStyle.Top;
             tlpNavigation.Location = new Point(0, 0);
             tlpNavigation.Margin = new Padding(2);
             tlpNavigation.Name = "tlpNavigation";
-            tlpNavigation.RowCount = 15;
+            tlpNavigation.RowCount = 5;
             tlpNavigation.RowStyles.Add(new RowStyle());
             tlpNavigation.RowStyles.Add(new RowStyle());
             tlpNavigation.RowStyles.Add(new RowStyle());
             tlpNavigation.RowStyles.Add(new RowStyle());
             tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.RowStyles.Add(new RowStyle());
-            tlpNavigation.Size = new Size(250, 350);
+            tlpNavigation.Size = new Size(250, 191);
             tlpNavigation.TabIndex = 2;
             // 
             // lblMenuGestionTitle
@@ -322,7 +301,7 @@
             lblMenuGestionTitle.ForeColor = Color.Gainsboro;
             lblMenuGestionTitle.Location = new Point(3, 0);
             lblMenuGestionTitle.Name = "lblMenuGestionTitle";
-            lblMenuGestionTitle.Padding = new Padding(0, 17, 0, 4);
+            lblMenuGestionTitle.Padding = new Padding(10, 17, 0, 4);
             lblMenuGestionTitle.Size = new Size(244, 34);
             lblMenuGestionTitle.TabIndex = 1;
             lblMenuGestionTitle.Text = "GESTIÓN";
@@ -333,8 +312,6 @@
             btnNavRecetas.Cursor = Cursors.Hand;
             btnNavRecetas.Dock = DockStyle.Fill;
             btnNavRecetas.FlatAppearance.BorderSize = 0;
-            btnNavRecetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavRecetas.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
             btnNavRecetas.FlatStyle = FlatStyle.Flat;
             btnNavRecetas.Font = new Font("Segoe UI", 10F);
             btnNavRecetas.ForeColor = Color.WhiteSmoke;
@@ -356,8 +333,6 @@
             btnNavUsuarios.Cursor = Cursors.Hand;
             btnNavUsuarios.Dock = DockStyle.Fill;
             btnNavUsuarios.FlatAppearance.BorderSize = 0;
-            btnNavUsuarios.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavUsuarios.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
             btnNavUsuarios.FlatStyle = FlatStyle.Flat;
             btnNavUsuarios.Font = new Font("Segoe UI", 10F);
             btnNavUsuarios.ForeColor = Color.WhiteSmoke;
@@ -379,8 +354,6 @@
             btnNavSolicitudes.Cursor = Cursors.Hand;
             btnNavSolicitudes.Dock = DockStyle.Fill;
             btnNavSolicitudes.FlatAppearance.BorderSize = 0;
-            btnNavSolicitudes.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavSolicitudes.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
             btnNavSolicitudes.FlatStyle = FlatStyle.Flat;
             btnNavSolicitudes.Font = new Font("Segoe UI", 10F);
             btnNavSolicitudes.ForeColor = Color.WhiteSmoke;
@@ -395,42 +368,19 @@
             btnNavSolicitudes.TextAlign = ContentAlignment.MiddleLeft;
             btnNavSolicitudes.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnNavSolicitudes.UseVisualStyleBackColor = true;
-            // 
-            // btnNavDificultades
-            // 
-            btnNavDificultades.Cursor = Cursors.No;
-            btnNavDificultades.Dock = DockStyle.Fill;
-            btnNavDificultades.FlatAppearance.BorderSize = 0;
-            btnNavDificultades.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavDificultades.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
-            btnNavDificultades.FlatStyle = FlatStyle.Flat;
-            btnNavDificultades.Font = new Font("Segoe UI", 10F);
-            btnNavDificultades.ForeColor = Color.WhiteSmoke;
-            btnNavDificultades.Image = Properties.Resources.difficultyIcon;
-            btnNavDificultades.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNavDificultades.Location = new Point(3, 153);
-            btnNavDificultades.Margin = new Padding(3, 2, 3, 2);
-            btnNavDificultades.Name = "btnNavDificultades";
-            btnNavDificultades.Size = new Size(244, 35);
-            btnNavDificultades.TabIndex = 4;
-            btnNavDificultades.Text = "    Dificultades";
-            btnNavDificultades.TextAlign = ContentAlignment.MiddleLeft;
-            btnNavDificultades.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnNavDificultades.UseVisualStyleBackColor = true;
+            btnNavSolicitudes.Click += btnNavSolicitudes_Click;
             // 
             // btnNavCategorias
             // 
             btnNavCategorias.Cursor = Cursors.Hand;
             btnNavCategorias.Dock = DockStyle.Fill;
             btnNavCategorias.FlatAppearance.BorderSize = 0;
-            btnNavCategorias.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavCategorias.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
             btnNavCategorias.FlatStyle = FlatStyle.Flat;
             btnNavCategorias.Font = new Font("Segoe UI", 10F);
             btnNavCategorias.ForeColor = Color.WhiteSmoke;
             btnNavCategorias.Image = Properties.Resources.categoryIcon;
             btnNavCategorias.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNavCategorias.Location = new Point(3, 192);
+            btnNavCategorias.Location = new Point(3, 153);
             btnNavCategorias.Margin = new Padding(3, 2, 3, 2);
             btnNavCategorias.Name = "btnNavCategorias";
             btnNavCategorias.Size = new Size(244, 35);
@@ -440,64 +390,6 @@
             btnNavCategorias.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnNavCategorias.UseVisualStyleBackColor = true;
             btnNavCategorias.Click += btnNavCategorias_Click;
-            // 
-            // lblMenuModeracionTitle
-            // 
-            lblMenuModeracionTitle.AutoSize = true;
-            lblMenuModeracionTitle.Dock = DockStyle.Fill;
-            lblMenuModeracionTitle.Font = new Font("Segoe UI", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMenuModeracionTitle.ForeColor = Color.Gainsboro;
-            lblMenuModeracionTitle.Location = new Point(3, 229);
-            lblMenuModeracionTitle.Name = "lblMenuModeracionTitle";
-            lblMenuModeracionTitle.Padding = new Padding(10, 26, 0, 4);
-            lblMenuModeracionTitle.Size = new Size(244, 43);
-            lblMenuModeracionTitle.TabIndex = 6;
-            lblMenuModeracionTitle.Text = "MODERACIÓN";
-            lblMenuModeracionTitle.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // btnNavAprobacionRecetas
-            // 
-            btnNavAprobacionRecetas.Cursor = Cursors.No;
-            btnNavAprobacionRecetas.Dock = DockStyle.Fill;
-            btnNavAprobacionRecetas.FlatAppearance.BorderSize = 0;
-            btnNavAprobacionRecetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavAprobacionRecetas.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
-            btnNavAprobacionRecetas.FlatStyle = FlatStyle.Flat;
-            btnNavAprobacionRecetas.Font = new Font("Segoe UI", 10F);
-            btnNavAprobacionRecetas.ForeColor = Color.WhiteSmoke;
-            btnNavAprobacionRecetas.Image = Properties.Resources.recipeConfirmationIcon;
-            btnNavAprobacionRecetas.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNavAprobacionRecetas.Location = new Point(3, 274);
-            btnNavAprobacionRecetas.Margin = new Padding(3, 2, 3, 2);
-            btnNavAprobacionRecetas.Name = "btnNavAprobacionRecetas";
-            btnNavAprobacionRecetas.Size = new Size(244, 35);
-            btnNavAprobacionRecetas.TabIndex = 7;
-            btnNavAprobacionRecetas.Text = "    Aprobación de Recetas";
-            btnNavAprobacionRecetas.TextAlign = ContentAlignment.MiddleLeft;
-            btnNavAprobacionRecetas.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnNavAprobacionRecetas.UseVisualStyleBackColor = true;
-            // 
-            // btnNavAprobacionIngredientes
-            // 
-            btnNavAprobacionIngredientes.Cursor = Cursors.No;
-            btnNavAprobacionIngredientes.Dock = DockStyle.Fill;
-            btnNavAprobacionIngredientes.FlatAppearance.BorderSize = 0;
-            btnNavAprobacionIngredientes.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnNavAprobacionIngredientes.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
-            btnNavAprobacionIngredientes.FlatStyle = FlatStyle.Flat;
-            btnNavAprobacionIngredientes.Font = new Font("Segoe UI", 10F);
-            btnNavAprobacionIngredientes.ForeColor = Color.WhiteSmoke;
-            btnNavAprobacionIngredientes.Image = Properties.Resources.ingredientsIcon;
-            btnNavAprobacionIngredientes.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNavAprobacionIngredientes.Location = new Point(3, 313);
-            btnNavAprobacionIngredientes.Margin = new Padding(3, 2, 3, 2);
-            btnNavAprobacionIngredientes.Name = "btnNavAprobacionIngredientes";
-            btnNavAprobacionIngredientes.Size = new Size(244, 35);
-            btnNavAprobacionIngredientes.TabIndex = 9;
-            btnNavAprobacionIngredientes.Text = "    Aprobación de Ingredientes";
-            btnNavAprobacionIngredientes.TextAlign = ContentAlignment.MiddleLeft;
-            btnNavAprobacionIngredientes.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnNavAprobacionIngredientes.UseVisualStyleBackColor = true;
             // 
             // pnlMainContent
             // 
@@ -539,34 +431,33 @@
             tlpNavigation.ResumeLayout(false);
             tlpNavigation.PerformLayout();
             ResumeLayout(false);
+
         }
 
         #endregion
 
-        internal TableLayoutPanel tlpMainLayout;
-        internal Panel pnlHeader;
-        internal Panel pnlNavigation;
-        internal TableLayoutPanel tlpHeaderLayout;
-        internal TableLayoutPanel tlpHeaderLeft;
-        internal PictureBox picLogo;
-        internal Label lblAppName;
-        internal TableLayoutPanel tlpHeaderRight;
-        internal PictureBox picUser;
-        internal TableLayoutPanel tlpUserDetails;
-        internal Label lblUserRole;
-        internal Label lblUserEmail;
-        internal Button btnUserOptions;
-        internal Button btnNavUsuarios;
-        internal Label lblMenuGestionTitle;
-        internal Button btnNavRecetas;
-        internal Button btnNavCategorias;
-        internal Button btnNavDificultades;
-        internal Button btnNavSolicitudes;
-        internal Label lblMenuModeracionTitle;
-        internal Button btnNavAprobacionRecetas;
-        internal Button btnNavAprobacionIngredientes;
-        private TableLayoutPanel tlpNavigation;
-        private Label lblSubtittleNav;
-        internal Panel pnlMainContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpMainLayout;
+        internal System.Windows.Forms.Panel pnlHeader;
+        internal System.Windows.Forms.Panel pnlNavigation;
+        internal System.Windows.Forms.TableLayoutPanel tlpHeaderLayout;
+        internal System.Windows.Forms.TableLayoutPanel tlpHeaderLeft;
+        internal System.Windows.Forms.PictureBox picLogo;
+        internal System.Windows.Forms.Label lblAppName;
+        internal System.Windows.Forms.TableLayoutPanel tlpHeaderRight;
+        internal System.Windows.Forms.PictureBox picUser;
+        internal System.Windows.Forms.TableLayoutPanel tlpUserDetails;
+        internal System.Windows.Forms.Label lblUserRole;
+        internal System.Windows.Forms.Label lblUserEmail;
+        internal System.Windows.Forms.Button btnUserOptions;
+        internal System.Windows.Forms.Button btnNavUsuarios;
+        internal System.Windows.Forms.Label lblMenuGestionTitle;
+        internal System.Windows.Forms.Button btnNavRecetas;
+        internal System.Windows.Forms.Button btnNavCategorias;
+        private System.Windows.Forms.TableLayoutPanel tlpNavigation;
+        private System.Windows.Forms.Label lblSubtittleNav;
+        internal System.Windows.Forms.Panel pnlMainContent;
+        private System.Windows.Forms.Button btnNavSolicitudes;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripUser;
+        private System.Windows.Forms.ToolStripMenuItem cerraSesiónToolStripMenuItem;
     }
 }
