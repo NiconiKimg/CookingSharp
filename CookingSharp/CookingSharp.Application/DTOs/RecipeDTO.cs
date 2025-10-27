@@ -17,6 +17,7 @@ public class RecipeSummaryDTO
     public ICollection<CategoryResponseDTO> Categories { get; set; }
     public double AverageRating { get; set; }
     public int RatingsCount { get; set; }
+    public string ImageUrl { get; set; }
 }
 
 /// <summary>
@@ -34,6 +35,7 @@ public class RecipeResponseDTO
     public ICollection<CategoryResponseDTO> Categories { get; set; }
     public double AverageRating { get; set; }
     public int RatingsCount { get; set; }
+    public string ImageUrl { get; set; }
 }
 
 /// <summary>
@@ -58,6 +60,7 @@ public class RecipeUpdateDTO
     public ICollection<RecipeStepCreateDTO> Steps { get; set; }
     public ICollection<int> CategoryIds { get; set; }
     public string Status { get; set; }
+    public IFormFile? Image { get; set; }
 }
 
 /// <summary>

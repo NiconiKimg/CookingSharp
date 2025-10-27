@@ -9,10 +9,14 @@ namespace CookingSharp.Infrastructure;
 public class PhotoService : IPhotoService
 {
     private readonly Cloudinary _cloudinary;
-
+    private readonly CloudinarySettings _cloudinarySettings;
     public PhotoService(IOptions<CloudinarySettings> config)
     {
-        var account = new Account(config.Value.CloudName, config.Value.ApiKey, config.Value.ApiSecret);
+        _cloudinarySettings = config.Value;
+        var account = new Account(
+            _cloudinarySettings.CloudName,
+            _cloudinarySettings.ApiKey,
+            _cloudinarySettings.ApiSecret);
         _cloudinary = new Cloudinary(account);
     }
 
@@ -44,5 +48,9 @@ public class PhotoService : IPhotoService
         var deleteParams = new DeletionParams(publicId);
         var result = await _cloudinary.DestroyAsync(deleteParams);
         return result.Result == "ok";
+    }
+    public (string ImageUrl, string PublicId) GetDefaultImage()
+    {
+        return (_cloudinarySettings.DefaultImageUrl, _cloudinarySettings.DefaultImagePublicId);
     }
 }

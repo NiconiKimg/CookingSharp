@@ -6,4 +6,6 @@ public interface IPhotoService
 {
     Task<(string ImageUrl, string PublicId)> AddPhotoAsync(IFormFile file);
     Task<bool> DeletePhotoAsync(string publicId);
+    (string ImageUrl, string PublicId) GetDefaultImage();
+
 }

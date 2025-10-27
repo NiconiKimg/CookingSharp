@@ -21,6 +21,7 @@ namespace WebApp.DTOs
         public ICollection<CategoryResponseDTO> Categories { get; set; } = new List<CategoryResponseDTO>();
         public double AverageRating { get; set; }
         public int RatingsCount { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     /// <summary>
@@ -46,6 +47,7 @@ namespace WebApp.DTOs
         public string Description { get; set; } = string.Empty;
         public ICollection<RecipeStepCreateDTO> Steps { get; set; } = new List<RecipeStepCreateDTO>();
         public ICollection<int> CategoryIds { get; set; } = new List<int>();
+        public IFormFile? Image { get; set; }
     }
 
     /// <summary>
@@ -74,6 +76,7 @@ namespace WebApp.DTOs
         public ICollection<CategoryResponseDTO> Categories { get; set; } = new List<CategoryResponseDTO>();
         public double AverageRating { get; set; }
         public int RatingsCount { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     /// <summary>

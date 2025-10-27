@@ -123,7 +123,7 @@ public class RecipesController : BaseApiController
     [ProducesResponseType(204)]
     [ProducesResponseType(403)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> Update(int id, RecipeUpdateDTO recipeUpdateDto)
+    public async Task<IActionResult> Update(int id, [FromForm] RecipeUpdateDTO recipeUpdateDto)
     {
         var recipe = await _recipeService.GetByIdAsync(id);
 

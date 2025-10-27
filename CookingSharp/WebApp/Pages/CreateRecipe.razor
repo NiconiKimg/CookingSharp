@@ -1,9 +1,14 @@
 ﻿@page "/recipes/create"
 @using System.ComponentModel.DataAnnotations
+@using System.Net.Http.Headers
 @using WebApp.DTOs
+@using WebApp.Services
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+
+@inject ILocalStorageService LocalStorage
+
 
 <MudPaper Elevation="0" Class="pa-4 mb-6" Style="var(--mud-palette-secondary-lighten)); border-radius: 8px;">
     <MudText Typo="Typo.h4" Style="color: var(--mud-palette-primary-darken);" GutterBottom="true">Crear Nueva Receta</MudText>
@@ -244,20 +249,22 @@
         _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.Steps)));
     }
 
-    private async Task HandleValidSubmit()
+   private async Task HandleValidSubmit()
+{
+    if (_recipeModel.CategoryIds.Count == 0)
     {
-        if (_recipeModel.CategoryIds.Count == 0)
-        {
-            Snackbar.Add("Debes seleccionar al menos una categoría.", Severity.Warning);
-            return;
-        }
+        Snackbar.Add("Debes seleccionar al menos una categoría.", Severity.Warning);
+        return;
+    }
 
-        if (_recipeModel.Steps.Count == 0)
-        {
-            Snackbar.Add("La receta debe tener al menos un paso.", Severity.Warning);
-            return;
-        }
-            using var content = new MultipartFormDataContent();
+    if (_recipeModel.Steps.Count == 0)
+    {
+        Snackbar.Add("La receta debe tener al menos un paso.", Severity.Warning);
+        return;
+    }
+
+    using var content = new MultipartFormDataContent();
+
     content.Add(new StringContent(_recipeModel.Name), "Name");
     content.Add(new StringContent(_recipeModel.Description), "Description");
 
@@ -278,45 +285,39 @@
         content.Add(fileContent, "Image", _imageFile.Name);
     }
 
-
-        try
+    try
+    {
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        if (string.IsNullOrWhiteSpace(token))
         {
-            var response = await Http.PostAsync("api/recipes", content);
-        }catch (Exception ex)
-        {
-            Snackbar.Add($"Error al crear la receta: {ex.Message}", Severity.Error);
+            Snackbar.Add("Error de autenticación: No se encontró el token. Por favor, inicie sesión de nuevo.", Severity.Error);
             return;
         }
 
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/recipes");
+        request.Content = content;
+        
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        var response = await Http.SendAsync(request);
 
-        var dto = new RecipeCreateDTO
+        if (response.IsSuccessStatusCode)
         {
-            Name = _recipeModel.Name,
-            Description = _recipeModel.Description,
-            CategoryIds = _recipeModel.CategoryIds,
-            Steps = _recipeModel.Steps.Select(s => new RecipeStepCreateDTO { Instruction = s }).ToList()
-        };
-
-        try
-        {
-            var response = await Http.PostAsJsonAsync("api/recipes", dto);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Snackbar.Add("¡Receta creada con éxito!", Severity.Success);
-                NavigationManager.NavigateTo("/recipes");
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Snackbar.Add($"Error al crear la receta: {response.StatusCode}", Severity.Error);
-            }
+            Snackbar.Add("¡Receta creada con éxito!", Severity.Success);
+            NavigationManager.NavigateTo("/my-recipes");
         }
-        catch (Exception ex)
+        else
         {
-            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+            var errorContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"[DEBUG] Contenido del error de la API: {errorContent}");
+            Snackbar.Add($"Error al crear la receta: {errorContent}", Severity.Error);
         }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[DEBUG] Excepción capturada: {ex.ToString()}");
+        Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+    }
+}
 
     private void GoBack()
     {
