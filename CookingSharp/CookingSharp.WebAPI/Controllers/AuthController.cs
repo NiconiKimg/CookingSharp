@@ -1,63 +1,45 @@
 using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
 
-namespace CookingSharp.WebAPI.Controllers
+namespace CookingSharp.WebAPI.Controllers;
+
+public class AuthController : BaseApiController
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class AuthController : ControllerBase
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
     {
-        private readonly IConfiguration _configuration;
-        private readonly IUserRepository _userRepository;
-
-        public AuthController(IConfiguration configuration, IUserRepository userRepository)
-        {
-            _configuration = configuration;
-            _userRepository = userRepository;
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserLoginDTO loginDto)
-        {
-            var user = await _userRepository.GetByEmailAsync(loginDto.Email);
-
-            // 1. Verificar si el usuario existe Y si la contraseña coincide con el hash almacenado.
-            if (user is null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
-            {
-                return Unauthorized(new { Message = "Credenciales inválidas." });
-            }
-
-            // 2. Si las credenciales son válidas, generar el token.
-            var token = GenerateJwtToken(user);
-
-            return Ok(new { Token = token });
-        }
-
-        private string GenerateJwtToken(Domain.User user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]!));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddHours(8),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        _authService = authService;
     }
+
+    #region --- POST Endpoints ---
+
+    /// <summary>
+    /// Registra un nuevo usuario en el sistema.
+    /// </summary>
+    [HttpPost("register")]
+    [ProducesResponseType(typeof(UserResponseDTO), 201)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> Register(UserCreateDTO userCreateDto)
+    {
+        var userResponse = await _authService.RegisterAsync(userCreateDto);
+        // Devuelve una respuesta 201 Created con la URL para obtener el nuevo usuario
+        return CreatedAtAction(nameof(UsersController.GetById), "Users", new { id = userResponse.Id }, userResponse);
+    }
+
+    /// <summary>
+    /// Autentica a un usuario y devuelve un token JWT.
+    /// </summary>
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(LoginResponseDTO), 200)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> Login(UserLoginDTO userLoginDto)
+    {
+        var loginResponse = await _authService.LoginAsync(userLoginDto);
+        return Ok(loginResponse);
+    }
+
+    #endregion
 }

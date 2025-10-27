@@ -1,0 +1,45 @@
+﻿@using MudBlazor
+@using WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Inicio</MudNavLink>
+    <MudNavLink Href="recipes" Icon="@Icons.Material.Filled.MenuBook">Explorar Recetas</MudNavLink>
+    <MudNavLink Href="menus" Icon="@Icons.Material.Filled.RestaurantMenu">Explorar Menús</MudNavLink>
+    <AuthorizeView Roles="Apprentice">
+        <MudNavLink Href="apply-for-chef" Icon="@Icons.Material.Filled.Upgrade">Ser Chef</MudNavLink>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Chef">
+        <Authorized>
+            <MudDivider Class="my-2" />
+            <MudNavGroup Title="Gestión de Chef" Icon="@Icons.Material.Filled.Restaurant" Expanded="true">
+                <MudNavLink Href="my-recipes" Icon="@Icons.Material.Filled.AutoStories">Mis Recetas</MudNavLink>
+                <MudNavLink Href="recipes/create" Icon="@Icons.Material.Filled.Add">Crear Receta</MudNavLink>
+                <MudNavLink Href="my-menus" Icon="@Icons.Material.Filled.RestaurantMenu">Mis Menús</MudNavLink>
+            </MudNavGroup>
+        </Authorized>
+    </AuthorizeView>
+
+    <MudDivider Class="my-2" />
+
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink OnClick="Logout" Icon="@Icons.Material.Filled.Logout">Cerrar Sesión</MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="login" Icon="@Icons.Material.Filled.Login">Iniciar Sesión</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudNavMenu>
+
+@code {
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthStateProvider)AuthStateProvider;
+        await customAuthStateProvider.MarkUserAsLoggedOut();
+        NavManager.NavigateTo("/");
+    }
+}

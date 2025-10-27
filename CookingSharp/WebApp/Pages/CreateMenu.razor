@@ -1,0 +1,227 @@
+﻿@page "/menus/create"
+@using System.ComponentModel.DataAnnotations
+@using WebApp.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using System.Linq
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@attribute [Authorize(Roles = "Chef, Admin")]
+
+<MudText Typo="Typo.h4" GutterBottom="true">Crear Nuevo Menú</MudText>
+<MudText Class="mb-4">Dale un nombre y una descripción a tu menú, luego selecciona las recetas que quieres incluir.</MudText>
+
+<EditForm EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid Spacing="4">
+        <MudItem xs="12">
+            <MudCard Elevation="2">
+                <MudCardContent>
+                    <MudTextField @bind-Value="_model.Name" For="@(() => _model.Name)" Label="Nombre del Menú" Variant="Variant.Outlined" Immediate="true" />
+                    <MudTextField @bind-Value="_model.Description" For="@(() => _model.Description)" Label="Descripción" Variant="Variant.Outlined" Lines="3" Class="mt-4" />
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudCard Elevation="2">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Selección de Recetas (Solo Publicadas)</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid Spacing="2">
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Buscar por nombre..." Variant="Variant.Outlined" Value="_recipeNameFilter" ValueChanged="OnNameFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" DebounceInterval="300" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudSelect T="int?" Label="Filtrar por categoría" Variant="Variant.Outlined" Value="_selectedCategoryId" ValueChanged="OnCategoryFilterChanged">
+                                <MudSelectItem T="int?" Value="null">Todas</MudSelectItem>
+                                @foreach (var category in _allCategories)
+                                {
+                                    <MudSelectItem T="int?" Value="@category.Id">@category.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudPaper Height="300px" Class="overflow-y-auto pa-2 mt-4 mud-border-solid mud-border-lines-default rounded-lg">
+                        @if (_isLoadingRecipes)
+                        {
+                            <div class="d-flex justify-center align-center mud-height-full"><MudProgressCircular Indeterminate="true" /></div>
+                        }
+                        else if (_filteredRecipes.Any())
+                        {
+                            <MudList T="int" Dense="true">
+                                @foreach (var recipe in _filteredRecipes)
+                                {
+                                    var recipeId = recipe.Id;
+                                    <MudListItem T="int">
+                                        <MudCheckBox T="bool"
+                                                     Label="@recipe.Name"
+                                                     Value="@(_model.SelectedRecipeIds.Contains(recipeId))"
+                                                     ValueChanged="@((bool isChecked) => OnRecipeChecked(recipeId, isChecked))"
+                                                     Color="Color.Primary" />
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        }
+                        else
+                        {
+                            <MudText Align="Align.Center" Class="mt-4">No se encontraron recetas publicadas que coincidan con los filtros.</MudText>
+                        }
+                    </MudPaper>
+
+                    <MudText Typo="Typo.caption" Class="mt-2">Recetas seleccionadas: @_model.SelectedRecipeIds.Count</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" Class="d-flex justify-end gap-4 mt-4">
+            <MudButton Variant="Variant.Outlined" OnClick="GoBack">Cancelar</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save">
+                Crear Menú
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+    private MenuCreateModel _model = new();
+    private EditContext _editContext = default!;
+    
+    private List<RecipeSummaryDTO> _allMyRecipes = new();
+    private List<RecipeSummaryDTO> _filteredRecipes = new();
+    
+    private List<CategoryResponseDTO> _allCategories = new();
+    private bool _isLoadingRecipes = true;
+
+    private string _recipeNameFilter = "";
+    private int? _selectedCategoryId = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editContext = new EditContext(_model);
+        _isLoadingRecipes = true;
+        try
+        {
+            var recipesTask = Http.GetFromJsonAsync<List<RecipeSummaryDTO>>("api/recipes/my-recipes");
+            var categoriesTask = Http.GetFromJsonAsync<List<CategoryResponseDTO>>("api/categories");
+
+            await Task.WhenAll(recipesTask, categoriesTask);
+
+            var allRecipesFromApi = recipesTask.Result ?? new();
+
+            _allMyRecipes = allRecipesFromApi
+                .Where(r => r.Status == "Published")
+                .ToList();
+
+            _allCategories = categoriesTask.Result ?? new();
+
+            ApplyFilters();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error cargando datos necesarios: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoadingRecipes = false;
+        }
+    }
+
+    private void ApplyFilters()
+    {
+        IEnumerable<RecipeSummaryDTO> recipes = _allMyRecipes;
+
+        if (!string.IsNullOrWhiteSpace(_recipeNameFilter))
+        {
+            recipes = recipes.Where(r => r.Name.Contains(_recipeNameFilter, StringComparison.OrdinalIgnoreCase));
+        }
+        if (_selectedCategoryId.HasValue)
+        {
+            recipes = recipes.Where(r => r.Categories.Any(c => c.Id == _selectedCategoryId.Value));
+        }
+
+        _filteredRecipes = recipes.ToList();
+    }
+
+    private void OnRecipeChecked(int recipeId, bool isChecked)
+    {
+        if (isChecked)
+        {
+            if (!_model.SelectedRecipeIds.Contains(recipeId))
+            {
+                _model.SelectedRecipeIds.Add(recipeId);
+            }
+        }
+        else
+        {
+            _model.SelectedRecipeIds.Remove(recipeId);
+        }
+
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_model, nameof(_model.SelectedRecipeIds)));
+        StateHasChanged();
+    }
+
+    private void OnNameFilterChanged(string value)
+    {
+        _recipeNameFilter = value;
+        ApplyFilters();
+    }
+
+    private void OnCategoryFilterChanged(int? value)
+    {
+        _selectedCategoryId = value;
+        ApplyFilters();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!_model.SelectedRecipeIds.Any())
+        {
+            Snackbar.Add("Debes seleccionar al menos una receta.", Severity.Warning);
+            return;
+        }
+
+        var dto = new MenuCreateUpdateDTO
+        {
+            Name = _model.Name,
+            Description = _model.Description,
+            RecipeIds = _model.SelectedRecipeIds
+        };
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/menus", dto);
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("Menú creado con éxito.", Severity.Success);
+                NavigationManager.NavigateTo("/my-menus");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Snackbar.Add($"Error al crear el menú: {error}", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void GoBack() => NavigationManager.NavigateTo("/my-menus");
+
+    public class MenuCreateModel
+    {
+        [Required(ErrorMessage = "El nombre del menú es obligatorio.")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "La descripción es obligatoria.")]
+        public string Description { get; set; } = "";
+
+        public List<int> SelectedRecipeIds { get; set; } = new();
+    }
+}

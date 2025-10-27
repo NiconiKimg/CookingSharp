@@ -1,14 +1,31 @@
-﻿using CookingSharp.Domain;
+﻿using CookingSharp.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CookingSharp.Application.Services.Contracts
+namespace CookingSharp.Application.Contracts
 {
-    public interface IAppealRepository
+    /// <summary>
+    /// Contrato para el repositorio de solicitudes (Appeals).
+    /// </summary>
+    public interface IAppealRepository : IGenericRepository<Appeal>
     {
-        Task<Appeal?> GetByIdAsync(int id);
-        Task<IEnumerable<Appeal>> GetAllAsync();
-        Task<Appeal> AddAsync(Appeal appeal);
-        Task UpdateAsync(Appeal appeal);
-        //Task<bool> DeleteAsync(int id);
-        //Task<bool> ExistsWithNameAsync(string name, int? excludeId = null);
+        /// <summary>
+        /// Obtiene todas las solicitudes pendientes, incluyendo los datos del usuario solicitante.
+        /// </summary>
+        /// <returns>Una colección de entidades Appeal con el usuario cargado.</returns>
+        Task<IEnumerable<Appeal>> GetPendingWithUserDetailsAsync();
+
+        /// <summary>
+        /// Cuenta el número de solicitudes en estado "Pendiente".
+        /// </summary>
+        /// <returns>El número de solicitudes pendientes.</returns>
+        Task<int> CountPendingAsync();
+
+        /// <summary>
+        /// Verifica si un usuario tiene alguna solicitud en estado "Pendiente".
+        /// </summary>
+        /// <param name="userId">El ID del usuario a verificar.</param>
+        /// <returns>True si el usuario tiene una solicitud pendiente, de lo contrario False.</returns>
+        Task<bool> HasPendingAppealAsync(int userId);
     }
 }

@@ -29,625 +29,626 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_AdminPanel));
-            pnlMainContent = new Panel();
-            tlpContentLayout = new TableLayoutPanel();
-            flpTitleContainer = new FlowLayoutPanel();
-            lblContentTitle = new Label();
-            lblContentSubtitle = new Label();
-            flpKPIs = new FlowLayoutPanel();
-            pnlKpiUsersBorder = new Panel();
-            pnlKpiUsuariosContent = new Panel();
-            tlpKpiUsersLayout = new TableLayoutPanel();
-            lblKpiUsersValue = new Label();
-            picKpiUsers = new PictureBox();
-            lblKpiUsuariosTittle = new Label();
-            pnlKpiRecipesBorder = new Panel();
-            pnlKpiRecipesContent = new Panel();
-            tlpKpiRecipesLayout = new TableLayoutPanel();
-            lblKpiRecipesValue = new Label();
-            picKpiRecipes = new PictureBox();
-            lblKpiRecipesTittle = new Label();
-            pnlKpiPendingBorder = new Panel();
-            pnlKpiPendingContent = new Panel();
-            tlpKpiPendingLayout = new TableLayoutPanel();
-            lblKpiPendingValue = new Label();
-            picKpiPending = new PictureBox();
-            lblKpiPendingTittle = new Label();
-            pnlKpiCategoryBorder = new Panel();
-            pnlKpiCategoryContent = new Panel();
-            tlpKpiCategoryLayout = new TableLayoutPanel();
-            lblKpiCategoryValue = new Label();
-            picKpiCategory = new PictureBox();
-            lblKpiCategoryTittle = new Label();
-            flpQuickActions = new FlowLayoutPanel();
-            lblQuickActionsTittle = new Label();
-            flpQuickActionsButtons = new FlowLayoutPanel();
-            btnNewUser = new Button();
-            btnViewReports = new Button();
-            btnCheckPending = new Button();
-            pnlMainContent.SuspendLayout();
-            tlpContentLayout.SuspendLayout();
-            flpTitleContainer.SuspendLayout();
-            flpKPIs.SuspendLayout();
-            pnlKpiUsersBorder.SuspendLayout();
-            pnlKpiUsuariosContent.SuspendLayout();
-            tlpKpiUsersLayout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiUsers).BeginInit();
-            pnlKpiRecipesBorder.SuspendLayout();
-            pnlKpiRecipesContent.SuspendLayout();
-            tlpKpiRecipesLayout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiRecipes).BeginInit();
-            pnlKpiPendingBorder.SuspendLayout();
-            pnlKpiPendingContent.SuspendLayout();
-            tlpKpiPendingLayout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiPending).BeginInit();
-            pnlKpiCategoryBorder.SuspendLayout();
-            pnlKpiCategoryContent.SuspendLayout();
-            tlpKpiCategoryLayout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiCategory).BeginInit();
-            flpQuickActions.SuspendLayout();
-            flpQuickActionsButtons.SuspendLayout();
-            SuspendLayout();
+            this.pnlMainContent = new System.Windows.Forms.Panel();
+            this.tlpContentLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.flpTitleContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblContentTitle = new System.Windows.Forms.Label();
+            this.lblContentSubtitle = new System.Windows.Forms.Label();
+            this.flpKPIs = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlKpiUsersBorder = new System.Windows.Forms.Panel();
+            this.pnlKpiUsuariosContent = new System.Windows.Forms.Panel();
+            this.tlpKpiUsersLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.lblKpiUsersValue = new System.Windows.Forms.Label();
+            this.picKpiUsers = new System.Windows.Forms.PictureBox();
+            this.lblKpiUsuariosTittle = new System.Windows.Forms.Label();
+            this.pnlKpiRecipesBorder = new System.Windows.Forms.Panel();
+            this.pnlKpiRecipesContent = new System.Windows.Forms.Panel();
+            this.tlpKpiRecipesLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.lblKpiRecipesValue = new System.Windows.Forms.Label();
+            this.picKpiRecipes = new System.Windows.Forms.PictureBox();
+            this.lblKpiRecipesTittle = new System.Windows.Forms.Label();
+            this.pnlKpiPendingBorder = new System.Windows.Forms.Panel();
+            this.pnlKpiPendingContent = new System.Windows.Forms.Panel();
+            this.tlpKpiPendingLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.lblKpiPendingValue = new System.Windows.Forms.Label();
+            this.picKpiPending = new System.Windows.Forms.PictureBox();
+            this.lblKpiPendingTittle = new System.Windows.Forms.Label();
+            this.pnlKpiCategoryBorder = new System.Windows.Forms.Panel();
+            this.pnlKpiCategoryContent = new System.Windows.Forms.Panel();
+            this.tlpKpiCategoryLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.lblKpiCategoryValue = new System.Windows.Forms.Label();
+            this.picKpiCategory = new System.Windows.Forms.PictureBox();
+            this.lblKpiCategoryTittle = new System.Windows.Forms.Label();
+            this.flpQuickActions = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblQuickActionsTittle = new System.Windows.Forms.Label();
+            this.flpQuickActionsButtons = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnNewUser = new System.Windows.Forms.Button();
+            this.btnViewReports = new System.Windows.Forms.Button();
+            this.btnCheckPending = new System.Windows.Forms.Button();
+            this.pnlMainContent.SuspendLayout();
+            this.tlpContentLayout.SuspendLayout();
+            this.flpTitleContainer.SuspendLayout();
+            this.flpKPIs.SuspendLayout();
+            this.pnlKpiUsersBorder.SuspendLayout();
+            this.pnlKpiUsuariosContent.SuspendLayout();
+            this.tlpKpiUsersLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiUsers)).BeginInit();
+            this.pnlKpiRecipesBorder.SuspendLayout();
+            this.pnlKpiRecipesContent.SuspendLayout();
+            this.tlpKpiRecipesLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiRecipes)).BeginInit();
+            this.pnlKpiPendingBorder.SuspendLayout();
+            this.pnlKpiPendingContent.SuspendLayout();
+            this.tlpKpiPendingLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiPending)).BeginInit();
+            this.pnlKpiCategoryBorder.SuspendLayout();
+            this.pnlKpiCategoryContent.SuspendLayout();
+            this.tlpKpiCategoryLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiCategory)).BeginInit();
+            this.flpQuickActions.SuspendLayout();
+            this.flpQuickActionsButtons.SuspendLayout();
+            this.SuspendLayout();
             // 
             // pnlMainContent
             // 
-            pnlMainContent.BackColor = Color.White;
-            pnlMainContent.Controls.Add(tlpContentLayout);
-            pnlMainContent.Dock = DockStyle.Fill;
-            pnlMainContent.Location = new Point(0, 0);
-            pnlMainContent.Margin = new Padding(2);
-            pnlMainContent.Name = "pnlMainContent";
-            pnlMainContent.Padding = new Padding(14, 13, 14, 13);
-            pnlMainContent.Size = new Size(782, 589);
-            pnlMainContent.TabIndex = 3;
+            this.pnlMainContent.BackColor = System.Drawing.Color.White;
+            this.pnlMainContent.Controls.Add(this.tlpContentLayout);
+            this.pnlMainContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMainContent.Location = new System.Drawing.Point(0, 0);
+            this.pnlMainContent.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlMainContent.Name = "pnlMainContent";
+            this.pnlMainContent.Padding = new System.Windows.Forms.Padding(14, 13, 14, 13);
+            this.pnlMainContent.Size = new System.Drawing.Size(782, 589);
+            this.pnlMainContent.TabIndex = 3;
             // 
             // tlpContentLayout
             // 
-            tlpContentLayout.BackColor = Color.Transparent;
-            tlpContentLayout.ColumnCount = 1;
-            tlpContentLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlpContentLayout.Controls.Add(flpTitleContainer, 0, 0);
-            tlpContentLayout.Controls.Add(flpKPIs, 0, 1);
-            tlpContentLayout.Controls.Add(flpQuickActions, 0, 2);
-            tlpContentLayout.Dock = DockStyle.Fill;
-            tlpContentLayout.Location = new Point(14, 13);
-            tlpContentLayout.Margin = new Padding(3, 2, 3, 2);
-            tlpContentLayout.Name = "tlpContentLayout";
-            tlpContentLayout.RowCount = 3;
-            tlpContentLayout.RowStyles.Add(new RowStyle());
-            tlpContentLayout.RowStyles.Add(new RowStyle());
-            tlpContentLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 17F));
-            tlpContentLayout.Size = new Size(754, 563);
-            tlpContentLayout.TabIndex = 0;
+            this.tlpContentLayout.BackColor = System.Drawing.Color.Transparent;
+            this.tlpContentLayout.ColumnCount = 1;
+            this.tlpContentLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpContentLayout.Controls.Add(this.flpTitleContainer, 0, 0);
+            this.tlpContentLayout.Controls.Add(this.flpKPIs, 0, 1);
+            this.tlpContentLayout.Controls.Add(this.flpQuickActions, 0, 2);
+            this.tlpContentLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpContentLayout.Location = new System.Drawing.Point(14, 13);
+            this.tlpContentLayout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tlpContentLayout.Name = "tlpContentLayout";
+            this.tlpContentLayout.RowCount = 3;
+            this.tlpContentLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpContentLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpContentLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpContentLayout.Size = new System.Drawing.Size(754, 563);
+            this.tlpContentLayout.TabIndex = 0;
             // 
             // flpTitleContainer
             // 
-            flpTitleContainer.AutoSize = true;
-            flpTitleContainer.Controls.Add(lblContentTitle);
-            flpTitleContainer.Controls.Add(lblContentSubtitle);
-            flpTitleContainer.Dock = DockStyle.Fill;
-            flpTitleContainer.FlowDirection = FlowDirection.TopDown;
-            flpTitleContainer.Location = new Point(3, 2);
-            flpTitleContainer.Margin = new Padding(3, 2, 3, 2);
-            flpTitleContainer.Name = "flpTitleContainer";
-            flpTitleContainer.Size = new Size(748, 72);
-            flpTitleContainer.TabIndex = 0;
+            this.flpTitleContainer.AutoSize = true;
+            this.flpTitleContainer.Controls.Add(this.lblContentTitle);
+            this.flpTitleContainer.Controls.Add(this.lblContentSubtitle);
+            this.flpTitleContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpTitleContainer.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpTitleContainer.Location = new System.Drawing.Point(3, 2);
+            this.flpTitleContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.flpTitleContainer.Name = "flpTitleContainer";
+            this.flpTitleContainer.Size = new System.Drawing.Size(748, 72);
+            this.flpTitleContainer.TabIndex = 0;
             // 
             // lblContentTitle
             // 
-            lblContentTitle.AutoSize = true;
-            lblContentTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblContentTitle.Location = new Point(0, 0);
-            lblContentTitle.Margin = new Padding(0, 0, 0, 4);
-            lblContentTitle.Name = "lblContentTitle";
-            lblContentTitle.Size = new Size(293, 32);
-            lblContentTitle.TabIndex = 0;
-            lblContentTitle.Text = "Panel de Administración";
+            this.lblContentTitle.AutoSize = true;
+            this.lblContentTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblContentTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblContentTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 4);
+            this.lblContentTitle.Name = "lblContentTitle";
+            this.lblContentTitle.Size = new System.Drawing.Size(293, 32);
+            this.lblContentTitle.TabIndex = 0;
+            this.lblContentTitle.Text = "Panel de Administración";
             // 
             // lblContentSubtitle
             // 
-            lblContentSubtitle.AutoSize = true;
-            lblContentSubtitle.Font = new Font("Segoe UI", 10F);
-            lblContentSubtitle.ForeColor = Color.DimGray;
-            lblContentSubtitle.Location = new Point(0, 36);
-            lblContentSubtitle.Margin = new Padding(0, 0, 0, 17);
-            lblContentSubtitle.Name = "lblContentSubtitle";
-            lblContentSubtitle.Size = new Size(445, 19);
-            lblContentSubtitle.TabIndex = 1;
-            lblContentSubtitle.Text = "Gestiona todos los aspectos de Cooking# desde este panel centralizado";
+            this.lblContentSubtitle.AutoSize = true;
+            this.lblContentSubtitle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblContentSubtitle.ForeColor = System.Drawing.Color.DimGray;
+            this.lblContentSubtitle.Location = new System.Drawing.Point(0, 36);
+            this.lblContentSubtitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 17);
+            this.lblContentSubtitle.Name = "lblContentSubtitle";
+            this.lblContentSubtitle.Size = new System.Drawing.Size(445, 19);
+            this.lblContentSubtitle.TabIndex = 1;
+            this.lblContentSubtitle.Text = "Gestiona todos los aspectos de Cooking# desde este panel centralizado";
             // 
             // flpKPIs
             // 
-            flpKPIs.AutoSize = true;
-            flpKPIs.Controls.Add(pnlKpiUsersBorder);
-            flpKPIs.Controls.Add(pnlKpiRecipesBorder);
-            flpKPIs.Controls.Add(pnlKpiPendingBorder);
-            flpKPIs.Controls.Add(pnlKpiCategoryBorder);
-            flpKPIs.Dock = DockStyle.Fill;
-            flpKPIs.Location = new Point(3, 78);
-            flpKPIs.Margin = new Padding(3, 2, 3, 2);
-            flpKPIs.Name = "flpKPIs";
-            flpKPIs.Size = new Size(748, 256);
-            flpKPIs.TabIndex = 1;
+            this.flpKPIs.AutoSize = true;
+            this.flpKPIs.Controls.Add(this.pnlKpiUsersBorder);
+            this.flpKPIs.Controls.Add(this.pnlKpiRecipesBorder);
+            this.flpKPIs.Controls.Add(this.pnlKpiPendingBorder);
+            this.flpKPIs.Controls.Add(this.pnlKpiCategoryBorder);
+            this.flpKPIs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpKPIs.Location = new System.Drawing.Point(3, 78);
+            this.flpKPIs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.flpKPIs.Name = "flpKPIs";
+            this.flpKPIs.Size = new System.Drawing.Size(748, 128);
+            this.flpKPIs.TabIndex = 1;
             // 
             // pnlKpiUsersBorder
             // 
-            pnlKpiUsersBorder.BackColor = Color.FromArgb(31, 41, 55);
-            pnlKpiUsersBorder.Controls.Add(pnlKpiUsuariosContent);
-            pnlKpiUsersBorder.Location = new Point(0, 0);
-            pnlKpiUsersBorder.Margin = new Padding(0, 0, 15, 13);
-            pnlKpiUsersBorder.Name = "pnlKpiUsersBorder";
-            pnlKpiUsersBorder.Padding = new Padding(1);
-            pnlKpiUsersBorder.Size = new Size(240, 115);
-            pnlKpiUsersBorder.TabIndex = 0;
+            this.pnlKpiUsersBorder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.pnlKpiUsersBorder.Controls.Add(this.pnlKpiUsuariosContent);
+            this.pnlKpiUsersBorder.Location = new System.Drawing.Point(0, 0);
+            this.pnlKpiUsersBorder.Margin = new System.Windows.Forms.Padding(0, 0, 15, 13);
+            this.pnlKpiUsersBorder.Name = "pnlKpiUsersBorder";
+            this.pnlKpiUsersBorder.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlKpiUsersBorder.Size = new System.Drawing.Size(240, 115);
+            this.pnlKpiUsersBorder.TabIndex = 0;
             // 
             // pnlKpiUsuariosContent
             // 
-            pnlKpiUsuariosContent.BackColor = Color.White;
-            pnlKpiUsuariosContent.Controls.Add(tlpKpiUsersLayout);
-            pnlKpiUsuariosContent.Dock = DockStyle.Fill;
-            pnlKpiUsuariosContent.Location = new Point(1, 1);
-            pnlKpiUsuariosContent.Margin = new Padding(0);
-            pnlKpiUsuariosContent.Name = "pnlKpiUsuariosContent";
-            pnlKpiUsuariosContent.Size = new Size(238, 113);
-            pnlKpiUsuariosContent.TabIndex = 0;
+            this.pnlKpiUsuariosContent.BackColor = System.Drawing.Color.White;
+            this.pnlKpiUsuariosContent.Controls.Add(this.tlpKpiUsersLayout);
+            this.pnlKpiUsuariosContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlKpiUsuariosContent.Location = new System.Drawing.Point(1, 1);
+            this.pnlKpiUsuariosContent.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlKpiUsuariosContent.Name = "pnlKpiUsuariosContent";
+            this.pnlKpiUsuariosContent.Size = new System.Drawing.Size(238, 113);
+            this.pnlKpiUsuariosContent.TabIndex = 0;
             // 
             // tlpKpiUsersLayout
             // 
-            tlpKpiUsersLayout.ColumnCount = 2;
-            tlpKpiUsersLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiUsersLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiUsersLayout.Controls.Add(lblKpiUsersValue, 1, 0);
-            tlpKpiUsersLayout.Controls.Add(picKpiUsers, 0, 0);
-            tlpKpiUsersLayout.Controls.Add(lblKpiUsuariosTittle, 0, 1);
-            tlpKpiUsersLayout.Dock = DockStyle.Fill;
-            tlpKpiUsersLayout.Location = new Point(0, 0);
-            tlpKpiUsersLayout.Margin = new Padding(3, 2, 3, 2);
-            tlpKpiUsersLayout.Name = "tlpKpiUsersLayout";
-            tlpKpiUsersLayout.RowCount = 2;
-            tlpKpiUsersLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiUsersLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiUsersLayout.Size = new Size(238, 113);
-            tlpKpiUsersLayout.TabIndex = 0;
+            this.tlpKpiUsersLayout.ColumnCount = 2;
+            this.tlpKpiUsersLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiUsersLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiUsersLayout.Controls.Add(this.lblKpiUsersValue, 1, 0);
+            this.tlpKpiUsersLayout.Controls.Add(this.picKpiUsers, 0, 0);
+            this.tlpKpiUsersLayout.Controls.Add(this.lblKpiUsuariosTittle, 0, 1);
+            this.tlpKpiUsersLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpKpiUsersLayout.Location = new System.Drawing.Point(0, 0);
+            this.tlpKpiUsersLayout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tlpKpiUsersLayout.Name = "tlpKpiUsersLayout";
+            this.tlpKpiUsersLayout.RowCount = 2;
+            this.tlpKpiUsersLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiUsersLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiUsersLayout.Size = new System.Drawing.Size(238, 113);
+            this.tlpKpiUsersLayout.TabIndex = 0;
             // 
             // lblKpiUsersValue
             // 
-            lblKpiUsersValue.AutoSize = true;
-            lblKpiUsersValue.Dock = DockStyle.Fill;
-            lblKpiUsersValue.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiUsersValue.Location = new Point(119, 0);
-            lblKpiUsersValue.Margin = new Padding(0, 0, 15, 0);
-            lblKpiUsersValue.Name = "lblKpiUsersValue";
-            lblKpiUsersValue.Size = new Size(104, 56);
-            lblKpiUsersValue.TabIndex = 1;
-            lblKpiUsersValue.Text = "1,234";
-            lblKpiUsersValue.TextAlign = ContentAlignment.MiddleRight;
+            this.lblKpiUsersValue.AutoSize = true;
+            this.lblKpiUsersValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblKpiUsersValue.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiUsersValue.Location = new System.Drawing.Point(119, 0);
+            this.lblKpiUsersValue.Margin = new System.Windows.Forms.Padding(0, 0, 15, 0);
+            this.lblKpiUsersValue.Name = "lblKpiUsersValue";
+            this.lblKpiUsersValue.Size = new System.Drawing.Size(104, 56);
+            this.lblKpiUsersValue.TabIndex = 1;
+            this.lblKpiUsersValue.Text = "1,234";
+            this.lblKpiUsersValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // picKpiUsers
             // 
-            picKpiUsers.Image = Properties.Resources.userKpiIcon;
-            picKpiUsers.Location = new Point(15, 13);
-            picKpiUsers.Margin = new Padding(15, 13, 0, 0);
-            picKpiUsers.Name = "picKpiUsers";
-            picKpiUsers.Size = new Size(32, 28);
-            picKpiUsers.SizeMode = PictureBoxSizeMode.StretchImage;
-            picKpiUsers.TabIndex = 2;
-            picKpiUsers.TabStop = false;
+            this.picKpiUsers.Image = global::CookingSharp.WindowsForms.Properties.Resources.userKpiIcon;
+            this.picKpiUsers.Location = new System.Drawing.Point(15, 13);
+            this.picKpiUsers.Margin = new System.Windows.Forms.Padding(15, 13, 0, 0);
+            this.picKpiUsers.Name = "picKpiUsers";
+            this.picKpiUsers.Size = new System.Drawing.Size(32, 28);
+            this.picKpiUsers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picKpiUsers.TabIndex = 2;
+            this.picKpiUsers.TabStop = false;
             // 
             // lblKpiUsuariosTittle
             // 
-            lblKpiUsuariosTittle.AutoSize = true;
-            tlpKpiUsersLayout.SetColumnSpan(lblKpiUsuariosTittle, 2);
-            lblKpiUsuariosTittle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiUsuariosTittle.ForeColor = Color.Black;
-            lblKpiUsuariosTittle.Location = new Point(3, 56);
-            lblKpiUsuariosTittle.Name = "lblKpiUsuariosTittle";
-            lblKpiUsuariosTittle.Size = new Size(169, 21);
-            lblKpiUsuariosTittle.TabIndex = 3;
-            lblKpiUsuariosTittle.Text = "Usuarios Registrados";
+            this.lblKpiUsuariosTittle.AutoSize = true;
+            this.tlpKpiUsersLayout.SetColumnSpan(this.lblKpiUsuariosTittle, 2);
+            this.lblKpiUsuariosTittle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiUsuariosTittle.ForeColor = System.Drawing.Color.Black;
+            this.lblKpiUsuariosTittle.Location = new System.Drawing.Point(3, 56);
+            this.lblKpiUsuariosTittle.Name = "lblKpiUsuariosTittle";
+            this.lblKpiUsuariosTittle.Size = new System.Drawing.Size(169, 21);
+            this.lblKpiUsuariosTittle.TabIndex = 3;
+            this.lblKpiUsuariosTittle.Text = "Usuarios Registrados";
             // 
             // pnlKpiRecipesBorder
             // 
-            pnlKpiRecipesBorder.BackColor = Color.FromArgb(31, 41, 55);
-            pnlKpiRecipesBorder.Controls.Add(pnlKpiRecipesContent);
-            pnlKpiRecipesBorder.Location = new Point(255, 0);
-            pnlKpiRecipesBorder.Margin = new Padding(0, 0, 15, 13);
-            pnlKpiRecipesBorder.Name = "pnlKpiRecipesBorder";
-            pnlKpiRecipesBorder.Padding = new Padding(1);
-            pnlKpiRecipesBorder.Size = new Size(240, 115);
-            pnlKpiRecipesBorder.TabIndex = 1;
+            this.pnlKpiRecipesBorder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.pnlKpiRecipesBorder.Controls.Add(this.pnlKpiRecipesContent);
+            this.pnlKpiRecipesBorder.Location = new System.Drawing.Point(255, 0);
+            this.pnlKpiRecipesBorder.Margin = new System.Windows.Forms.Padding(0, 0, 15, 13);
+            this.pnlKpiRecipesBorder.Name = "pnlKpiRecipesBorder";
+            this.pnlKpiRecipesBorder.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlKpiRecipesBorder.Size = new System.Drawing.Size(240, 115);
+            this.pnlKpiRecipesBorder.TabIndex = 1;
             // 
             // pnlKpiRecipesContent
             // 
-            pnlKpiRecipesContent.BackColor = Color.White;
-            pnlKpiRecipesContent.Controls.Add(tlpKpiRecipesLayout);
-            pnlKpiRecipesContent.Dock = DockStyle.Fill;
-            pnlKpiRecipesContent.Location = new Point(1, 1);
-            pnlKpiRecipesContent.Margin = new Padding(0);
-            pnlKpiRecipesContent.Name = "pnlKpiRecipesContent";
-            pnlKpiRecipesContent.Size = new Size(238, 113);
-            pnlKpiRecipesContent.TabIndex = 0;
+            this.pnlKpiRecipesContent.BackColor = System.Drawing.Color.White;
+            this.pnlKpiRecipesContent.Controls.Add(this.tlpKpiRecipesLayout);
+            this.pnlKpiRecipesContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlKpiRecipesContent.Location = new System.Drawing.Point(1, 1);
+            this.pnlKpiRecipesContent.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlKpiRecipesContent.Name = "pnlKpiRecipesContent";
+            this.pnlKpiRecipesContent.Size = new System.Drawing.Size(238, 113);
+            this.pnlKpiRecipesContent.TabIndex = 0;
             // 
             // tlpKpiRecipesLayout
             // 
-            tlpKpiRecipesLayout.ColumnCount = 2;
-            tlpKpiRecipesLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiRecipesLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiRecipesLayout.Controls.Add(lblKpiRecipesValue, 1, 0);
-            tlpKpiRecipesLayout.Controls.Add(picKpiRecipes, 0, 0);
-            tlpKpiRecipesLayout.Controls.Add(lblKpiRecipesTittle, 0, 1);
-            tlpKpiRecipesLayout.Dock = DockStyle.Fill;
-            tlpKpiRecipesLayout.Location = new Point(0, 0);
-            tlpKpiRecipesLayout.Margin = new Padding(3, 2, 3, 2);
-            tlpKpiRecipesLayout.Name = "tlpKpiRecipesLayout";
-            tlpKpiRecipesLayout.RowCount = 2;
-            tlpKpiRecipesLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiRecipesLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiRecipesLayout.Size = new Size(238, 113);
-            tlpKpiRecipesLayout.TabIndex = 0;
+            this.tlpKpiRecipesLayout.ColumnCount = 2;
+            this.tlpKpiRecipesLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiRecipesLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiRecipesLayout.Controls.Add(this.lblKpiRecipesValue, 1, 0);
+            this.tlpKpiRecipesLayout.Controls.Add(this.picKpiRecipes, 0, 0);
+            this.tlpKpiRecipesLayout.Controls.Add(this.lblKpiRecipesTittle, 0, 1);
+            this.tlpKpiRecipesLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpKpiRecipesLayout.Location = new System.Drawing.Point(0, 0);
+            this.tlpKpiRecipesLayout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tlpKpiRecipesLayout.Name = "tlpKpiRecipesLayout";
+            this.tlpKpiRecipesLayout.RowCount = 2;
+            this.tlpKpiRecipesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiRecipesLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiRecipesLayout.Size = new System.Drawing.Size(238, 113);
+            this.tlpKpiRecipesLayout.TabIndex = 0;
             // 
             // lblKpiRecipesValue
             // 
-            lblKpiRecipesValue.AutoSize = true;
-            lblKpiRecipesValue.Dock = DockStyle.Fill;
-            lblKpiRecipesValue.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiRecipesValue.Location = new Point(119, 0);
-            lblKpiRecipesValue.Margin = new Padding(0, 0, 15, 0);
-            lblKpiRecipesValue.Name = "lblKpiRecipesValue";
-            lblKpiRecipesValue.Size = new Size(104, 56);
-            lblKpiRecipesValue.TabIndex = 1;
-            lblKpiRecipesValue.Text = "3,456";
-            lblKpiRecipesValue.TextAlign = ContentAlignment.MiddleRight;
+            this.lblKpiRecipesValue.AutoSize = true;
+            this.lblKpiRecipesValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblKpiRecipesValue.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiRecipesValue.Location = new System.Drawing.Point(119, 0);
+            this.lblKpiRecipesValue.Margin = new System.Windows.Forms.Padding(0, 0, 15, 0);
+            this.lblKpiRecipesValue.Name = "lblKpiRecipesValue";
+            this.lblKpiRecipesValue.Size = new System.Drawing.Size(104, 56);
+            this.lblKpiRecipesValue.TabIndex = 1;
+            this.lblKpiRecipesValue.Text = "3,456";
+            this.lblKpiRecipesValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // picKpiRecipes
             // 
-            picKpiRecipes.Image = (Image)resources.GetObject("picKpiRecipes.Image");
-            picKpiRecipes.Location = new Point(15, 13);
-            picKpiRecipes.Margin = new Padding(15, 13, 0, 0);
-            picKpiRecipes.Name = "picKpiRecipes";
-            picKpiRecipes.Size = new Size(32, 28);
-            picKpiRecipes.SizeMode = PictureBoxSizeMode.StretchImage;
-            picKpiRecipes.TabIndex = 2;
-            picKpiRecipes.TabStop = false;
+            this.picKpiRecipes.Image = ((System.Drawing.Image)(resources.GetObject("picKpiRecipes.Image")));
+            this.picKpiRecipes.Location = new System.Drawing.Point(15, 13);
+            this.picKpiRecipes.Margin = new System.Windows.Forms.Padding(15, 13, 0, 0);
+            this.picKpiRecipes.Name = "picKpiRecipes";
+            this.picKpiRecipes.Size = new System.Drawing.Size(32, 28);
+            this.picKpiRecipes.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picKpiRecipes.TabIndex = 2;
+            this.picKpiRecipes.TabStop = false;
             // 
             // lblKpiRecipesTittle
             // 
-            lblKpiRecipesTittle.AutoSize = true;
-            tlpKpiRecipesLayout.SetColumnSpan(lblKpiRecipesTittle, 2);
-            lblKpiRecipesTittle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiRecipesTittle.ForeColor = Color.Black;
-            lblKpiRecipesTittle.Location = new Point(3, 56);
-            lblKpiRecipesTittle.Name = "lblKpiRecipesTittle";
-            lblKpiRecipesTittle.Size = new Size(155, 21);
-            lblKpiRecipesTittle.TabIndex = 3;
-            lblKpiRecipesTittle.Text = "Recetas Publicadas";
+            this.lblKpiRecipesTittle.AutoSize = true;
+            this.tlpKpiRecipesLayout.SetColumnSpan(this.lblKpiRecipesTittle, 2);
+            this.lblKpiRecipesTittle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiRecipesTittle.ForeColor = System.Drawing.Color.Black;
+            this.lblKpiRecipesTittle.Location = new System.Drawing.Point(3, 56);
+            this.lblKpiRecipesTittle.Name = "lblKpiRecipesTittle";
+            this.lblKpiRecipesTittle.Size = new System.Drawing.Size(155, 21);
+            this.lblKpiRecipesTittle.TabIndex = 3;
+            this.lblKpiRecipesTittle.Text = "Recetas Publicadas";
             // 
             // pnlKpiPendingBorder
             // 
-            pnlKpiPendingBorder.BackColor = Color.FromArgb(31, 41, 55);
-            pnlKpiPendingBorder.Controls.Add(pnlKpiPendingContent);
-            pnlKpiPendingBorder.Location = new Point(0, 128);
-            pnlKpiPendingBorder.Margin = new Padding(0, 0, 15, 13);
-            pnlKpiPendingBorder.Name = "pnlKpiPendingBorder";
-            pnlKpiPendingBorder.Padding = new Padding(1);
-            pnlKpiPendingBorder.Size = new Size(240, 115);
-            pnlKpiPendingBorder.TabIndex = 2;
+            this.pnlKpiPendingBorder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.pnlKpiPendingBorder.Controls.Add(this.pnlKpiPendingContent);
+            this.pnlKpiPendingBorder.Location = new System.Drawing.Point(510, 0);
+            this.pnlKpiPendingBorder.Margin = new System.Windows.Forms.Padding(0, 0, 15, 13);
+            this.pnlKpiPendingBorder.Name = "pnlKpiPendingBorder";
+            this.pnlKpiPendingBorder.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlKpiPendingBorder.Size = new System.Drawing.Size(240, 115);
+            this.pnlKpiPendingBorder.TabIndex = 2;
             // 
             // pnlKpiPendingContent
             // 
-            pnlKpiPendingContent.BackColor = Color.White;
-            pnlKpiPendingContent.Controls.Add(tlpKpiPendingLayout);
-            pnlKpiPendingContent.Dock = DockStyle.Fill;
-            pnlKpiPendingContent.Location = new Point(1, 1);
-            pnlKpiPendingContent.Margin = new Padding(0);
-            pnlKpiPendingContent.Name = "pnlKpiPendingContent";
-            pnlKpiPendingContent.Size = new Size(238, 113);
-            pnlKpiPendingContent.TabIndex = 0;
+            this.pnlKpiPendingContent.BackColor = System.Drawing.Color.White;
+            this.pnlKpiPendingContent.Controls.Add(this.tlpKpiPendingLayout);
+            this.pnlKpiPendingContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlKpiPendingContent.Location = new System.Drawing.Point(1, 1);
+            this.pnlKpiPendingContent.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlKpiPendingContent.Name = "pnlKpiPendingContent";
+            this.pnlKpiPendingContent.Size = new System.Drawing.Size(238, 113);
+            this.pnlKpiPendingContent.TabIndex = 0;
             // 
             // tlpKpiPendingLayout
             // 
-            tlpKpiPendingLayout.ColumnCount = 2;
-            tlpKpiPendingLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiPendingLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiPendingLayout.Controls.Add(lblKpiPendingValue, 1, 0);
-            tlpKpiPendingLayout.Controls.Add(picKpiPending, 0, 0);
-            tlpKpiPendingLayout.Controls.Add(lblKpiPendingTittle, 0, 1);
-            tlpKpiPendingLayout.Dock = DockStyle.Fill;
-            tlpKpiPendingLayout.Location = new Point(0, 0);
-            tlpKpiPendingLayout.Margin = new Padding(3, 2, 3, 2);
-            tlpKpiPendingLayout.Name = "tlpKpiPendingLayout";
-            tlpKpiPendingLayout.RowCount = 2;
-            tlpKpiPendingLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiPendingLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiPendingLayout.Size = new Size(238, 113);
-            tlpKpiPendingLayout.TabIndex = 0;
+            this.tlpKpiPendingLayout.ColumnCount = 2;
+            this.tlpKpiPendingLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiPendingLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiPendingLayout.Controls.Add(this.lblKpiPendingValue, 1, 0);
+            this.tlpKpiPendingLayout.Controls.Add(this.picKpiPending, 0, 0);
+            this.tlpKpiPendingLayout.Controls.Add(this.lblKpiPendingTittle, 0, 1);
+            this.tlpKpiPendingLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpKpiPendingLayout.Location = new System.Drawing.Point(0, 0);
+            this.tlpKpiPendingLayout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tlpKpiPendingLayout.Name = "tlpKpiPendingLayout";
+            this.tlpKpiPendingLayout.RowCount = 2;
+            this.tlpKpiPendingLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiPendingLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiPendingLayout.Size = new System.Drawing.Size(238, 113);
+            this.tlpKpiPendingLayout.TabIndex = 0;
             // 
             // lblKpiPendingValue
             // 
-            lblKpiPendingValue.AutoSize = true;
-            lblKpiPendingValue.Dock = DockStyle.Fill;
-            lblKpiPendingValue.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiPendingValue.Location = new Point(119, 0);
-            lblKpiPendingValue.Margin = new Padding(0, 0, 15, 0);
-            lblKpiPendingValue.Name = "lblKpiPendingValue";
-            lblKpiPendingValue.Size = new Size(104, 56);
-            lblKpiPendingValue.TabIndex = 1;
-            lblKpiPendingValue.Text = "8";
-            lblKpiPendingValue.TextAlign = ContentAlignment.MiddleRight;
+            this.lblKpiPendingValue.AutoSize = true;
+            this.lblKpiPendingValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblKpiPendingValue.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiPendingValue.Location = new System.Drawing.Point(119, 0);
+            this.lblKpiPendingValue.Margin = new System.Windows.Forms.Padding(0, 0, 15, 0);
+            this.lblKpiPendingValue.Name = "lblKpiPendingValue";
+            this.lblKpiPendingValue.Size = new System.Drawing.Size(104, 56);
+            this.lblKpiPendingValue.TabIndex = 1;
+            this.lblKpiPendingValue.Text = "8";
+            this.lblKpiPendingValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // picKpiPending
             // 
-            picKpiPending.Image = (Image)resources.GetObject("picKpiPending.Image");
-            picKpiPending.Location = new Point(15, 13);
-            picKpiPending.Margin = new Padding(15, 13, 0, 0);
-            picKpiPending.Name = "picKpiPending";
-            picKpiPending.Size = new Size(32, 28);
-            picKpiPending.SizeMode = PictureBoxSizeMode.StretchImage;
-            picKpiPending.TabIndex = 2;
-            picKpiPending.TabStop = false;
+            this.picKpiPending.Image = ((System.Drawing.Image)(resources.GetObject("picKpiPending.Image")));
+            this.picKpiPending.Location = new System.Drawing.Point(15, 13);
+            this.picKpiPending.Margin = new System.Windows.Forms.Padding(15, 13, 0, 0);
+            this.picKpiPending.Name = "picKpiPending";
+            this.picKpiPending.Size = new System.Drawing.Size(32, 28);
+            this.picKpiPending.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picKpiPending.TabIndex = 2;
+            this.picKpiPending.TabStop = false;
             // 
             // lblKpiPendingTittle
             // 
-            lblKpiPendingTittle.AutoSize = true;
-            tlpKpiPendingLayout.SetColumnSpan(lblKpiPendingTittle, 2);
-            lblKpiPendingTittle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiPendingTittle.ForeColor = Color.Black;
-            lblKpiPendingTittle.Location = new Point(3, 56);
-            lblKpiPendingTittle.Name = "lblKpiPendingTittle";
-            lblKpiPendingTittle.Size = new Size(188, 21);
-            lblKpiPendingTittle.TabIndex = 3;
-            lblKpiPendingTittle.Text = "Pendientes Aprobación";
+            this.lblKpiPendingTittle.AutoSize = true;
+            this.tlpKpiPendingLayout.SetColumnSpan(this.lblKpiPendingTittle, 2);
+            this.lblKpiPendingTittle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiPendingTittle.ForeColor = System.Drawing.Color.Black;
+            this.lblKpiPendingTittle.Location = new System.Drawing.Point(3, 56);
+            this.lblKpiPendingTittle.Name = "lblKpiPendingTittle";
+            this.lblKpiPendingTittle.Size = new System.Drawing.Size(188, 21);
+            this.lblKpiPendingTittle.TabIndex = 3;
+            this.lblKpiPendingTittle.Text = "Pendientes Aprobación";
             // 
             // pnlKpiCategoryBorder
             // 
-            pnlKpiCategoryBorder.BackColor = Color.FromArgb(31, 41, 55);
-            pnlKpiCategoryBorder.Controls.Add(pnlKpiCategoryContent);
-            pnlKpiCategoryBorder.Location = new Point(255, 128);
-            pnlKpiCategoryBorder.Margin = new Padding(0, 0, 15, 13);
-            pnlKpiCategoryBorder.Name = "pnlKpiCategoryBorder";
-            pnlKpiCategoryBorder.Padding = new Padding(1);
-            pnlKpiCategoryBorder.Size = new Size(240, 115);
-            pnlKpiCategoryBorder.TabIndex = 3;
+            this.pnlKpiCategoryBorder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.pnlKpiCategoryBorder.Controls.Add(this.pnlKpiCategoryContent);
+            this.pnlKpiCategoryBorder.Location = new System.Drawing.Point(0, 128);
+            this.pnlKpiCategoryBorder.Margin = new System.Windows.Forms.Padding(0, 0, 15, 13);
+            this.pnlKpiCategoryBorder.Name = "pnlKpiCategoryBorder";
+            this.pnlKpiCategoryBorder.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlKpiCategoryBorder.Size = new System.Drawing.Size(240, 115);
+            this.pnlKpiCategoryBorder.TabIndex = 3;
             // 
             // pnlKpiCategoryContent
             // 
-            pnlKpiCategoryContent.BackColor = Color.White;
-            pnlKpiCategoryContent.Controls.Add(tlpKpiCategoryLayout);
-            pnlKpiCategoryContent.Dock = DockStyle.Fill;
-            pnlKpiCategoryContent.Location = new Point(1, 1);
-            pnlKpiCategoryContent.Margin = new Padding(0);
-            pnlKpiCategoryContent.Name = "pnlKpiCategoryContent";
-            pnlKpiCategoryContent.Size = new Size(238, 113);
-            pnlKpiCategoryContent.TabIndex = 0;
+            this.pnlKpiCategoryContent.BackColor = System.Drawing.Color.White;
+            this.pnlKpiCategoryContent.Controls.Add(this.tlpKpiCategoryLayout);
+            this.pnlKpiCategoryContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlKpiCategoryContent.Location = new System.Drawing.Point(1, 1);
+            this.pnlKpiCategoryContent.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlKpiCategoryContent.Name = "pnlKpiCategoryContent";
+            this.pnlKpiCategoryContent.Size = new System.Drawing.Size(238, 113);
+            this.pnlKpiCategoryContent.TabIndex = 0;
             // 
             // tlpKpiCategoryLayout
             // 
-            tlpKpiCategoryLayout.ColumnCount = 2;
-            tlpKpiCategoryLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiCategoryLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpKpiCategoryLayout.Controls.Add(lblKpiCategoryValue, 1, 0);
-            tlpKpiCategoryLayout.Controls.Add(picKpiCategory, 0, 0);
-            tlpKpiCategoryLayout.Controls.Add(lblKpiCategoryTittle, 0, 1);
-            tlpKpiCategoryLayout.Dock = DockStyle.Fill;
-            tlpKpiCategoryLayout.Location = new Point(0, 0);
-            tlpKpiCategoryLayout.Margin = new Padding(3, 2, 3, 2);
-            tlpKpiCategoryLayout.Name = "tlpKpiCategoryLayout";
-            tlpKpiCategoryLayout.RowCount = 3;
-            tlpKpiCategoryLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiCategoryLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpKpiCategoryLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlpKpiCategoryLayout.Size = new Size(238, 113);
-            tlpKpiCategoryLayout.TabIndex = 0;
+            this.tlpKpiCategoryLayout.ColumnCount = 2;
+            this.tlpKpiCategoryLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiCategoryLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiCategoryLayout.Controls.Add(this.lblKpiCategoryValue, 1, 0);
+            this.tlpKpiCategoryLayout.Controls.Add(this.picKpiCategory, 0, 0);
+            this.tlpKpiCategoryLayout.Controls.Add(this.lblKpiCategoryTittle, 0, 1);
+            this.tlpKpiCategoryLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpKpiCategoryLayout.Location = new System.Drawing.Point(0, 0);
+            this.tlpKpiCategoryLayout.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tlpKpiCategoryLayout.Name = "tlpKpiCategoryLayout";
+            this.tlpKpiCategoryLayout.RowCount = 2;
+            this.tlpKpiCategoryLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiCategoryLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpKpiCategoryLayout.Size = new System.Drawing.Size(238, 113);
+            this.tlpKpiCategoryLayout.TabIndex = 0;
             // 
             // lblKpiCategoryValue
             // 
-            lblKpiCategoryValue.AutoSize = true;
-            lblKpiCategoryValue.Dock = DockStyle.Fill;
-            lblKpiCategoryValue.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiCategoryValue.Location = new Point(119, 0);
-            lblKpiCategoryValue.Margin = new Padding(0, 0, 15, 0);
-            lblKpiCategoryValue.Name = "lblKpiCategoryValue";
-            lblKpiCategoryValue.Size = new Size(104, 46);
-            lblKpiCategoryValue.TabIndex = 1;
-            lblKpiCategoryValue.Text = "24";
-            lblKpiCategoryValue.TextAlign = ContentAlignment.MiddleRight;
+            this.lblKpiCategoryValue.AutoSize = true;
+            this.lblKpiCategoryValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblKpiCategoryValue.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiCategoryValue.Location = new System.Drawing.Point(119, 0);
+            this.lblKpiCategoryValue.Margin = new System.Windows.Forms.Padding(0, 0, 15, 0);
+            this.lblKpiCategoryValue.Name = "lblKpiCategoryValue";
+            this.lblKpiCategoryValue.Size = new System.Drawing.Size(104, 56);
+            this.lblKpiCategoryValue.TabIndex = 1;
+            this.lblKpiCategoryValue.Text = "24";
+            this.lblKpiCategoryValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // picKpiCategory
             // 
-            picKpiCategory.Image = (Image)resources.GetObject("picKpiCategory.Image");
-            picKpiCategory.Location = new Point(15, 13);
-            picKpiCategory.Margin = new Padding(15, 13, 0, 0);
-            picKpiCategory.Name = "picKpiCategory";
-            picKpiCategory.Size = new Size(32, 28);
-            picKpiCategory.SizeMode = PictureBoxSizeMode.StretchImage;
-            picKpiCategory.TabIndex = 2;
-            picKpiCategory.TabStop = false;
+            this.picKpiCategory.Image = ((System.Drawing.Image)(resources.GetObject("picKpiCategory.Image")));
+            this.picKpiCategory.Location = new System.Drawing.Point(15, 13);
+            this.picKpiCategory.Margin = new System.Windows.Forms.Padding(15, 13, 0, 0);
+            this.picKpiCategory.Name = "picKpiCategory";
+            this.picKpiCategory.Size = new System.Drawing.Size(32, 28);
+            this.picKpiCategory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picKpiCategory.TabIndex = 2;
+            this.picKpiCategory.TabStop = false;
             // 
             // lblKpiCategoryTittle
             // 
-            lblKpiCategoryTittle.AutoSize = true;
-            tlpKpiCategoryLayout.SetColumnSpan(lblKpiCategoryTittle, 2);
-            lblKpiCategoryTittle.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblKpiCategoryTittle.ForeColor = Color.Black;
-            lblKpiCategoryTittle.Location = new Point(3, 46);
-            lblKpiCategoryTittle.Name = "lblKpiCategoryTittle";
-            lblKpiCategoryTittle.Size = new Size(150, 21);
-            lblKpiCategoryTittle.TabIndex = 3;
-            lblKpiCategoryTittle.Text = "Categorias Activas";
+            this.lblKpiCategoryTittle.AutoSize = true;
+            this.tlpKpiCategoryLayout.SetColumnSpan(this.lblKpiCategoryTittle, 2);
+            this.lblKpiCategoryTittle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblKpiCategoryTittle.ForeColor = System.Drawing.Color.Black;
+            this.lblKpiCategoryTittle.Location = new System.Drawing.Point(3, 56);
+            this.lblKpiCategoryTittle.Name = "lblKpiCategoryTittle";
+            this.lblKpiCategoryTittle.Size = new System.Drawing.Size(150, 21);
+            this.lblKpiCategoryTittle.TabIndex = 3;
+            this.lblKpiCategoryTittle.Text = "Categorias Activas";
             // 
             // flpQuickActions
             // 
-            flpQuickActions.Controls.Add(lblQuickActionsTittle);
-            flpQuickActions.Controls.Add(flpQuickActionsButtons);
-            flpQuickActions.Dock = DockStyle.Fill;
-            flpQuickActions.FlowDirection = FlowDirection.TopDown;
-            flpQuickActions.Location = new Point(2, 338);
-            flpQuickActions.Margin = new Padding(2);
-            flpQuickActions.Name = "flpQuickActions";
-            flpQuickActions.Padding = new Padding(0, 12, 0, 0);
-            flpQuickActions.Size = new Size(750, 223);
-            flpQuickActions.TabIndex = 2;
+            this.flpQuickActions.AutoSize = true;
+            this.flpQuickActions.Controls.Add(this.lblQuickActionsTittle);
+            this.flpQuickActions.Controls.Add(this.flpQuickActionsButtons);
+            this.flpQuickActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpQuickActions.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpQuickActions.Location = new System.Drawing.Point(2, 210);
+            this.flpQuickActions.Margin = new System.Windows.Forms.Padding(2);
+            this.flpQuickActions.Name = "flpQuickActions";
+            this.flpQuickActions.Padding = new System.Windows.Forms.Padding(0, 12, 0, 0);
+            this.flpQuickActions.Size = new System.Drawing.Size(750, 351);
+            this.flpQuickActions.TabIndex = 2;
             // 
             // lblQuickActionsTittle
             // 
-            lblQuickActionsTittle.AutoSize = true;
-            lblQuickActionsTittle.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblQuickActionsTittle.ForeColor = Color.DimGray;
-            lblQuickActionsTittle.Location = new Point(0, 24);
-            lblQuickActionsTittle.Margin = new Padding(0, 12, 0, 6);
-            lblQuickActionsTittle.Name = "lblQuickActionsTittle";
-            lblQuickActionsTittle.Size = new Size(146, 21);
-            lblQuickActionsTittle.TabIndex = 1;
-            lblQuickActionsTittle.Text = "Acciones Rápidas";
+            this.lblQuickActionsTittle.AutoSize = true;
+            this.lblQuickActionsTittle.Font = new System.Drawing.Font("Segoe UI Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblQuickActionsTittle.ForeColor = System.Drawing.Color.DimGray;
+            this.lblQuickActionsTittle.Location = new System.Drawing.Point(0, 24);
+            this.lblQuickActionsTittle.Margin = new System.Windows.Forms.Padding(0, 12, 0, 6);
+            this.lblQuickActionsTittle.Name = "lblQuickActionsTittle";
+            this.lblQuickActionsTittle.Size = new System.Drawing.Size(146, 21);
+            this.lblQuickActionsTittle.TabIndex = 1;
+            this.lblQuickActionsTittle.Text = "Acciones Rápidas";
             // 
             // flpQuickActionsButtons
             // 
-            flpQuickActionsButtons.AutoSize = true;
-            flpQuickActionsButtons.Controls.Add(btnNewUser);
-            flpQuickActionsButtons.Controls.Add(btnViewReports);
-            flpQuickActionsButtons.Controls.Add(btnCheckPending);
-            flpQuickActionsButtons.Location = new Point(3, 53);
-            flpQuickActionsButtons.Margin = new Padding(3, 2, 3, 2);
-            flpQuickActionsButtons.Name = "flpQuickActionsButtons";
-            flpQuickActionsButtons.Size = new Size(732, 58);
-            flpQuickActionsButtons.TabIndex = 5;
+            this.flpQuickActionsButtons.AutoSize = true;
+            this.flpQuickActionsButtons.Controls.Add(this.btnNewUser);
+            this.flpQuickActionsButtons.Controls.Add(this.btnViewReports);
+            this.flpQuickActionsButtons.Controls.Add(this.btnCheckPending);
+            this.flpQuickActionsButtons.Location = new System.Drawing.Point(3, 53);
+            this.flpQuickActionsButtons.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.flpQuickActionsButtons.Name = "flpQuickActionsButtons";
+            this.flpQuickActionsButtons.Size = new System.Drawing.Size(732, 58);
+            this.flpQuickActionsButtons.TabIndex = 5;
             // 
             // btnNewUser
             // 
-            btnNewUser.BackColor = Color.FromArgb(165, 182, 252);
-            btnNewUser.FlatAppearance.BorderSize = 0;
-            btnNewUser.FlatAppearance.MouseDownBackColor = Color.FromArgb(193, 220, 253);
-            btnNewUser.FlatAppearance.MouseOverBackColor = Color.FromArgb(193, 220, 253);
-            btnNewUser.FlatStyle = FlatStyle.Flat;
-            btnNewUser.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnNewUser.ForeColor = Color.Black;
-            btnNewUser.Image = (Image)resources.GetObject("btnNewUser.Image");
-            btnNewUser.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNewUser.Location = new Point(3, 2);
-            btnNewUser.Margin = new Padding(3, 2, 3, 4);
-            btnNewUser.Name = "btnNewUser";
-            btnNewUser.Padding = new Padding(4);
-            btnNewUser.Size = new Size(238, 52);
-            btnNewUser.TabIndex = 1;
-            btnNewUser.Text = "Crear Usuario";
-            btnNewUser.UseVisualStyleBackColor = false;
+            this.btnNewUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.btnNewUser.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.btnNewUser.FlatAppearance.BorderSize = 2;
+            this.btnNewUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewUser.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnNewUser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnNewUser.Image = ((System.Drawing.Image)(resources.GetObject("btnNewUser.Image")));
+            this.btnNewUser.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewUser.Location = new System.Drawing.Point(3, 2);
+            this.btnNewUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
+            this.btnNewUser.Name = "btnNewUser";
+            this.btnNewUser.Padding = new System.Windows.Forms.Padding(4);
+            this.btnNewUser.Size = new System.Drawing.Size(238, 52);
+            this.btnNewUser.TabIndex = 1;
+            this.btnNewUser.Text = "     Crear Usuario";
+            this.btnNewUser.UseVisualStyleBackColor = false;
+            this.btnNewUser.Click += new System.EventHandler(this.btnNewUser_Click);
             // 
             // btnViewReports
             // 
-            btnViewReports.BackColor = Color.FromArgb(193, 152, 243);
-            btnViewReports.FlatAppearance.BorderSize = 0;
-            btnViewReports.FlatAppearance.MouseDownBackColor = Color.FromArgb(227, 209, 250);
-            btnViewReports.FlatAppearance.MouseOverBackColor = Color.FromArgb(227, 209, 250);
-            btnViewReports.FlatStyle = FlatStyle.Flat;
-            btnViewReports.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnViewReports.ForeColor = Color.Black;
-            btnViewReports.Image = (Image)resources.GetObject("btnViewReports.Image");
-            btnViewReports.ImageAlign = ContentAlignment.MiddleLeft;
-            btnViewReports.Location = new Point(247, 2);
-            btnViewReports.Margin = new Padding(3, 2, 3, 4);
-            btnViewReports.Name = "btnViewReports";
-            btnViewReports.Padding = new Padding(4);
-            btnViewReports.Size = new Size(238, 52);
-            btnViewReports.TabIndex = 3;
-            btnViewReports.Text = "Ver Reportes";
-            btnViewReports.UseVisualStyleBackColor = false;
+            this.btnViewReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.btnViewReports.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.btnViewReports.FlatAppearance.BorderSize = 2;
+            this.btnViewReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViewReports.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnViewReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnViewReports.Image = ((System.Drawing.Image)(resources.GetObject("btnViewReports.Image")));
+            this.btnViewReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnViewReports.Location = new System.Drawing.Point(247, 2);
+            this.btnViewReports.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
+            this.btnViewReports.Name = "btnViewReports";
+            this.btnViewReports.Padding = new System.Windows.Forms.Padding(4);
+            this.btnViewReports.Size = new System.Drawing.Size(238, 52);
+            this.btnViewReports.TabIndex = 3;
+            this.btnViewReports.Text = "     Ver Reportes";
+            this.btnViewReports.UseVisualStyleBackColor = false;
+            this.btnViewReports.Click += new System.EventHandler(this.btnViewReports_Click);
             // 
             // btnCheckPending
             // 
-            btnCheckPending.BackColor = Color.FromArgb(192, 255, 192);
-            btnCheckPending.FlatAppearance.BorderSize = 0;
-            btnCheckPending.FlatAppearance.MouseDownBackColor = Color.FromArgb(215, 255, 215);
-            btnCheckPending.FlatAppearance.MouseOverBackColor = Color.FromArgb(215, 255, 215);
-            btnCheckPending.FlatStyle = FlatStyle.Flat;
-            btnCheckPending.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnCheckPending.ForeColor = Color.Black;
-            btnCheckPending.Image = (Image)resources.GetObject("btnCheckPending.Image");
-            btnCheckPending.ImageAlign = ContentAlignment.MiddleLeft;
-            btnCheckPending.Location = new Point(491, 2);
-            btnCheckPending.Margin = new Padding(3, 2, 3, 4);
-            btnCheckPending.Name = "btnCheckPending";
-            btnCheckPending.Padding = new Padding(4);
-            btnCheckPending.Size = new Size(238, 52);
-            btnCheckPending.TabIndex = 2;
-            btnCheckPending.Text = "Revisar Pendientes";
-            btnCheckPending.UseVisualStyleBackColor = false;
+            this.btnCheckPending.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.btnCheckPending.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.btnCheckPending.FlatAppearance.BorderSize = 2;
+            this.btnCheckPending.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCheckPending.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnCheckPending.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCheckPending.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckPending.Image")));
+            this.btnCheckPending.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCheckPending.Location = new System.Drawing.Point(491, 2);
+            this.btnCheckPending.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
+            this.btnCheckPending.Name = "btnCheckPending";
+            this.btnCheckPending.Padding = new System.Windows.Forms.Padding(4);
+            this.btnCheckPending.Size = new System.Drawing.Size(238, 52);
+            this.btnCheckPending.TabIndex = 2;
+            this.btnCheckPending.Text = "     Revisar Pendientes";
+            this.btnCheckPending.UseVisualStyleBackColor = false;
+            this.btnCheckPending.Click += new System.EventHandler(this.btnCheckPending_Click);
             // 
             // UC_AdminPanel
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(pnlMainContent);
-            Name = "UC_AdminPanel";
-            Size = new Size(782, 589);
-            pnlMainContent.ResumeLayout(false);
-            tlpContentLayout.ResumeLayout(false);
-            tlpContentLayout.PerformLayout();
-            flpTitleContainer.ResumeLayout(false);
-            flpTitleContainer.PerformLayout();
-            flpKPIs.ResumeLayout(false);
-            pnlKpiUsersBorder.ResumeLayout(false);
-            pnlKpiUsuariosContent.ResumeLayout(false);
-            tlpKpiUsersLayout.ResumeLayout(false);
-            tlpKpiUsersLayout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiUsers).EndInit();
-            pnlKpiRecipesBorder.ResumeLayout(false);
-            pnlKpiRecipesContent.ResumeLayout(false);
-            tlpKpiRecipesLayout.ResumeLayout(false);
-            tlpKpiRecipesLayout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiRecipes).EndInit();
-            pnlKpiPendingBorder.ResumeLayout(false);
-            pnlKpiPendingContent.ResumeLayout(false);
-            tlpKpiPendingLayout.ResumeLayout(false);
-            tlpKpiPendingLayout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiPending).EndInit();
-            pnlKpiCategoryBorder.ResumeLayout(false);
-            pnlKpiCategoryContent.ResumeLayout(false);
-            tlpKpiCategoryLayout.ResumeLayout(false);
-            tlpKpiCategoryLayout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picKpiCategory).EndInit();
-            flpQuickActions.ResumeLayout(false);
-            flpQuickActions.PerformLayout();
-            flpQuickActionsButtons.ResumeLayout(false);
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pnlMainContent);
+            this.Name = "UC_AdminPanel";
+            this.Size = new System.Drawing.Size(782, 589);
+            this.pnlMainContent.ResumeLayout(false);
+            this.tlpContentLayout.ResumeLayout(false);
+            this.tlpContentLayout.PerformLayout();
+            this.flpTitleContainer.ResumeLayout(false);
+            this.flpTitleContainer.PerformLayout();
+            this.flpKPIs.ResumeLayout(false);
+            this.pnlKpiUsersBorder.ResumeLayout(false);
+            this.pnlKpiUsuariosContent.ResumeLayout(false);
+            this.tlpKpiUsersLayout.ResumeLayout(false);
+            this.tlpKpiUsersLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiUsers)).EndInit();
+            this.pnlKpiRecipesBorder.ResumeLayout(false);
+            this.pnlKpiRecipesContent.ResumeLayout(false);
+            this.tlpKpiRecipesLayout.ResumeLayout(false);
+            this.tlpKpiRecipesLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiRecipes)).EndInit();
+            this.pnlKpiPendingBorder.ResumeLayout(false);
+            this.pnlKpiPendingContent.ResumeLayout(false);
+            this.tlpKpiPendingLayout.ResumeLayout(false);
+            this.tlpKpiPendingLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiPending)).EndInit();
+            this.pnlKpiCategoryBorder.ResumeLayout(false);
+            this.pnlKpiCategoryContent.ResumeLayout(false);
+            this.tlpKpiCategoryLayout.ResumeLayout(false);
+            this.tlpKpiCategoryLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picKpiCategory)).EndInit();
+            this.flpQuickActions.ResumeLayout(false);
+            this.flpQuickActions.PerformLayout();
+            this.flpQuickActionsButtons.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
 
-        internal Panel pnlMainContent;
-        internal TableLayoutPanel tlpContentLayout;
-        internal FlowLayoutPanel flpTitleContainer;
-        internal Label lblContentTitle;
-        internal Label lblContentSubtitle;
-        internal FlowLayoutPanel flpKPIs;
-        internal Panel pnlKpiUsersBorder;
-        internal Panel pnlKpiUsuariosContent;
-        internal TableLayoutPanel tlpKpiUsersLayout;
-        internal Label lblKpiUsersValue;
-        internal PictureBox picKpiUsers;
-        internal Label lblKpiUsuariosTittle;
-        internal Panel pnlKpiRecipesBorder;
-        internal Panel pnlKpiRecipesContent;
-        internal TableLayoutPanel tlpKpiRecipesLayout;
-        internal Label lblKpiRecipesValue;
-        internal PictureBox picKpiRecipes;
-        internal Label lblKpiRecipesTittle;
-        internal Panel pnlKpiPendingBorder;
-        internal Panel pnlKpiPendingContent;
-        internal TableLayoutPanel tlpKpiPendingLayout;
-        internal Label lblKpiPendingValue;
-        internal PictureBox picKpiPending;
-        internal Label lblKpiPendingTittle;
-        internal Panel pnlKpiCategoryBorder;
-        internal Panel pnlKpiCategoryContent;
-        internal TableLayoutPanel tlpKpiCategoryLayout;
-        internal Label lblKpiCategoryValue;
-        internal PictureBox picKpiCategory;
-        internal Label lblKpiCategoryTittle;
-        private FlowLayoutPanel flpQuickActions;
-        private Label lblQuickActionsTittle;
-        internal FlowLayoutPanel flpQuickActionsButtons;
-        internal Button btnNewUser;
-        internal Button btnViewReports;
-        internal Button btnCheckPending;
+        internal System.Windows.Forms.Panel pnlMainContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpContentLayout;
+        internal System.Windows.Forms.FlowLayoutPanel flpTitleContainer;
+        internal System.Windows.Forms.Label lblContentTitle;
+        internal System.Windows.Forms.Label lblContentSubtitle;
+        internal System.Windows.Forms.FlowLayoutPanel flpKPIs;
+        internal System.Windows.Forms.Panel pnlKpiUsersBorder;
+        internal System.Windows.Forms.Panel pnlKpiUsuariosContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpKpiUsersLayout;
+        internal System.Windows.Forms.Label lblKpiUsersValue;
+        internal System.Windows.Forms.PictureBox picKpiUsers;
+        internal System.Windows.Forms.Label lblKpiUsuariosTittle;
+        internal System.Windows.Forms.Panel pnlKpiRecipesBorder;
+        internal System.Windows.Forms.Panel pnlKpiRecipesContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpKpiRecipesLayout;
+        internal System.Windows.Forms.Label lblKpiRecipesValue;
+        internal System.Windows.Forms.PictureBox picKpiRecipes;
+        internal System.Windows.Forms.Label lblKpiRecipesTittle;
+        internal System.Windows.Forms.Panel pnlKpiPendingBorder;
+        internal System.Windows.Forms.Panel pnlKpiPendingContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpKpiPendingLayout;
+        internal System.Windows.Forms.Label lblKpiPendingValue;
+        internal System.Windows.Forms.PictureBox picKpiPending;
+        internal System.Windows.Forms.Label lblKpiPendingTittle;
+        internal System.Windows.Forms.Panel pnlKpiCategoryBorder;
+        internal System.Windows.Forms.Panel pnlKpiCategoryContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpKpiCategoryLayout;
+        internal System.Windows.Forms.Label lblKpiCategoryValue;
+        internal System.Windows.Forms.PictureBox picKpiCategory;
+        internal System.Windows.Forms.Label lblKpiCategoryTittle;
+        private System.Windows.Forms.FlowLayoutPanel flpQuickActions;
+        private System.Windows.Forms.Label lblQuickActionsTittle;
+        internal System.Windows.Forms.FlowLayoutPanel flpQuickActionsButtons;
+        internal System.Windows.Forms.Button btnNewUser;
+        internal System.Windows.Forms.Button btnViewReports;
+        internal System.Windows.Forms.Button btnCheckPending;
     }
 }

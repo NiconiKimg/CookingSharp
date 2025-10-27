@@ -1,0 +1,340 @@
+﻿@page "/recipes/create"
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Http.Headers
+@using WebApp.DTOs
+@using WebApp.Services
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+@inject ILocalStorageService LocalStorage
+
+
+<MudPaper Elevation="0" Class="pa-4 mb-6" Style="var(--mud-palette-secondary-lighten)); border-radius: 8px;">
+    <MudText Typo="Typo.h4" Style="color: var(--mud-palette-primary-darken);" GutterBottom="true">Crear Nueva Receta</MudText>
+    <MudText>Completa los detalles de tu nueva creación culinaria.</MudText>
+</MudPaper>
+
+<EditForm EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid Spacing="4">
+        <MudItem xs="12">
+            <MudCard Elevation="3">
+                <MudCardContent>
+                    <MudTextField @bind-Value="_recipeModel.Name"
+                                  For="@(() => _recipeModel.Name)"
+                                  Label="Nombre de la Receta"
+                                  Variant="Variant.Outlined"
+                                  Immediate="true" />
+
+                    <MudTextField @bind-Value="_recipeModel.Description"
+                                  For="@(() => _recipeModel.Description)"
+                                  Label="Descripción"
+                                  Variant="Variant.Outlined"
+                                  Lines="4"
+                                  Class="mt-4" />
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+         <MudItem xs="12">
+            <MudCard Elevation="3">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Image" Color="Color.Primary" />
+                            <MudText Typo="Typo.h6">Imagen de la Receta (Opcional)</MudText>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <InputFile OnChange="OnFileSelected" accept=".jpg,.jpeg,.png" />
+                    @if (!string.IsNullOrEmpty(_imageDataUrl))
+                    {
+                        <div class="mt-4 d-flex justify-center">
+                            <MudImage Src="@_imageDataUrl" Alt="Previsualización de imagen" Elevation="3" Class="rounded-lg" Style="height: 250px; max-width: 100%; object-fit: contain;" />
+                        </div>
+                    }
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudCard Elevation="3">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Category" Color="Color.Primary" />
+                            <MudText Typo="Typo.h6">Categorías</MudText>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudPaper Height="200px" Class="overflow-y-auto pa-2 mud-border-solid mud-border-lines-default rounded-lg">
+                        @if (_availableCategories.Any())
+                        {
+                            @foreach (var category in _availableCategories)
+                            {
+                                var categoryId = category.Id;
+                                <MudCheckBox T="bool"
+                                             Label="@category.Name"
+                                             Value="@(_recipeModel.CategoryIds.Contains(categoryId))"
+                                             ValueChanged="@((bool isChecked) => OnCategoryChecked(categoryId, isChecked))"
+                                             Color="Color.Primary" />
+                            }
+                        }
+                        else
+                        {
+                            <MudText Color="Color.Warning">No hay categorías disponibles.</MudText>
+                        }
+                    </MudPaper>
+                    <ValidationMessage For="@(() => _recipeModel.CategoryIds)" />
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudCard Elevation="3">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.ListAlt" Color="Color.Primary" />
+                            <MudText Typo="Typo.h6">Pasos de la Receta</MudText>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <div class="d-flex">
+                        <MudTextField @bind-Value="_newStep"
+                                      Label="Añadir un nuevo paso"
+                                      Variant="Variant.Outlined"
+                                      Class="flex-grow-1"
+                                      @onkeydown="HandleKeyDown" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                       OnClick="AddStep"
+                                       Color="Color.Primary"
+                                       Class="ml-2 mt-1" />
+                    </div>
+                    <MudPaper Height="135px" Class="overflow-y-auto pa-2 mt-2 mud-border-solid mud-border-lines-default rounded-lg">
+                        <MudList T="string" Clickable="false">
+                            @if (_recipeModel.Steps.Any())
+                            {
+                                @foreach (var step in _recipeModel.Steps)
+                                {
+                                    <MudListItem T="string" Class="pa-0">
+                                        <div class="d-flex align-center w-100">
+                                            <MudText Class="flex-grow-1">@step</MudText>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                           Size="Size.Small"
+                                                           Color="Color.Error"
+                                                           OnClick="@(() => RemoveStep(step))" />
+                                        </div>
+                                    </MudListItem>
+                                }
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Class="pa-2 text-center" Color="Color.Info">
+                                    Añade el primer paso arriba.
+                                </MudText>
+                            }
+                        </MudList>
+                    </MudPaper>
+                    <ValidationMessage For="@(() => _recipeModel.Steps)" />
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" Class="d-flex justify-end gap-4 mt-4">
+            <MudButton Variant="Variant.Outlined" OnClick="GoBack">
+                Cancelar
+            </MudButton>
+            <MudButton ButtonType="ButtonType.Submit"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Save">
+                Guardar Receta
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+    private RecipeCreateModel _recipeModel = new();
+    private EditContext _editContext = null!;
+    private List<CategoryResponseDTO> _availableCategories = new();
+    private string _newStep = "";
+    private IBrowserFile? _imageFile;
+    private string? _imageDataUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editContext = new EditContext(_recipeModel);
+
+        try
+        {
+            var categories = await Http.GetFromJsonAsync<List<CategoryResponseDTO>>("api/categories");
+            if (categories != null)
+            {
+                _availableCategories = categories;
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar categorías: {ex.Message}", Severity.Error);
+        }
+    }
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        _imageDataUrl = null;
+        _imageFile = e.File;
+
+        if (_imageFile != null)
+        {
+            if (_imageFile.Size > 2_000_000) // Límite de 2MB
+            {
+                Snackbar.Add("La imagen es demasiado grande. El límite es 2MB.", Severity.Warning);
+                _imageFile = null;
+                return;
+            }
+
+            var format = "image/png";
+            var resizedImage = await _imageFile.RequestImageFileAsync(format, 400, 400);
+            var buffer = new byte[resizedImage.Size];
+            await resizedImage.OpenReadStream().ReadAsync(buffer);
+            _imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            
+            StateHasChanged();
+        }
+    }
+
+    private void OnCategoryChecked(int categoryId, bool isChecked)
+    {
+        if (isChecked)
+        {
+            if (!_recipeModel.CategoryIds.Contains(categoryId))
+            {
+                _recipeModel.CategoryIds.Add(categoryId);
+            }
+        }
+        else
+        {
+            _recipeModel.CategoryIds.Remove(categoryId);
+        }
+
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.CategoryIds)));
+        StateHasChanged();
+    }
+
+    private void AddStep()
+    {
+        if (!string.IsNullOrWhiteSpace(_newStep))
+        {
+            _recipeModel.Steps.Add(_newStep.Trim());
+            _newStep = "";
+            _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.Steps)));
+        }
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            AddStep();
+        }
+    }
+
+    private void RemoveStep(string step)
+    {
+        _recipeModel.Steps.Remove(step);
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.Steps)));
+    }
+
+   private async Task HandleValidSubmit()
+{
+    if (_recipeModel.CategoryIds.Count == 0)
+    {
+        Snackbar.Add("Debes seleccionar al menos una categoría.", Severity.Warning);
+        return;
+    }
+
+    if (_recipeModel.Steps.Count == 0)
+    {
+        Snackbar.Add("La receta debe tener al menos un paso.", Severity.Warning);
+        return;
+    }
+
+    using var content = new MultipartFormDataContent();
+
+    content.Add(new StringContent(_recipeModel.Name), "Name");
+    content.Add(new StringContent(_recipeModel.Description), "Description");
+
+    foreach (var categoryId in _recipeModel.CategoryIds)
+    {
+        content.Add(new StringContent(categoryId.ToString()), "CategoryIds");
+    }
+
+    for (int i = 0; i < _recipeModel.Steps.Count; i++)
+    {
+        content.Add(new StringContent(_recipeModel.Steps[i]), $"Steps[{i}].Instruction");
+    }
+
+    if (_imageFile != null)
+    {
+        var fileContent = new StreamContent(_imageFile.OpenReadStream(_imageFile.Size));
+        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(_imageFile.ContentType);
+        content.Add(fileContent, "Image", _imageFile.Name);
+    }
+
+    try
+    {
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Snackbar.Add("Error de autenticación: No se encontró el token. Por favor, inicie sesión de nuevo.", Severity.Error);
+            return;
+        }
+
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/recipes");
+        request.Content = content;
+        
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        var response = await Http.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Snackbar.Add("¡Receta creada con éxito!", Severity.Success);
+            NavigationManager.NavigateTo("/my-recipes");
+        }
+        else
+        {
+            var errorContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"[DEBUG] Contenido del error de la API: {errorContent}");
+            Snackbar.Add($"Error al crear la receta: {errorContent}", Severity.Error);
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[DEBUG] Excepción capturada: {ex.ToString()}");
+        Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+    }
+}
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/recipes");
+    }
+
+    public class RecipeCreateModel
+    {
+        [Required(ErrorMessage = "El nombre de la receta es obligatorio.")]
+        [StringLength(150, ErrorMessage = "El nombre no puede exceder los 150 caracteres.")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "La descripción es obligatoria.")]
+        [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres.")]
+        public string Description { get; set; } = "";
+
+        public List<int> CategoryIds { get; set; } = new();
+        public List<string> Steps { get; set; } = new();
+    }
+}

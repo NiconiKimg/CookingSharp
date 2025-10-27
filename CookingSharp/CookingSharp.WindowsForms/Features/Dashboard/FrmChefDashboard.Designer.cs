@@ -28,49 +28,384 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
-            pnlMainContent = new Panel();
-            tableLayoutPanel1.SuspendLayout();
+            tlpMainLayout = new System.Windows.Forms.TableLayoutPanel();
+            pnlHeader = new System.Windows.Forms.Panel();
+            tlpHeaderLayout = new System.Windows.Forms.TableLayoutPanel();
+            tlpHeaderLeft = new System.Windows.Forms.TableLayoutPanel();
+            picLogo = new System.Windows.Forms.PictureBox();
+            lblAppName = new System.Windows.Forms.Label();
+            lblSubtittleNav = new System.Windows.Forms.Label();
+            tlpHeaderRight = new System.Windows.Forms.TableLayoutPanel();
+            picUser = new System.Windows.Forms.PictureBox();
+            tlpUserDetails = new System.Windows.Forms.TableLayoutPanel();
+            lblUserRole = new System.Windows.Forms.Label();
+            lblUserEmail = new System.Windows.Forms.Label();
+            btnUserOptions = new System.Windows.Forms.Button();
+            pnlNavigation = new System.Windows.Forms.Panel();
+            tlpNavigation = new System.Windows.Forms.TableLayoutPanel();
+            lblMenuGestionTitle = new System.Windows.Forms.Label();
+            btnNavMisRecetas = new System.Windows.Forms.Button();
+            btnNavExplorar = new System.Windows.Forms.Button();
+            pnlMainContent = new System.Windows.Forms.Panel();
+            tlpMainLayout.SuspendLayout();
+            pnlHeader.SuspendLayout();
+            tlpHeaderLayout.SuspendLayout();
+            tlpHeaderLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(picLogo)).BeginInit();
+            tlpHeaderRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(picUser)).BeginInit();
+            tlpUserDetails.SuspendLayout();
+            pnlNavigation.SuspendLayout();
+            tlpNavigation.SuspendLayout();
             SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tlpMainLayout
             // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(pnlMainContent, 0, 0);
-            tableLayoutPanel1.Location = new Point(0, 1);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10.2449884F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(800, 449);
-            tableLayoutPanel1.TabIndex = 1;
+            tlpMainLayout.BackColor = System.Drawing.Color.Transparent;
+            tlpMainLayout.ColumnCount = 2;
+            tlpMainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            tlpMainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpMainLayout.Controls.Add(pnlHeader, 0, 0);
+            tlpMainLayout.Controls.Add(pnlNavigation, 0, 1);
+            tlpMainLayout.Controls.Add(pnlMainContent, 1, 1);
+            tlpMainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            tlpMainLayout.Location = new System.Drawing.Point(0, 0);
+            tlpMainLayout.Margin = new System.Windows.Forms.Padding(0);
+            tlpMainLayout.Name = "tlpMainLayout";
+            tlpMainLayout.RowCount = 2;
+            tlpMainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            tlpMainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpMainLayout.Size = new System.Drawing.Size(1264, 826);
+            tlpMainLayout.TabIndex = 1;
+            // 
+            // pnlHeader
+            // 
+            pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(34)))), ((int)(((byte)(45)))));
+            tlpMainLayout.SetColumnSpan(pnlHeader, 2);
+            pnlHeader.Controls.Add(tlpHeaderLayout);
+            pnlHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+            pnlHeader.Location = new System.Drawing.Point(0, 0);
+            pnlHeader.Margin = new System.Windows.Forms.Padding(0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new System.Drawing.Size(1264, 70);
+            pnlHeader.TabIndex = 0;
+            // 
+            // tlpHeaderLayout
+            // 
+            tlpHeaderLayout.BackColor = System.Drawing.Color.Transparent;
+            tlpHeaderLayout.ColumnCount = 3;
+            tlpHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpHeaderLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderLayout.Controls.Add(tlpHeaderLeft, 0, 0);
+            tlpHeaderLayout.Controls.Add(tlpHeaderRight, 2, 0);
+            tlpHeaderLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            tlpHeaderLayout.Location = new System.Drawing.Point(0, 0);
+            tlpHeaderLayout.Margin = new System.Windows.Forms.Padding(2);
+            tlpHeaderLayout.Name = "tlpHeaderLayout";
+            tlpHeaderLayout.RowCount = 1;
+            tlpHeaderLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpHeaderLayout.Size = new System.Drawing.Size(1264, 70);
+            tlpHeaderLayout.TabIndex = 0;
+            // 
+            // tlpHeaderLeft
+            // 
+            tlpHeaderLeft.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            tlpHeaderLeft.AutoSize = true;
+            tlpHeaderLeft.ColumnCount = 3;
+            tlpHeaderLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderLeft.Controls.Add(picLogo, 0, 0);
+            tlpHeaderLeft.Controls.Add(lblAppName, 1, 0);
+            tlpHeaderLeft.Controls.Add(lblSubtittleNav, 2, 0);
+            tlpHeaderLeft.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
+            tlpHeaderLeft.Location = new System.Drawing.Point(3, 17);
+            tlpHeaderLeft.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tlpHeaderLeft.Name = "tlpHeaderLeft";
+            tlpHeaderLeft.RowCount = 1;
+            tlpHeaderLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpHeaderLeft.Size = new System.Drawing.Size(290, 36);
+            tlpHeaderLeft.TabIndex = 2;
+            // 
+            // picLogo
+            // 
+            picLogo.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
+            picLogo.Image = global::CookingSharp.WindowsForms.Properties.Resources.logo;
+            picLogo.Location = new System.Drawing.Point(2, 2);
+            picLogo.Margin = new System.Windows.Forms.Padding(2);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new System.Drawing.Size(32, 32);
+            picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            picLogo.TabIndex = 0;
+            picLogo.TabStop = false;
+            picLogo.Click += new System.EventHandler(this.picLogo_Click);
+            // 
+            // lblAppName
+            // 
+            lblAppName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            lblAppName.AutoSize = true;
+            lblAppName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lblAppName.ForeColor = System.Drawing.Color.WhiteSmoke;
+            lblAppName.Location = new System.Drawing.Point(46, 7);
+            lblAppName.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            lblAppName.Name = "lblAppName";
+            lblAppName.Size = new System.Drawing.Size(83, 21);
+            lblAppName.TabIndex = 1;
+            lblAppName.Text = "Cooking#";
+            // 
+            // lblSubtittleNav
+            // 
+            lblSubtittleNav.Anchor = System.Windows.Forms.AnchorStyles.None;
+            lblSubtittleNav.AutoSize = true;
+            lblSubtittleNav.ForeColor = System.Drawing.Color.WhiteSmoke;
+            lblSubtittleNav.Location = new System.Drawing.Point(131, 9);
+            lblSubtittleNav.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            lblSubtittleNav.Name = "lblSubtittleNav";
+            lblSubtittleNav.Size = new System.Drawing.Size(157, 17);
+            lblSubtittleNav.TabIndex = 2;
+            lblSubtittleNav.Text = "Panel de Control del Chef";
+            // 
+            // tlpHeaderRight
+            // 
+            tlpHeaderRight.ColumnCount = 3;
+            tlpHeaderRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpHeaderRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tlpHeaderRight.Controls.Add(picUser, 0, 0);
+            tlpHeaderRight.Controls.Add(tlpUserDetails, 1, 0);
+            tlpHeaderRight.Controls.Add(btnUserOptions, 2, 0);
+            tlpHeaderRight.Dock = System.Windows.Forms.DockStyle.Right;
+            tlpHeaderRight.Location = new System.Drawing.Point(1061, 2);
+            tlpHeaderRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tlpHeaderRight.Name = "tlpHeaderRight";
+            tlpHeaderRight.RowCount = 1;
+            tlpHeaderRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpHeaderRight.Size = new System.Drawing.Size(200, 66);
+            tlpHeaderRight.TabIndex = 0;
+            // 
+            // picUser
+            // 
+            picUser.Anchor = System.Windows.Forms.AnchorStyles.None;
+            picUser.Location = new System.Drawing.Point(3, 13);
+            picUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            picUser.Name = "picUser";
+            picUser.Size = new System.Drawing.Size(40, 39);
+            picUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            picUser.TabIndex = 0;
+            picUser.TabStop = false;
+            // 
+            // tlpUserDetails
+            // 
+            tlpUserDetails.ColumnCount = 1;
+            tlpUserDetails.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tlpUserDetails.Controls.Add(lblUserRole, 0, 0);
+            tlpUserDetails.Controls.Add(lblUserEmail, 0, 1);
+            tlpUserDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            tlpUserDetails.Location = new System.Drawing.Point(49, 2);
+            tlpUserDetails.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tlpUserDetails.Name = "tlpUserDetails";
+            tlpUserDetails.RowCount = 2;
+            tlpUserDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tlpUserDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tlpUserDetails.Size = new System.Drawing.Size(112, 62);
+            tlpUserDetails.TabIndex = 1;
+            // 
+            // lblUserRole
+            // 
+            lblUserRole.AutoSize = true;
+            lblUserRole.Dock = System.Windows.Forms.DockStyle.Fill;
+            lblUserRole.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lblUserRole.ForeColor = System.Drawing.Color.WhiteSmoke;
+            lblUserRole.Location = new System.Drawing.Point(3, 0);
+            lblUserRole.Name = "lblUserRole";
+            lblUserRole.Size = new System.Drawing.Size(106, 31);
+            lblUserRole.TabIndex = 0;
+            lblUserRole.Text = "Chef";
+            lblUserRole.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblUserEmail
+            // 
+            lblUserEmail.AutoEllipsis = true;
+            lblUserEmail.AutoSize = true;
+            lblUserEmail.Dock = System.Windows.Forms.DockStyle.Fill;
+            lblUserEmail.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lblUserEmail.ForeColor = System.Drawing.Color.Gainsboro;
+            lblUserEmail.Location = new System.Drawing.Point(3, 31);
+            lblUserEmail.Name = "lblUserEmail";
+            lblUserEmail.Size = new System.Drawing.Size(106, 31);
+            lblUserEmail.TabIndex = 1;
+            lblUserEmail.Text = "chef@email.com";
+            lblUserEmail.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnUserOptions
+            // 
+            btnUserOptions.Anchor = System.Windows.Forms.AnchorStyles.None;
+            btnUserOptions.FlatAppearance.BorderSize = 0;
+            btnUserOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnUserOptions.Image = global::CookingSharp.WindowsForms.Properties.Resources.closeSessionIcon;
+            btnUserOptions.Location = new System.Drawing.Point(167, 18);
+            btnUserOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnUserOptions.Name = "btnUserOptions";
+            btnUserOptions.Size = new System.Drawing.Size(30, 29);
+            btnUserOptions.TabIndex = 2;
+            btnUserOptions.UseVisualStyleBackColor = true;
+            btnUserOptions.Click += new System.EventHandler(this.btnUserOptions_Click);
+            // 
+            // pnlNavigation
+            // 
+            pnlNavigation.AutoScroll = true;
+            pnlNavigation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
+            pnlNavigation.Controls.Add(tlpNavigation);
+            pnlNavigation.Dock = System.Windows.Forms.DockStyle.Fill;
+            pnlNavigation.Location = new System.Drawing.Point(0, 70);
+            pnlNavigation.Margin = new System.Windows.Forms.Padding(0);
+            pnlNavigation.Name = "pnlNavigation";
+            pnlNavigation.Size = new System.Drawing.Size(250, 756);
+            pnlNavigation.TabIndex = 1;
+            // 
+            // tlpNavigation
+            // 
+            tlpNavigation.AutoSize = true;
+            tlpNavigation.BackColor = System.Drawing.Color.Transparent;
+            tlpNavigation.ColumnCount = 1;
+            tlpNavigation.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tlpNavigation.Controls.Add(lblMenuGestionTitle, 0, 0);
+            tlpNavigation.Controls.Add(btnNavMisRecetas, 0, 1);
+            tlpNavigation.Controls.Add(btnNavExplorar, 0, 2);
+            tlpNavigation.Dock = System.Windows.Forms.DockStyle.Top;
+            tlpNavigation.Location = new System.Drawing.Point(0, 0);
+            tlpNavigation.Margin = new System.Windows.Forms.Padding(2);
+            tlpNavigation.Name = "tlpNavigation";
+            tlpNavigation.RowCount = 3;
+            tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tlpNavigation.Size = new System.Drawing.Size(250, 125);
+            tlpNavigation.TabIndex = 2;
+            // 
+            // lblMenuGestionTitle
+            // 
+            lblMenuGestionTitle.AutoSize = true;
+            lblMenuGestionTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            lblMenuGestionTitle.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lblMenuGestionTitle.ForeColor = System.Drawing.Color.Gainsboro;
+            lblMenuGestionTitle.Location = new System.Drawing.Point(3, 0);
+            lblMenuGestionTitle.Name = "lblMenuGestionTitle";
+            lblMenuGestionTitle.Padding = new System.Windows.Forms.Padding(10, 19, 0, 5);
+            lblMenuGestionTitle.Size = new System.Drawing.Size(244, 37);
+            lblMenuGestionTitle.TabIndex = 1;
+            lblMenuGestionTitle.Text = "GESTIÓN";
+            lblMenuGestionTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnNavMisRecetas
+            // 
+            btnNavMisRecetas.Cursor = System.Windows.Forms.Cursors.Hand;
+            btnNavMisRecetas.Dock = System.Windows.Forms.DockStyle.Fill;
+            btnNavMisRecetas.FlatAppearance.BorderSize = 0;
+            btnNavMisRecetas.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
+            btnNavMisRecetas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
+            btnNavMisRecetas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnNavMisRecetas.Font = new System.Drawing.Font("Segoe UI", 10F);
+            btnNavMisRecetas.ForeColor = System.Drawing.Color.WhiteSmoke;
+            btnNavMisRecetas.Image = global::CookingSharp.WindowsForms.Properties.Resources.recipesIcon;
+            btnNavMisRecetas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNavMisRecetas.Location = new System.Drawing.Point(3, 39);
+            btnNavMisRecetas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnNavMisRecetas.Name = "btnNavMisRecetas";
+            btnNavMisRecetas.Size = new System.Drawing.Size(244, 40);
+            btnNavMisRecetas.TabIndex = 2;
+            btnNavMisRecetas.Text = "    Mis Recetas";
+            btnNavMisRecetas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNavMisRecetas.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            btnNavMisRecetas.UseVisualStyleBackColor = true;
+            btnNavMisRecetas.Click += new System.EventHandler(this.btnNavMisRecetas_Click);
+            // 
+            // btnNavExplorar
+            // 
+            btnNavExplorar.Cursor = System.Windows.Forms.Cursors.Hand;
+            btnNavExplorar.Dock = System.Windows.Forms.DockStyle.Fill;
+            btnNavExplorar.FlatAppearance.BorderSize = 0;
+            btnNavExplorar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
+            btnNavExplorar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(62)))), ((int)(((byte)(83)))));
+            btnNavExplorar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnNavExplorar.Font = new System.Drawing.Font("Segoe UI", 10F);
+            btnNavExplorar.ForeColor = System.Drawing.Color.WhiteSmoke;
+            btnNavExplorar.Image = global::CookingSharp.WindowsForms.Properties.Resources.ingredientsIcon; // Cambia a un icono adecuado
+            btnNavExplorar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNavExplorar.Location = new System.Drawing.Point(3, 83);
+            btnNavExplorar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnNavExplorar.Name = "btnNavExplorar";
+            btnNavExplorar.Size = new System.Drawing.Size(244, 40);
+            btnNavExplorar.TabIndex = 3;
+            btnNavExplorar.Text = "    Explorar Recetas";
+            btnNavExplorar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNavExplorar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            btnNavExplorar.UseVisualStyleBackColor = true;
+            btnNavExplorar.Click += new System.EventHandler(this.btnNavExplorar_Click);
             // 
             // pnlMainContent
             // 
-            pnlMainContent.BackColor = Color.White;
-            pnlMainContent.Location = new Point(2, 2);
-            pnlMainContent.Margin = new Padding(2);
+            pnlMainContent.BackColor = System.Drawing.Color.White;
+            pnlMainContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            pnlMainContent.Location = new System.Drawing.Point(252, 72);
+            pnlMainContent.Margin = new System.Windows.Forms.Padding(2);
             pnlMainContent.Name = "pnlMainContent";
-            pnlMainContent.Padding = new Padding(14, 13, 14, 13);
-            pnlMainContent.Size = new Size(796, 445);
-            pnlMainContent.TabIndex = 4;
+            pnlMainContent.Padding = new System.Windows.Forms.Padding(14, 15, 14, 15);
+            pnlMainContent.Size = new System.Drawing.Size(1010, 752);
+            pnlMainContent.TabIndex = 2;
             // 
             // FrmChefDashboard
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(tableLayoutPanel1);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1264, 826);
+            Controls.Add(tlpMainLayout);
+            Margin = new System.Windows.Forms.Padding(2);
+            MinimumSize = new System.Drawing.Size(1280, 865);
             Name = "FrmChefDashboard";
-            Text = "FrmChefDashboard";
-            tableLayoutPanel1.ResumeLayout(false);
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Cooking # - Panel de Chef";
+            WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            tlpMainLayout.ResumeLayout(false);
+            pnlHeader.ResumeLayout(false);
+            tlpHeaderLayout.ResumeLayout(false);
+            tlpHeaderLayout.PerformLayout();
+            tlpHeaderLeft.ResumeLayout(false);
+            tlpHeaderLeft.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(picLogo)).EndInit();
+            tlpHeaderRight.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(picUser)).EndInit();
+            tlpUserDetails.ResumeLayout(false);
+            tlpUserDetails.PerformLayout();
+            pnlNavigation.ResumeLayout(false);
+            pnlNavigation.PerformLayout();
+            tlpNavigation.ResumeLayout(false);
+            tlpNavigation.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
-        internal Panel pnlMainContent;
+        internal System.Windows.Forms.TableLayoutPanel tlpMainLayout;
+        internal System.Windows.Forms.Panel pnlHeader;
+        internal System.Windows.Forms.Panel pnlNavigation;
+        internal System.Windows.Forms.TableLayoutPanel tlpHeaderLayout;
+        internal System.Windows.Forms.TableLayoutPanel tlpHeaderLeft;
+        internal System.Windows.Forms.PictureBox picLogo;
+        internal System.Windows.Forms.Label lblAppName;
+        internal System.Windows.Forms.TableLayoutPanel tlpHeaderRight;
+        internal System.Windows.Forms.PictureBox picUser;
+        internal System.Windows.Forms.TableLayoutPanel tlpUserDetails;
+        internal System.Windows.Forms.Label lblUserRole;
+        internal System.Windows.Forms.Label lblUserEmail;
+        internal System.Windows.Forms.Button btnUserOptions;
+        internal System.Windows.Forms.Label lblMenuGestionTitle;
+        internal System.Windows.Forms.Button btnNavMisRecetas;
+        private System.Windows.Forms.TableLayoutPanel tlpNavigation;
+        private System.Windows.Forms.Label lblSubtittleNav;
+        internal System.Windows.Forms.Panel pnlMainContent;
+        private System.Windows.Forms.Button btnNavExplorar;
     }
 }

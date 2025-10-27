@@ -1,13 +1,19 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using CookingSharp.WindowsForms.Users;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.UserControls
 {
     public partial class UC_Users : UserControl
     {
         private readonly UserApiClient _apiClient;
+
         public UC_Users(UserApiClient apiClient)
         {
             InitializeComponent();
@@ -17,6 +23,7 @@ namespace CookingSharp.WindowsForms.UserControls
 
         private async void UCUsers_Load(object sender, EventArgs e)
         {
+            ConfigureGridView();
             await LoadUsers();
         }
 
@@ -25,65 +32,101 @@ namespace CookingSharp.WindowsForms.UserControls
             try
             {
                 var users = await _apiClient.GetAllAsync();
-
                 dgvUsers.DataSource = users?.ToList();
-
-                ConfigureGridView();
+                UpdateButtonsState();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show($"Error al cargar los usuarios: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ConfigureGridView()
         {
-            if (dgvUsers.Columns.Count == 0) return;
+            dgvUsers.AutoGenerateColumns = false;
+            dgvUsers.Columns.Clear();
 
-            if (dgvUsers.Columns["Id"] != null)
-                dgvUsers.Columns["Id"].Visible = false;
+            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "NameColumn",
+                DataPropertyName = "Name",
+                HeaderText = "Nombre",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 30,
+                MinimumWidth = 120
+            });
 
-            if (dgvUsers.Columns["Name"] != null)
-                dgvUsers.Columns["Name"].HeaderText = "Nombre";
+            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "SurnameColumn",
+                DataPropertyName = "Surname",
+                HeaderText = "Apellido",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 30,
+                MinimumWidth = 120
+            });
 
-            if (dgvUsers.Columns["Surname"] != null)
-                dgvUsers.Columns["Surname"].HeaderText = "Apellido";
+            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "EmailColumn",
+                DataPropertyName = "Email",
+                HeaderText = "Email",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 40,
+                MinimumWidth = 200
+            });
 
-            if (dgvUsers.Columns["Email"] != null)
-                dgvUsers.Columns["Email"].HeaderText = "Email";
+            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "RoleColumn",
+                DataPropertyName = "Role",
+                HeaderText = "Rol",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 100
+            });
 
-            dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvUsers.MultiSelect = false;
             dgvUsers.ReadOnly = true;
             dgvUsers.AllowUserToAddRows = false;
+            dgvUsers.RowHeadersVisible = false;
+            dgvUsers.BackgroundColor = Color.White;
+            dgvUsers.BorderStyle = BorderStyle.None;
 
-            dgvUsers.EnableHeadersVisualStyles = false;
             dgvUsers.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
-            dgvUsers.ColumnHeadersDefaultCellStyle.ForeColor = Color.WhiteSmoke;
+            dgvUsers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvUsers.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvUsers.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvUsers.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvUsers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvUsers.EnableHeadersVisualStyles = false;
+            dgvUsers.ColumnHeadersHeight = 40;
+
+            dgvUsers.DefaultCellStyle.BackColor = Color.White;
+            dgvUsers.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
+            dgvUsers.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvUsers.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 229, 255);
+            dgvUsers.DefaultCellStyle.SelectionForeColor = Color.FromArgb(21, 21, 21);
+            dgvUsers.DefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvUsers.RowTemplate.Height = 38;
+            dgvUsers.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
         }
 
         private async void btnCreateUser_Click(object sender, EventArgs e)
         {
-
             using (var createForm = Program.ServiceProvider?.GetRequiredService<FrmUsersCreate>())
             {
-                if (createForm == null) return;
-                createForm.ShowDialog();
+                if (createForm != null && createForm.ShowDialog() == DialogResult.OK)
+                {
+                    await LoadUsers();
+                }
             }
-
-            await LoadUsers();
         }
 
         private async void btnModifyUser_Click(object sender, EventArgs e)
         {
             var selectedUser = GetSelectedUser();
-            if (selectedUser == null)
-            {
-                MessageBox.Show("Por favor, seleccione un usuario para modificar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            if (selectedUser == null) return;
 
             var apiClient = Program.ServiceProvider.GetRequiredService<UserApiClient>();
 
@@ -99,13 +142,9 @@ namespace CookingSharp.WindowsForms.UserControls
         private async void btnDeleteUser_Click(object sender, EventArgs e)
         {
             var selectedUser = GetSelectedUser();
-            if (selectedUser == null)
-            {
-                MessageBox.Show("Por favor, seleccione un usuario para eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            if (selectedUser == null) return;
 
-            var confirmResult = MessageBox.Show($"¿Está seguro de que desea eliminar el usuario '{selectedUser.Name}'?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var confirmResult = MessageBox.Show($"¿Está seguro de que desea eliminar al usuario '{selectedUser.Name} {selectedUser.Surname}'?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirmResult == DialogResult.Yes)
             {
@@ -118,7 +157,7 @@ namespace CookingSharp.WindowsForms.UserControls
                     }
                     else
                     {
-                        MessageBox.Show("El usuario no pudo ser eliminado (posiblemente ya fue borrado).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("El usuario no pudo ser eliminado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -130,11 +169,23 @@ namespace CookingSharp.WindowsForms.UserControls
 
         private UserResponseDTO? GetSelectedUser()
         {
-            if (dgvUsers.CurrentRow != null && dgvUsers.CurrentRow.DataBoundItem is UserResponseDTO users)
+            if (dgvUsers.CurrentRow != null && dgvUsers.CurrentRow.DataBoundItem is UserResponseDTO user)
             {
-                return users;
+                return user;
             }
             return null;
+        }
+
+        private void dgvUsers_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateButtonsState();
+        }
+
+        private void UpdateButtonsState()
+        {
+            bool hasSelection = dgvUsers.SelectedRows.Count > 0;
+            btnModifyUser.Enabled = hasSelection;
+            btnDeleteUser.Enabled = hasSelection;
         }
     }
 }

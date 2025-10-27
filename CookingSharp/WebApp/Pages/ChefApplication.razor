@@ -1,0 +1,102 @@
+﻿@page "/apply-for-chef"
+@using System.Threading
+@using WebApp.DTOs
+@using WebApp.Shared.Dialog
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@using MudBlazor
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@attribute [Authorize(Roles = "Apprentice")]
+
+<MudText Typo="Typo.h3" GutterBottom="true">Conviértete en Chef</MudText>
+<MudText Class="mb-6">Aquí puedes enviar una solicitud para obtener el rol de Chef y ver el estado de tus solicitudes anteriores.</MudText>
+
+<MudTable T="AppealResponseDTO" ServerData="ServerReload"
+          Dense="true" Hover="true" @ref="_table" Striped="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Historial de Solicitudes</MudText>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenCreateApplicationDialog" StartIcon="@Icons.Material.Filled.Add">
+            Nueva Solicitud
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Descripción</MudTh>
+        <MudTh>Estado</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Descripción">@context.Description</MudTd>
+        <MudTd DataLabel="Estado">
+            <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small" Text="@context.Status" />
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No has enviado ninguna solicitud todavía.</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Cargando tus solicitudes...</MudText>
+    </LoadingContent>
+</MudTable>
+
+@code {
+    private MudTable<AppealResponseDTO> _table = null!;
+    private IEnumerable<AppealResponseDTO> _applications = new List<AppealResponseDTO>();
+
+    private async Task<TableData<AppealResponseDTO>> ServerReload(TableState state, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<List<AppealResponseDTO>>("api/appeals/my-appeals", cancellationToken);
+            _applications = response ?? new List<AppealResponseDTO>();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar tus solicitudes: {ex.Message}", Severity.Error);
+            _applications = new List<AppealResponseDTO>();
+        }
+        return new TableData<AppealResponseDTO>() { TotalItems = _applications.Count(), Items = _applications };
+    }
+
+    private Color GetStatusColor(string status) => status.ToLower() switch
+    {
+        "approved" => Color.Success,
+        "rejected" => Color.Error,
+        "pending" => Color.Warning,
+        _ => Color.Default
+    };
+
+    private async Task OpenCreateApplicationDialog()
+    {
+        var dialog = await DialogService.ShowAsync<CreateAppealDialog>("Nueva Solicitud");
+        var result = await dialog.Result;
+
+        bool cancelled = false;
+        if (result != null)
+        {
+            var t = result.GetType();
+            var prop = t.GetProperty("Cancelled")
+                   ?? t.GetProperty("Canceled")
+                   ?? t.GetProperty("IsCancelled")
+                   ?? t.GetProperty("IsCanceled");
+
+            if (prop != null && prop.PropertyType == typeof(bool))
+            {
+                try
+                {
+                    cancelled = (bool?)prop.GetValue(result) ?? false;
+                }
+                catch
+                {
+                    cancelled = false;
+                }
+            }
+        }
+
+        if (!cancelled)
+        {
+            await _table.ReloadServerData();
+        }
+    }
+}

@@ -1,0 +1,43 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_myCustomTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+
+<MudLayout>
+    <TopAppBar OnDrawerToggle="DrawerToggle" />
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16 mb-16">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private readonly MudTheme _myCustomTheme = new()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = "#5E35B1",
+            Secondary = "#1E88E5",
+            AppbarBackground = "#5E35B1",
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = "#7E57C2"
+        }
+    };
+}

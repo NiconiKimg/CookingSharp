@@ -1,5 +1,10 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.AppealsControl
 {
@@ -16,6 +21,7 @@ namespace CookingSharp.WindowsForms.AppealsControl
 
         private async void UCAppeals_Load(object sender, EventArgs e)
         {
+            ConfigureGridView();
             await LoadAppeals();
         }
 
@@ -23,43 +29,74 @@ namespace CookingSharp.WindowsForms.AppealsControl
         {
             try
             {
-                var appeals = await _apiClient.GetAllAsync();
-
+                var appeals = await _apiClient.GetAllPendingAsync();
                 dgvAppeals.DataSource = appeals?.ToList();
-
-                ConfigureGridView();
+                UpdateButtonsState();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar las solicitudes: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar las solicitudes pendientes: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ConfigureGridView()
         {
-            if (dgvAppeals.Columns.Count == 0) return;
+            dgvAppeals.AutoGenerateColumns = false;
+            dgvAppeals.Columns.Clear();
 
-            if (dgvAppeals.Columns["Id"] != null)
-                dgvAppeals.Columns["Id"].Visible = false;
+            dgvAppeals.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "ApplicantNameColumn",
+                DataPropertyName = "ApplicantName",
+                HeaderText = "Solicitante",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 150
+            });
 
-            if (dgvAppeals.Columns["Description"] != null)
-                dgvAppeals.Columns["Description"].HeaderText = "Descripción";
+            dgvAppeals.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "DescriptionColumn",
+                DataPropertyName = "Description",
+                HeaderText = "Descripción",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 100,
+                MinimumWidth = 250
+            });
 
-            if (dgvAppeals.Columns["Status"] != null)
-                dgvAppeals.Columns["Status"].HeaderText = "Estado";
+            dgvAppeals.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "StatusColumn",
+                DataPropertyName = "Status",
+                HeaderText = "Estado",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 100
+            });
 
-            if (dgvAppeals.Columns["UserName"] != null)
-                dgvAppeals.Columns["UserName"].HeaderText = "Usuario";
-
-            dgvAppeals.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvAppeals.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAppeals.MultiSelect = false;
             dgvAppeals.ReadOnly = true;
             dgvAppeals.AllowUserToAddRows = false;
+            dgvAppeals.RowHeadersVisible = false;
+            dgvAppeals.BackgroundColor = Color.White;
+            dgvAppeals.BorderStyle = BorderStyle.None;
 
-            dgvAppeals.EnableHeadersVisualStyles = false;
             dgvAppeals.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
-            dgvAppeals.ColumnHeadersDefaultCellStyle.ForeColor = Color.WhiteSmoke;
+            dgvAppeals.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvAppeals.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvAppeals.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvAppeals.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvAppeals.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvAppeals.EnableHeadersVisualStyles = false;
+            dgvAppeals.ColumnHeadersHeight = 40;
+
+            dgvAppeals.DefaultCellStyle.BackColor = Color.White;
+            dgvAppeals.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
+            dgvAppeals.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvAppeals.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 229, 255);
+            dgvAppeals.DefaultCellStyle.SelectionForeColor = Color.FromArgb(21, 21, 21);
+            dgvAppeals.DefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvAppeals.RowTemplate.Height = 38;
+            dgvAppeals.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
         }
 
         private async void btnApproveAppeal_Click(object sender, EventArgs e)
@@ -75,44 +112,48 @@ namespace CookingSharp.WindowsForms.AppealsControl
         private async Task ProcessAppeal(string newStatus)
         {
             var selectedAppeal = GetSelectedAppeal();
-            if (selectedAppeal == null)
-            {
-                MessageBox.Show("Por favor, seleccione una solicitud para procesar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (selectedAppeal.Status != "Pending")
-            {
-                MessageBox.Show("Esta solicitud ya ha sido procesada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            if (selectedAppeal is null) return;
 
             string action = newStatus == "Approved" ? "aprobar" : "rechazar";
-            var confirmResult = MessageBox.Show($"¿Está seguro de que desea {action} esta solicitud?", $"Confirmar {action}", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var confirmResult = MessageBox.Show($"¿Está seguro de que desea {action} esta solicitud?", $"Confirmar Acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirmResult == DialogResult.Yes)
             {
                 try
                 {
-                    var appealToUpdate = new UpdateAppealDTO { Status = newStatus };
-                    await _apiClient.UpdateAsync(selectedAppeal.Id, appealToUpdate);
+                    var appealUpdateDto = new AppealUpdateDTO { Status = newStatus };
+                    bool success = await _apiClient.ProcessAppealAsync(selectedAppeal.Id, appealUpdateDto);
+
+                    // La API devuelve un bool que indica éxito, pero no devuelve contenido.
+                    // Si la llamada no lanza una excepción, asumimos que fue exitosa.
                     await LoadAppeals();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al {action} la solicitud: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al procesar la solicitud: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private AppealDTO? GetSelectedAppeal()
+        private AppealResponseDTO? GetSelectedAppeal()
         {
-            if (dgvAppeals.CurrentRow != null && dgvAppeals.CurrentRow.DataBoundItem is AppealDTO appeal)
+            if (dgvAppeals.CurrentRow != null && dgvAppeals.CurrentRow.DataBoundItem is AppealResponseDTO appeal)
             {
                 return appeal;
             }
             return null;
         }
 
+        private void dgvAppeals_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateButtonsState();
+        }
+
+        private void UpdateButtonsState()
+        {
+            bool hasSelection = dgvAppeals.SelectedRows.Count > 0;
+            btnApproveAppeal.Enabled = hasSelection;
+            btnRejectAppeal.Enabled = hasSelection;
+        }
     }
 }

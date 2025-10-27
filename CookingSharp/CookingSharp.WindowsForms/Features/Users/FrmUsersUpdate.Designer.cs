@@ -2,15 +2,8 @@
 {
     partial class FrmUsersUpdate
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,158 +15,217 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            txtBoxEmail = new TextBox();
-            lblEmail = new Label();
-            txtBoxSurname = new TextBox();
-            btnCancel = new Button();
-            btnSave = new Button();
-            lblSurname = new Label();
-            lblName = new Label();
-            txtBoxName = new TextBox();
-            lblCRUDCategories = new Label();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.pnlMain = new System.Windows.Forms.Panel();
+            this.txtBoxEmail = new System.Windows.Forms.TextBox();
+            this.lblEmail = new System.Windows.Forms.Label();
+            this.txtBoxSurname = new System.Windows.Forms.TextBox();
+            this.lblSurname = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.txtBoxName = new System.Windows.Forms.TextBox();
+            this.lblName = new System.Windows.Forms.Label();
+            this.pnlTitleBar = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.pnlMain.SuspendLayout();
+            this.pnlTitleBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // pnlMain
+            // 
+            this.pnlMain.BackColor = System.Drawing.Color.White;
+            this.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlMain.Controls.Add(this.txtBoxEmail);
+            this.pnlMain.Controls.Add(this.lblEmail);
+            this.pnlMain.Controls.Add(this.txtBoxSurname);
+            this.pnlMain.Controls.Add(this.lblSurname);
+            this.pnlMain.Controls.Add(this.btnCancel);
+            this.pnlMain.Controls.Add(this.btnSave);
+            this.pnlMain.Controls.Add(this.txtBoxName);
+            this.pnlMain.Controls.Add(this.lblName);
+            this.pnlMain.Controls.Add(this.pnlTitleBar);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(0, 0);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Size = new System.Drawing.Size(560, 410);
+            this.pnlMain.TabIndex = 2;
             // 
             // txtBoxEmail
             // 
-            txtBoxEmail.Location = new Point(57, 408);
-            txtBoxEmail.Margin = new Padding(4, 5, 4, 5);
-            txtBoxEmail.Name = "txtBoxEmail";
-            txtBoxEmail.Size = new Size(541, 31);
-            txtBoxEmail.TabIndex = 29;
+            this.txtBoxEmail.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtBoxEmail.Location = new System.Drawing.Point(25, 265);
+            this.txtBoxEmail.MaxLength = 255;
+            this.txtBoxEmail.Name = "txtBoxEmail";
+            this.txtBoxEmail.Size = new System.Drawing.Size(510, 25);
+            this.txtBoxEmail.TabIndex = 3;
+            this.txtBoxEmail.Validating += new System.ComponentModel.CancelEventHandler(this.txtBoxEmail_Validating);
             // 
             // lblEmail
             // 
-            lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(57, 378);
-            lblEmail.Margin = new Padding(4, 0, 4, 0);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(54, 25);
-            lblEmail.TabIndex = 28;
-            lblEmail.Text = "Email";
+            this.lblEmail.AutoSize = true;
+            this.lblEmail.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblEmail.Location = new System.Drawing.Point(25, 240);
+            this.lblEmail.Name = "lblEmail";
+            this.lblEmail.Size = new System.Drawing.Size(42, 17);
+            this.lblEmail.TabIndex = 7;
+            this.lblEmail.Text = "Email";
             // 
             // txtBoxSurname
             // 
-            txtBoxSurname.Location = new Point(57, 318);
-            txtBoxSurname.Margin = new Padding(4, 5, 4, 5);
-            txtBoxSurname.Name = "txtBoxSurname";
-            txtBoxSurname.Size = new Size(541, 31);
-            txtBoxSurname.TabIndex = 27;
-            // 
-            // btnCancel
-            // 
-            btnCancel.Anchor = AnchorStyles.None;
-            btnCancel.BackColor = Color.FromArgb(224, 224, 224);
-            btnCancel.Cursor = Cursors.Hand;
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.FlatAppearance.MouseDownBackColor = Color.Silver;
-            btnCancel.FlatAppearance.MouseOverBackColor = Color.Silver;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(57, 587);
-            btnCancel.Margin = new Padding(0, 28, 0, 0);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(206, 73);
-            btnCancel.TabIndex = 26;
-            btnCancel.Text = "Cancelar";
-            btnCancel.UseVisualStyleBackColor = false;
-            btnCancel.Click += btnCancel_Click;
-            // 
-            // btnSave
-            // 
-            btnSave.Anchor = AnchorStyles.None;
-            btnSave.BackColor = Color.FromArgb(31, 41, 55);
-            btnSave.Cursor = Cursors.Hand;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatAppearance.MouseDownBackColor = Color.FromArgb(47, 62, 83);
-            btnSave.FlatAppearance.MouseOverBackColor = Color.FromArgb(47, 62, 83);
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(394, 587);
-            btnSave.Margin = new Padding(0, 28, 0, 0);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(206, 73);
-            btnSave.TabIndex = 25;
-            btnSave.Text = "Guardar";
-            btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += btnSave_Click;
+            this.txtBoxSurname.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtBoxSurname.Location = new System.Drawing.Point(25, 190);
+            this.txtBoxSurname.MaxLength = 100;
+            this.txtBoxSurname.Name = "txtBoxSurname";
+            this.txtBoxSurname.Size = new System.Drawing.Size(510, 25);
+            this.txtBoxSurname.TabIndex = 2;
+            this.txtBoxSurname.Validating += new System.ComponentModel.CancelEventHandler(this.txtBoxSurname_Validating);
             // 
             // lblSurname
             // 
-            lblSurname.AutoSize = true;
-            lblSurname.Location = new Point(57, 288);
-            lblSurname.Margin = new Padding(4, 0, 4, 0);
-            lblSurname.Name = "lblSurname";
-            lblSurname.Size = new Size(78, 25);
-            lblSurname.TabIndex = 24;
-            lblSurname.Text = "Apellido";
+            this.lblSurname.AutoSize = true;
+            this.lblSurname.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblSurname.Location = new System.Drawing.Point(25, 165);
+            this.lblSurname.Name = "lblSurname";
+            this.lblSurname.Size = new System.Drawing.Size(59, 17);
+            this.lblSurname.TabIndex = 5;
+            this.lblSurname.Text = "Apellido";
             // 
-            // lblName
+            // btnCancel
             // 
-            lblName.AutoSize = true;
-            lblName.Location = new Point(57, 203);
-            lblName.Margin = new Padding(4, 0, 4, 0);
-            lblName.Name = "lblName";
-            lblName.Size = new Size(78, 25);
-            lblName.TabIndex = 23;
-            lblName.Text = "Nombre";
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCancel.Location = new System.Drawing.Point(280, 330);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(120, 45);
+            this.btnCancel.TabIndex = 5;
+            this.btnCancel.Text = "Cancelar";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(415, 330);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(120, 45);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtBoxName
             // 
-            txtBoxName.Location = new Point(57, 233);
-            txtBoxName.Margin = new Padding(4, 5, 4, 5);
-            txtBoxName.Name = "txtBoxName";
-            txtBoxName.Size = new Size(541, 31);
-            txtBoxName.TabIndex = 22;
+            this.txtBoxName.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtBoxName.Location = new System.Drawing.Point(25, 115);
+            this.txtBoxName.MaxLength = 100;
+            this.txtBoxName.Name = "txtBoxName";
+            this.txtBoxName.Size = new System.Drawing.Size(510, 25);
+            this.txtBoxName.TabIndex = 1;
+            this.txtBoxName.Validating += new System.ComponentModel.CancelEventHandler(this.txtBoxName_Validating);
             // 
-            // lblCRUDCategories
+            // lblName
             // 
-            lblCRUDCategories.AutoSize = true;
-            lblCRUDCategories.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCRUDCategories.Location = new Point(191, 68);
-            lblCRUDCategories.Margin = new Padding(4, 0, 4, 0);
-            lblCRUDCategories.Name = "lblCRUDCategories";
-            lblCRUDCategories.Size = new Size(253, 48);
-            lblCRUDCategories.TabIndex = 21;
-            lblCRUDCategories.Text = "Editar usuario";
+            this.lblName.AutoSize = true;
+            this.lblName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblName.Location = new System.Drawing.Point(25, 90);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(58, 17);
+            this.lblName.TabIndex = 1;
+            this.lblName.Text = "Nombre";
+            // 
+            // pnlTitleBar
+            // 
+            this.pnlTitleBar.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlTitleBar.Controls.Add(this.lblTitle);
+            this.pnlTitleBar.Controls.Add(this.btnClose);
+            this.pnlTitleBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTitleBar.Location = new System.Drawing.Point(0, 0);
+            this.pnlTitleBar.Name = "pnlTitleBar";
+            this.pnlTitleBar.Size = new System.Drawing.Size(558, 60);
+            this.pnlTitleBar.TabIndex = 0;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblTitle.Location = new System.Drawing.Point(20, 16);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(117, 21);
+            this.lblTitle.TabIndex = 1;
+            this.lblTitle.Text = "Editar Usuario";
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnClose.Location = new System.Drawing.Point(508, 10);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(40, 40);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = "X";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // FrmUsersUpdate
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(657, 728);
-            Controls.Add(txtBoxEmail);
-            Controls.Add(lblEmail);
-            Controls.Add(txtBoxSurname);
-            Controls.Add(btnCancel);
-            Controls.Add(btnSave);
-            Controls.Add(lblSurname);
-            Controls.Add(lblName);
-            Controls.Add(txtBoxName);
-            Controls.Add(lblCRUDCategories);
-            Name = "FrmUsersUpdate";
-            Text = "Cooking # - Editar Usuario";
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(560, 410);
+            this.Controls.Add(this.pnlMain);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "FrmUsersUpdate";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Editar Usuario";
+            this.pnlMain.ResumeLayout(false);
+            this.pnlMain.PerformLayout();
+            this.pnlTitleBar.ResumeLayout(false);
+            this.pnlTitleBar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
 
-        private TextBox txtBoxEmail;
-        private Label lblEmail;
-        private TextBox txtBoxSurname;
-        private Button btnCancel;
-        private Button btnSave;
-        private Label lblSurname;
-        private Label lblName;
-        private TextBox txtBoxName;
-        private Label lblCRUDCategories;
+        private System.Windows.Forms.Panel pnlMain;
+        private System.Windows.Forms.TextBox txtBoxEmail;
+        private System.Windows.Forms.Label lblEmail;
+        private System.Windows.Forms.TextBox txtBoxSurname;
+        private System.Windows.Forms.Label lblSurname;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.TextBox txtBoxName;
+        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Panel pnlTitleBar;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

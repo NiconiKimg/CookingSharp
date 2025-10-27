@@ -1,19 +1,31 @@
+using CookingSharp.Application;
 using CookingSharp.Application.Services;
-using CookingSharp.Application.Services.Contracts;
-using CookingSharp.Infrastructure.Persistence.Repositories;
-using CookingSharp.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using CookingSharp.Infrastructure;
+using CookingSharp.WebAPI.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<CookingSharpDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services
+    .AddApplicationServices()
+    .AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -32,16 +44,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddScoped<CategoryService>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<AppealService>();
-builder.Services.AddScoped<RecipeService>();
-
-builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
-builder.Services.AddScoped<IUserRepository, EFUserRepository>();
-builder.Services.AddScoped<IAppealRepository, EFAppealRepository>();
-builder.Services.AddScoped<IRecipeRepository, EFRecipeRepository>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -50,7 +52,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-    app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -58,4 +64,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

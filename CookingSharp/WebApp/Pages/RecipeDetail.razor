@@ -1,0 +1,233 @@
+﻿@page "/recipe/{RecipeId:int}"
+@using Microsoft.AspNetCore.Components.Authorization
+@using WebApp.DTOs
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+@inject AuthenticationStateProvider AuthStateProvider
+@attribute [Authorize]
+
+@if (_isLoading)
+{
+    <div class="d-flex justify-center mt-16">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    </div>
+}
+else if (_recipe == null)
+{
+    <MudAlert Severity="Severity.Error">No se pudo cargar la receta. Es posible que no exista o haya ocurrido un error.</MudAlert>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" md="8">
+            <MudCard Class="mb-6">
+                <MudCardMedia Image="@_recipe.ImageUrl" Height="300" />
+            </MudCard>
+            <!-- Encabezado -->
+            <MudText Typo="Typo.h3" GutterBottom="true">@_recipe.Name</MudText>
+            <MudText Typo="Typo.subtitle1" Class="mb-2">Por: @_recipe.AuthorName</MudText>
+            <MudChipSet T="WebApp.DTOs.CategoryResponseDTO" Class="mb-4">
+                @foreach (var category in _recipe.Categories ?? new List<CategoryResponseDTO>())
+                {
+                    <MudChip T="WebApp.DTOs.CategoryResponseDTO" Color="Color.Primary" Text="@category.Name" />
+                }
+            </MudChipSet>
+
+            <div class="d-flex align-center">
+                <MudRating SelectedValue="(int)Math.Round(_recipe.AverageRating)" ReadOnly="true" />
+                @if (_recipe.RatingsCount > 0)
+                {
+                    <MudText Typo="Typo.body2" Class="ml-2">@_recipe.AverageRating.ToString("0.0") (@_recipe.RatingsCount @(_recipe.RatingsCount == 1 ? "voto" : "votos"))</MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Class="ml-2">Sin valorar</MudText>
+                }
+            </div>
+
+            <MudText Class="mt-4 mb-4">@_recipe.Description</MudText>
+
+            <!-- Pasos -->
+            <MudCard Elevation="2" Class="mt-6">
+                <MudCardHeader><CardHeaderContent><MudText Typo="Typo.h5">Pasos de Preparación</MudText></CardHeaderContent></MudCardHeader>
+                <MudCardContent>
+                    <MudList T="RecipeStepResponseDTO" Dense="true">
+                        @foreach(var step in _recipe.Steps.OrderBy(s => s.StepNumber))
+                        {
+                            <MudListItem>
+                                <div class="d-flex">
+                                    <MudText Typo="Typo.h6" Class="mr-3" Style="min-width: 30px;">@step.StepNumber.</MudText>
+                                    <MudText>@step.Instruction</MudText>
+                                </div>
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudCard Elevation="2" Class="mb-6">
+                <MudCardHeader><CardHeaderContent><MudText Typo="Typo.h6">Tu Valoración</MudText></CardHeaderContent></MudCardHeader>
+                <MudCardContent Class="d-flex justify-center">
+                    <MudRating SelectedValueChanged="SubmitRating" />
+                </MudCardContent>
+            </MudCard>
+
+            <MudCard Elevation="2">
+                <MudCardHeader><CardHeaderContent><MudText Typo="Typo.h6">Comentarios</MudText></CardHeaderContent></MudCardHeader>
+                <MudCardContent>
+                    <MudTextField T="string" @bind-Value="_newCommentText" Label="Escribe un comentario..." Variant="Variant.Outlined" Lines="3" />
+                    <MudButton OnClick="SubmitComment" Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" FullWidth="true" Disabled="string.IsNullOrWhiteSpace(_newCommentText)">Enviar</MudButton>
+                    
+                    <MudDivider Class="my-4" />
+
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <MudList T="CommentResponseDTO">
+                            @foreach (var comment in _comments)
+                            {
+                                <MudListItem>
+                                    <MudText Typo="Typo.body1"><strong>@comment.AuthorName</strong></MudText>
+                                    <MudText Typo="Typo.caption">@comment.CreatedAt.ToLocalTime().ToString("g")</MudText>
+                                    <MudText>@comment.Text</MudText>
+                                </MudListItem>
+                                <MudDivider />
+                            }
+                        </MudList>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    [Parameter]
+    public int RecipeId { get; set; }
+
+    private RecipeResponseDTO? _recipe;
+    private List<CommentResponseDTO> _comments = new();
+    
+    private string _newCommentText = "";
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAllData();
+    }
+
+    private async Task LoadAllData()
+    {
+        _isLoading = true;
+        try
+        {
+            var recipeTask = LoadRecipeAsync();
+            var commentsTask = LoadCommentsAsync();
+
+            await Task.WhenAll(recipeTask, commentsTask);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar los detalles de la receta: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+    
+    private async Task LoadRecipeAsync()
+    {
+        try
+        {
+            _recipe = await Http.GetFromJsonAsync<RecipeResponseDTO>($"api/recipes/{RecipeId}");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"No se pudo cargar la receta: {ex.Message}", Severity.Error);
+            _recipe = null;
+        }
+    }
+
+    private async Task LoadCommentsAsync()
+    {
+        try
+        {
+            _comments = await Http.GetFromJsonAsync<List<CommentResponseDTO>>($"api/recipes/{RecipeId}/comments") ?? new();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"No se pudieron cargar los comentarios: {ex.Message}", Severity.Warning);
+        }
+    }
+
+    private async Task SubmitRating(int ratingValue)
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Snackbar.Add("Debe iniciar sesión para poder valorar.", Severity.Info);
+            return;
+        }
+
+        var dto = new RatingCreateUpdateDTO { Stars = ratingValue };
+        try
+        {
+            var response = await Http.PostAsJsonAsync($"api/recipes/{RecipeId}/ratings", dto);
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("¡Gracias por tu valoración!", Severity.Success);
+                await LoadRecipeAsync();
+                StateHasChanged();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Snackbar.Add($"Error al enviar la valoración: {error}", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task SubmitComment()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Snackbar.Add("Debe iniciar sesión para poder comentar.", Severity.Info);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_newCommentText)) return;
+
+        var dto = new CommentCreateDTO { Text = _newCommentText };
+        try
+        {
+            var response = await Http.PostAsJsonAsync($"api/recipes/{RecipeId}/comments", dto);
+            if (response.IsSuccessStatusCode)
+            {
+                _newCommentText = "";
+                Snackbar.Add("Comentario añadido.", Severity.Success);
+                await LoadCommentsAsync(); 
+                StateHasChanged();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Snackbar.Add($"Error al enviar el comentario: {error}", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
+    }
+}

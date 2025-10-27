@@ -1,0 +1,88 @@
+﻿@page "/login"
+@using WebApp.DTOs
+@using WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <div class="d-flex justify-center my-4">
+                    <MudIcon Icon="@Icons.Material.Filled.Cookie" Color="Color.Primary" Size="Size.Large" />
+                </div>
+                <MudText Typo="Typo.h5" Align="Align.Center">Bienvenido de vuelta</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">Ingresa a tu cuenta para ver las recetas.</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <EditForm Model="@_model" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <MudTextField @bind-Value="_model.Email" For="@(() => _model.Email)" Label="Email" InputType="InputType.Email" Variant="Variant.Outlined" Class="mb-3" />
+                <MudTextField @bind-Value="_model.Password" For="@(() => _model.Password)" Label="Contraseña" InputType="InputType.Password" Variant="Variant.Outlined" Class="mb-3" />
+
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <MudAlert Severity="Severity.Error" Class="mb-3">@_errorMessage</MudAlert>
+                }
+
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="Size.Large" Disabled="@_isSubmitting">
+                    @if (_isSubmitting)
+                    {
+                        <MudProgressCircular Indeterminate="true" Size="Size.Small" />
+                    }
+                    else
+                    {
+                        <span>Iniciar Sesión</span>
+                    }
+                </MudButton>
+            </EditForm>
+        </MudCardContent>
+        <MudCardActions Class="d-flex justify-center pb-4">
+            <MudText Typo="Typo.body2">
+                ¿No tienes cuenta? <MudLink Href="/register">Regístrate aquí</MudLink>
+            </MudText>
+        </MudCardActions>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private readonly UserLoginDTO _model = new();
+    private bool _isSubmitting = false;
+    private string? _errorMessage;
+
+    private async Task HandleLogin()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/auth/login", _model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<LoginResponseDTO>();
+                if (result != null && !string.IsNullOrWhiteSpace(result.Token))
+                {
+                    var customAuthStateProvider = (CustomAuthStateProvider)AuthStateProvider;
+                    await customAuthStateProvider.MarkUserAsAuthenticated(result.Token);
+
+                    NavManager.NavigateTo("/");
+                    return;
+                }
+            }
+
+            _errorMessage = "Email o contraseña incorrectos.";
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Ha ocurrido un error inesperado: {ex.Message}";
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

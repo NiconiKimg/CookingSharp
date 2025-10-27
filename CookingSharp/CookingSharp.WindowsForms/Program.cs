@@ -1,23 +1,34 @@
-using Azure;
-using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using CookingSharp.WindowsForms.AppealsControl;
 using CookingSharp.WindowsForms.CategoriesControl;
+using CookingSharp.WindowsForms.Features.Apprentice;
+using CookingSharp.WindowsForms.Features.Authentication;
+using CookingSharp.WindowsForms.Features.Chef;
 using CookingSharp.WindowsForms.Features.Dashboard;
 using CookingSharp.WindowsForms.RecipesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
-using CookingSharp.WindowsForms.Features.Apprentice;
-using CookingSharp.WindowsForms.Features.Chef;
+using CookingSharp.WindowsForms.Features.Reports;
+using System;
+using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms
 {
+    /// <summary>
+    /// Clase principal de la aplicaciï¿½n. Responsable de la configuraciï¿½n, inyecciï¿½n de dependencias,
+    /// y del control del flujo principal de autenticaciï¿½n y navegaciï¿½n.
+    /// </summary>
     internal static class Program
     {
+        /// <summary>
+        /// Proveedor de servicios de inyecciï¿½n de dependencias para toda la aplicaciï¿½n.
+        /// </summary>
         public static IServiceProvider? ServiceProvider { get; private set; }
 
+        /// <summary>
+        /// Punto de entrada principal de la aplicaciï¿½n.
+        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -27,129 +38,88 @@ namespace CookingSharp.WindowsForms
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider();
 
-            using (var loginForm = ServiceProvider?.GetRequiredService<FrmLogin>())
+            // Bucle principal que gestiona el ciclo de vida de la sesiï¿½n.
+            while (true)
             {
-                DialogResult result = loginForm?.ShowDialog() ?? DialogResult.Cancel;
-                if (result == DialogResult.OK)
+                SessionManager.Logout(); // Asegura que cualquier sesiï¿½n anterior estï¿½ cerrada.
+
+                using (var loginForm = ServiceProvider.GetRequiredService<FrmLogin>())
                 {
-                    var userRole = SessionManager.CurrentUser?.Role;
-
-                    Form? mainForm = null;
-
-                    switch (userRole)
+                    // Muestra el formulario de login como un diï¿½logo modal.
+                    if (loginForm.ShowDialog() == DialogResult.OK)
                     {
-                        case Domain.User.RoleTypes.Admin:
-                            mainForm = ServiceProvider?.GetRequiredService<FrmDashboard>();
-                            break;
-
-                        case Domain.User.RoleTypes.Chef:
-                            mainForm = ServiceProvider?.GetRequiredService<FrmChefDashboard>();
-                            break;
-
-                        case Domain.User.RoleTypes.Apprentice:
-                            mainForm = ServiceProvider?.GetRequiredService<FrmApprenticeDashboard>();
-                            break;
-
-                        default:
-                            MessageBox.Show("Rol de usuario no reconocido. La aplicación se cerrará.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            System.Windows.Forms.Application.Exit();
-                            break;
+                        // Si el login es exitoso, lanza el dashboard correspondiente.
+                        // El cï¿½digo se detendrï¿½ aquï¿½ hasta que el dashboard se cierre.
+                        LaunchDashboardBasedOnRole();
                     }
-
-                    if (mainForm != null)
+                    else
                     {
-                        System.Windows.Forms.Application.Run(mainForm);
+                        // Si el usuario cierra el login con la 'X' o cancela,
+                        // se rompe el bucle y la aplicaciï¿½n termina.
+                        break;
                     }
-                }
-                else
-                {
-                    System.Windows.Forms.Application.Exit();
                 }
             }
         }
 
+        /// <summary>
+        /// Configura el contenedor de inyecciï¿½n de dependencias (DI) para la aplicaciï¿½n.
+        /// </summary>
         private static void ConfigureServices(IServiceCollection services)
         {
-            
-            services.AddTransient<AuthenticationHandler>();
-
-            // Category
-            services.AddHttpClient<CategoryApiClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7111/api/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .AddHttpMessageHandler<AuthenticationHandler>()
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            });
-
-            // Appeals
-            services.AddHttpClient<AppealApiClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7111/api/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .AddHttpMessageHandler<AuthenticationHandler>()
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            });
-
-            // Recipes
-            services.AddHttpClient<RecipeApiClient>(recipe =>
-            {
-                recipe.BaseAddress = new Uri("https://localhost:7111/api/");
-                recipe.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .AddHttpMessageHandler<AuthenticationHandler>()
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            });
-
-            // Users
-            services.AddHttpClient<UserApiClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7111/api/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .AddHttpMessageHandler<AuthenticationHandler>()
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            });
-
-            // Auth
-            services.AddHttpClient<AuthApiClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7111/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            });
+            const string baseApiAddress = "https://localhost:7111";
+            services.AddApiClients(baseApiAddress);
 
             services.AddTransient<FrmLogin>();
-
             services.AddTransient<FrmDashboard>();
             services.AddTransient<FrmChefDashboard>();
             services.AddTransient<FrmApprenticeDashboard>();
-
             services.AddTransient<frmCategoriesCreate>();
+            services.AddTransient<frmCategoriesUpdate>();
             services.AddTransient<FrmUsersCreate>();
+            services.AddTransient<FrmUsersUpdate>();
             services.AddTransient<frmAppeal>();
             services.AddTransient<FrmRecipe>();
+
             services.AddTransient<UC_AdminPanel>();
-            services.AddTransient<UC_RecipesChef>();
-            services.AddTransient<UC_Appeals>();
             services.AddTransient<UC_Categories>();
-            services.AddTransient<UC_Recipes>();
             services.AddTransient<UC_Users>();
+            services.AddTransient<UC_Appeals>();
+            services.AddTransient<UC_Recipes>();
+            services.AddTransient<UC_Chef_MyRecipes>();
+            services.AddTransient<UC_Chef_ExploreRecipes>();
             services.AddTransient<UC_AppealsApprentice>();
             services.AddTransient<UC_RecipiesApprentice>();
+            services.AddTransient<UC_Reports>();
+        }
+
+        /// <summary>
+        /// Determina el rol del usuario autenticado y lanza el dashboard correspondiente.
+        /// </summary>
+        private static void LaunchDashboardBasedOnRole()
+        {
+            if (ServiceProvider is null) return;
+
+            var userRole = SessionManager.GetUserRole();
+            Form? mainForm = null;
+
+            switch (userRole)
+            {
+                case "Admin":
+                    mainForm = ServiceProvider.GetRequiredService<FrmDashboard>();
+                    break;
+                case "Chef":
+                    mainForm = ServiceProvider.GetRequiredService<FrmChefDashboard>();
+                    break;
+                case "Apprentice":
+                    mainForm = ServiceProvider.GetRequiredService<FrmApprenticeDashboard>();
+                    break;
+                default:
+                    MessageBox.Show("Rol de usuario no reconocido. Volviendo a la pantalla de inicio.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+            }
+
+            System.Windows.Forms.Application.Run(mainForm);
         }
     }
 }

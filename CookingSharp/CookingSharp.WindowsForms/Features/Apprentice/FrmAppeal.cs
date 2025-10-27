@@ -1,13 +1,7 @@
 ﻿using CookingSharp.Application.DTOs;
-using CookingSharp.Infrastructure.Clients;
+using CookingSharp.Clients;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.Features.Apprentice
@@ -15,36 +9,37 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
     public partial class frmAppeal : Form
     {
         private readonly AppealApiClient _apiClient;
+
         public frmAppeal(AppealApiClient apiClient)
         {
             InitializeComponent();
             _apiClient = apiClient;
+            this.AcceptButton = btnCreate;
+            this.CancelButton = btnCancel;
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
         }
 
         private async void btnCreate_Click(object sender, EventArgs e)
         {
-            // 1. Validar la entrada del usuario
-            if (string.IsNullOrWhiteSpace(txtDescription.Text))
+            if (!this.ValidateChildren())
             {
-                MessageBox.Show("La descripción de la solicitud es obligatoria.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, corrija los errores marcados.", "Errores de Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. Crear el Data Transfer Object (DTO)
             var newAppealDto = new AppealCreateDTO
             {
                 Description = txtDescription.Text.Trim(),
             };
 
-            // 3. Enviar la solicitud a la API
             try
             {
-                var createdAppeal = await _apiClient.AddAsync(newAppealDto);
+                var createdAppeal = await _apiClient.CreateAppealAsync(newAppealDto);
 
                 if (createdAppeal != null)
                 {
                     MessageBox.Show("Solicitud enviada con éxito. Un administrador la revisará pronto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.DialogResult = DialogResult.OK; // Indicar que la operación fue exitosa
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
@@ -54,8 +49,34 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             }
             catch (Exception ex)
             {
-                // Manejar errores de conexión o del servidor
                 MessageBox.Show($"Ocurrió un error al enviar la solicitud: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.AutoValidate = AutoValidate.Disable;
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.AutoValidate = AutoValidate.Disable;
+            this.Close();
+        }
+
+        private void txtDescription_Validating(object sender, CancelEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDescription.Text))
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(txtDescription, "La descripción es obligatoria. Explica por qué quieres ser chef.");
+            }
+            else
+            {
+                e.Cancel = false;
+                errorProvider1.SetError(txtDescription, "");
             }
         }
     }

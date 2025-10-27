@@ -1,24 +1,28 @@
-﻿using CookingSharp.Domain;
+﻿using CookingSharp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CookingSharp.Infrastructure.Persistence.Configurations
+namespace CookingSharp.Infrastructure.Persistence.Configurations;
+
+/// <summary>
+/// Configuración de Entity Framework para la entidad Category.
+/// </summary>
+public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    public void Configure(EntityTypeBuilder<Category> builder)
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
-        {
-            builder.ToTable("Categories");
+        builder.ToTable("Categories");
 
-            builder.HasKey(c => c.Id);
+        builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Name)
-                .IsRequired()
-                .HasMaxLength(100);
+        builder.Property(c => c.Name)
+            .IsRequired()
+            .HasMaxLength(100);
 
-            builder.Property(c => c.Description)
-                .IsRequired()
-                .HasMaxLength(255);
-        }
+        builder.HasIndex(c => c.Name).IsUnique();
+
+        builder.Property(c => c.Description)
+            .IsRequired()
+            .HasMaxLength(255);
     }
 }

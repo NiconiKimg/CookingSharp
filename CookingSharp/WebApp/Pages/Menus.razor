@@ -1,0 +1,127 @@
+﻿@page "/menus"
+@using WebApp.DTOs
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+
+    <MudText Typo="Typo.h3" GutterBottom="true">Explorar Menús</MudText>
+    <MudText Class="mb-6">Descubre colecciones de recetas creadas por nuestros chefs.</MudText>
+
+    <MudCard Elevation="3" Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <div class="d-flex align-center gap-2">
+                    <MudIcon Icon="@Icons.Material.Filled.FilterList" Color="Color.Primary" />
+                    <MudText Typo="Typo.h6">Filtros de Búsqueda</MudText>
+                </div>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            @if (_isLoading)
+            {
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="60px" />
+            }
+            else
+            {
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6">
+                        <MudTextField T="string" Label="Buscar por nombre de menú" Variant="Variant.Outlined" Value="_nameFilter" ValueChanged="OnNameFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" DebounceInterval="300" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudTextField T="string" Label="Buscar por creador" Variant="Variant.Outlined" Value="_authorFilter" ValueChanged="OnAuthorFilterChanged" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" DebounceInterval="300" />
+                    </MudItem>
+                </MudGrid>
+            }
+        </MudCardContent>
+    </MudCard>
+
+    <MudDivider Class="my-6" />
+
+    @if (_isLoading)
+    {
+        <div class="d-flex justify-center mt-6">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        </div>
+    }
+    else if (!_filteredMenus.Any())
+    {
+        <MudAlert Severity="Severity.Info" Class="mt-6" Icon="@Icons.Material.Filled.Info">
+            No se encontraron menús que coincidan con los filtros aplicados.
+        </MudAlert>
+    }
+    else
+    {
+        <MudGrid Spacing="4">
+            @foreach (var menu in _filteredMenus)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MenuCard Menu="menu" />
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private List<MenuSummaryDTO>? _allMenus;
+    private List<MenuSummaryDTO> _filteredMenus = new();
+
+    private string _nameFilter = "";
+    private string _authorFilter = "";
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            _allMenus = await Http.GetFromJsonAsync<List<MenuSummaryDTO>>("api/menus/summaries");
+            ApplyFilters();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar los menús: {ex.Message}", Severity.Error);
+            _allMenus = new List<MenuSummaryDTO>();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void ApplyFilters()
+    {
+        if (_allMenus == null)
+        {
+            _filteredMenus = new List<MenuSummaryDTO>();
+            return;
+        }
+
+        IEnumerable<MenuSummaryDTO> menus = _allMenus;
+
+        if (!string.IsNullOrWhiteSpace(_nameFilter))
+        {
+            menus = menus.Where(m => m.Name.Contains(_nameFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_authorFilter))
+        {
+            menus = menus.Where(m => m.AuthorName.Contains(_authorFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        _filteredMenus = menus.ToList();
+    }
+
+    private void OnNameFilterChanged(string value)
+    {
+        _nameFilter = value;
+        ApplyFilters();
+    }
+
+    private void OnAuthorFilterChanged(string value)
+    {
+        _authorFilter = value;
+        ApplyFilters();
+    }
+}
