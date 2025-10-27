@@ -1,9 +1,11 @@
 ﻿@page "/recipe/{RecipeId:int}"
+@using Microsoft.AspNetCore.Components.Authorization
 @using WebApp.DTOs
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
 @inject ISnackbar Snackbar
+@inject AuthenticationStateProvider AuthStateProvider
 @attribute [Authorize]
 
 @if (_isLoading)
@@ -67,7 +69,7 @@ else
             <MudCard Elevation="2" Class="mb-6">
                 <MudCardHeader><CardHeaderContent><MudText Typo="Typo.h6">Tu Valoración</MudText></CardHeaderContent></MudCardHeader>
                 <MudCardContent Class="d-flex justify-center">
-                    <MudRating SelectedValueChanged="OnRatingChanged" />
+                    <MudRating SelectedValueChanged="SubmitRating" />
                 </MudCardContent>
             </MudCard>
 
@@ -98,14 +100,12 @@ else
     </MudGrid>
 }
 
-
 @code {
     [Parameter]
     public int RecipeId { get; set; }
 
     private RecipeResponseDTO? _recipe;
     private List<CommentResponseDTO> _comments = new();
-    private int _averageRating = 0;
     
     private string _newCommentText = "";
     private bool _isLoading = true;
@@ -120,13 +120,10 @@ else
         _isLoading = true;
         try
         {
-            var recipeTask = Http.GetFromJsonAsync<RecipeResponseDTO>($"api/recipes/{RecipeId}");
+            var recipeTask = LoadRecipeAsync();
             var commentsTask = LoadCommentsAsync();
-            var ratingTask = LoadAverageRatingAsync();
 
-            await Task.WhenAll(recipeTask, commentsTask, ratingTask);
-
-            _recipe = await recipeTask;
+            await Task.WhenAll(recipeTask, commentsTask);
         }
         catch (Exception ex)
         {
@@ -137,13 +134,25 @@ else
             _isLoading = false;
         }
     }
+    
+    private async Task LoadRecipeAsync()
+    {
+        try
+        {
+            _recipe = await Http.GetFromJsonAsync<RecipeResponseDTO>($"api/recipes/{RecipeId}");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"No se pudo cargar la receta: {ex.Message}", Severity.Error);
+            _recipe = null;
+        }
+    }
 
     private async Task LoadCommentsAsync()
     {
         try
         {
-            var comments = await Http.GetFromJsonAsync<List<CommentResponseDTO>>($"api/recipes/{RecipeId}/comments");
-            _comments = comments ?? new();
+            _comments = await Http.GetFromJsonAsync<List<CommentResponseDTO>>($"api/recipes/{RecipeId}/comments") ?? new();
         }
         catch (Exception ex)
         {
@@ -151,24 +160,49 @@ else
         }
     }
 
-    private async Task LoadAverageRatingAsync()
+    private async Task SubmitRating(int ratingValue)
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Snackbar.Add("Debe iniciar sesión para poder valorar.", Severity.Info);
+            return;
+        }
+
+        var dto = new RatingCreateUpdateDTO { Stars = ratingValue };
         try
         {
-            var ratingData = await Http.GetFromJsonAsync<AverageRatingResponseDTO>($"api/recipes/{RecipeId}/ratings/average");
-            if (ratingData != null)
+            var response = await Http.PostAsJsonAsync($"api/recipes/{RecipeId}/ratings", dto);
+            if (response.IsSuccessStatusCode)
             {
-                _averageRating = (int)Math.Round(ratingData.AverageRating);
+                Snackbar.Add("¡Gracias por tu valoración!", Severity.Success);
+                await LoadRecipeAsync();
+                StateHasChanged();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Snackbar.Add($"Error al enviar la valoración: {error}", Severity.Error);
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"No se pudo cargar la valoración: {ex.Message}", Severity.Warning);
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
         }
     }
 
     private async Task SubmitComment()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Snackbar.Add("Debe iniciar sesión para poder comentar.", Severity.Info);
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(_newCommentText)) return;
 
         var dto = new CommentCreateDTO { Text = _newCommentText };
@@ -179,35 +213,13 @@ else
             {
                 _newCommentText = "";
                 Snackbar.Add("Comentario añadido.", Severity.Success);
-                await LoadCommentsAsync();
+                await LoadCommentsAsync(); 
                 StateHasChanged();
             }
             else
             {
-                Snackbar.Add("Error al enviar el comentario.", Severity.Error);
-            }
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
-        }
-    }
-
-    private async Task OnRatingChanged(int newRating)
-    {
-        var dto = new RatingCreateUpdateDTO { Stars = newRating };
-        try
-        {
-            var response = await Http.PostAsJsonAsync($"api/recipes/{RecipeId}/ratings", dto);
-            if (response.IsSuccessStatusCode)
-            {
-                Snackbar.Add("¡Gracias por tu valoración!", Severity.Success);
-                await LoadAllData();
-                StateHasChanged();
-            }
-            else
-            {
-                Snackbar.Add("Error al enviar tu valoración.", Severity.Error);
+                var error = await response.Content.ReadAsStringAsync();
+                Snackbar.Add($"Error al enviar el comentario: {error}", Severity.Error);
             }
         }
         catch (Exception ex)
