@@ -26,6 +26,16 @@ public class MenuRepository : GenericRepository<Menu>, IMenuRepository
             .ToListAsync();
     }
 
+    public async Task<Menu?> GetByIdWithDetailsAsync(int id)
+    {
+        return await _dbSet
+            .Include(m => m.User)
+            .Include(m => m.Recipes)
+            .Include(m => m.Ratings)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Id == id);
+    }
+
     public async Task<IEnumerable<Menu>> GetMenusByUserWithRecipesAsync(int userId)
     {
         return await _dbSet
@@ -45,18 +55,24 @@ public class MenuRepository : GenericRepository<Menu>, IMenuRepository
             .ToListAsync();
     }
 
-    public async Task<Menu?> GetByIdWithDetailsAsync(int id)
+    public async Task<IEnumerable<Menu>> GetAllWithDetailsAsync(string? nameFilter = null, string? authorFilter = null)
     {
-        return await _dbSet
+        var query = _dbSet
             .Include(m => m.User)
+            .Include(m => m.Recipes)
             .Include(m => m.Ratings)
-            .Include(m => m.Recipes)
-                .ThenInclude(r => r.User)
-            .Include(m => m.Recipes)
-                .ThenInclude(r => r.Categories)
-            .Include(m => m.Recipes)
-                .ThenInclude(r => r.Ratings)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(nameFilter))
+        {
+            query = query.Where(m => m.Name.Contains(nameFilter));
+        }
+
+        if (!string.IsNullOrWhiteSpace(authorFilter))
+        {
+            query = query.Where(m => (m.User.Name + " " + m.User.Surname).Contains(authorFilter));
+        }
+
+        return await query.ToListAsync();
     }
 }

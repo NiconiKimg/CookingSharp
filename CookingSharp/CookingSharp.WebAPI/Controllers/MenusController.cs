@@ -57,9 +57,9 @@ public class MenusController : BaseApiController
     [AllowAnonymous]
     [HttpGet("summaries")]
     [ProducesResponseType(typeof(IEnumerable<MenuSummaryDTO>), 200)]
-    public async Task<IActionResult> GetAllSummaries()
+    public async Task<IActionResult> GetAllSummaries([FromQuery] string? nameFilter = null, [FromQuery] string? authorFilter = null)
     {
-        var menuSummaries = await _menuService.GetAllSummariesAsync();
+        var menuSummaries = await _menuService.GetAllSummariesAsync(nameFilter, authorFilter);
         return Ok(menuSummaries);
     }
 

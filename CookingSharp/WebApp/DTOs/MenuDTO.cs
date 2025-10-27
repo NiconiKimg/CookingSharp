@@ -6,10 +6,10 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int UserId { get; set; }
-        public ICollection<RecipeSummaryDTO> Recipes { get; set; } = new List<RecipeSummaryDTO>();
+        public string AuthorName { get; set; } = string.Empty;
         public double AverageRating { get; set; }
         public int RatingsCount { get; set; }
-        public string AuthorName { get; set; } = string.Empty;
+        public ICollection<RecipeSummaryDTO> Recipes { get; set; } = new List<RecipeSummaryDTO>();
     }
 
     public class MenuCreateUpdateDTO
