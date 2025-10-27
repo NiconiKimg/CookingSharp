@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace CookingSharp.Domain.Entities;
 
 /// <summary>
 /// Representa una receta de cocina, incluyendo sus detalles y pasos.
-/// Protege su estado interno y gestiona su ciclo de vida.
 /// </summary>
 public class Recipe
 {
@@ -37,10 +35,11 @@ public class Recipe
     /// </summary>
     public int UserId { get; private set; }
 
-
-    // Se usa un campo privado y una colección de solo lectura para proteger la lista de pasos.
-    // La única forma de añadir o quitar pasos es a través de los métodos de la entidad
     private readonly List<RecipeStep> _steps = new();
+
+    /// <summary>
+    /// Colección de solo lectura de los pasos de la receta.
+    /// </summary>
     public IReadOnlyCollection<RecipeStep> Steps => _steps.AsReadOnly();
 
     public User User { get; private set; }
@@ -48,9 +47,22 @@ public class Recipe
     public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
     public ICollection<RecipeRating> Ratings { get; private set; } = new List<RecipeRating>();
     public ICollection<Menu> Menus { get; private set; } = new List<Menu>();
+
+    /// <summary>
+    /// URL de la imagen de la receta.
+    /// </summary>
     public string ImageUrl { get; private set; }
+
+    /// <summary>
+    /// Identificador público de la imagen en el servicio de almacenamiento.
+    /// </summary>
     public string ImagePublicId { get; private set; }
 
+    /// <summary>
+    /// Establece la imagen de la receta con su URL y su identificador público.
+    /// </summary>
+    /// <param name="imageUrl">URL de la imagen.</param>
+    /// <param name="publicId">Identificador público de la imagen.</param>
     public void SetImage(string imageUrl, string publicId)
     {
         ImageUrl = imageUrl;

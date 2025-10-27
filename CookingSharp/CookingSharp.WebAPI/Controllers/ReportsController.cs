@@ -10,7 +10,7 @@ namespace CookingSharp.WebAPI.Controllers
     /// Controlador para la generación de reportes en formato PDF.
     /// </summary>
     [Authorize(Roles = "Admin")]
-    [Route("api/reports")] // AÑADIR ESTA LÍNEA PARA FORZAR LA RUTA EN MINÚSCULAS
+    [Route("api/reports")]
     public class ReportsController : BaseApiController
     {
         private readonly IReportService _reportService;

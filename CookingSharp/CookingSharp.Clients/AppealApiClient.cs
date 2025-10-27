@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CookingSharp.Clients;
 
+/// <summary>
+/// Cliente para interactuar con el endpoint de solicitudes de la API.
+/// </summary>
 public class AppealApiClient
 {
     private readonly HttpClient _httpClient;
@@ -16,23 +19,34 @@ public class AppealApiClient
         _httpClient = httpClient;
     }
 
+    /// <summary>
+    /// Obtiene todas las solicitudes pendientes de revisión.
+    /// </summary>
     public async Task<IEnumerable<AppealResponseDTO>?> GetAllPendingAsync()
     {
         return await _httpClient.GetFromJsonAsync<IEnumerable<AppealResponseDTO>>($"{Endpoint}/pending");
     }
 
+    /// <summary>
+    /// Procesa una solicitud, aprobándola o rechazándola.
+    /// </summary>
     public async Task<bool> ProcessAppealAsync(int appealId, AppealUpdateDTO dto)
     {
         var response = await _httpClient.PutAsJsonAsync($"{Endpoint}/{appealId}/process", dto);
         return response.IsSuccessStatusCode;
     }
 
-    // Métodos para el usuario (aprendiz)
+    /// <summary>
+    /// Obtiene todas las solicitudes hechas por el usuario autenticado.
+    /// </summary>
     public async Task<IEnumerable<AppealResponseDTO>?> GetMyAppealsAsync()
     {
         return await _httpClient.GetFromJsonAsync<IEnumerable<AppealResponseDTO>>($"{Endpoint}/my-appeals");
     }
 
+    /// <summary>
+    /// Crea una nueva solicitud para convertirse en Chef.
+    /// </summary>
     public async Task<AppealResponseDTO?> CreateAppealAsync(AppealCreateDTO dto)
     {
         var response = await _httpClient.PostAsJsonAsync(Endpoint, dto);

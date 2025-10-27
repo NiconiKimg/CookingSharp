@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingSharp.Infrastructure.Persistence.Configurations;
 
+/// <summary>
+/// Configuración de Entity Framework para la entidad Appeal.
+/// </summary>
 public class AppealConfiguration : IEntityTypeConfiguration<Appeal>
 {
     public void Configure(EntityTypeBuilder<Appeal> builder)
@@ -18,10 +21,9 @@ public class AppealConfiguration : IEntityTypeConfiguration<Appeal>
 
         builder.Property(a => a.Status).IsRequired();
 
-        // Relación Uno-a-Muchos: Un Usuario tiene muchas Solicitudes
         builder.HasOne(a => a.User)
             .WithMany(u => u.Appeals)
             .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Cascade); // Si se borra el usuario, se borran sus solicitudes
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

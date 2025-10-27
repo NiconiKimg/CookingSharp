@@ -87,6 +87,12 @@ public class CommentService : ICommentService
         await _unitOfWork.CompleteAsync();
     }
 
+    /// <summary>
+    /// Obtiene un comentario por su ID de forma asíncrona.
+    /// </summary>
+    /// <param name="commentId">El ID del comentario a buscar.</param>
+    /// <returns>El DTO del comentario encontrado.</returns>
+    /// <exception cref="NotFoundException">Se lanza si el comentario no existe.</exception>
     public async Task<CommentResponseDTO?> GetByIdAsync(int commentId)
     {
         var comment = await _unitOfWork.Comments.GetByIdAsync(commentId) ?? throw new NotFoundException(nameof(Comment), commentId);

@@ -6,6 +6,9 @@ using WebApp.Services;
 
 namespace WebApp.Auth
 {
+    /// <summary>
+    /// Proveedor de estado de autenticación personalizado para la aplicación Blazor WebAssembly.
+    /// </summary>
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
         private readonly HttpClient _httpClient;
@@ -20,6 +23,9 @@ namespace WebApp.Auth
             _userStateService = userStateService;
         }
 
+        /// <summary>
+        /// Obtiene el estado de autenticación actual del usuario.
+        /// </summary>
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _localStorage.GetItemAsync<string>("authToken");
@@ -43,6 +49,9 @@ namespace WebApp.Auth
             return new AuthenticationState(user);
         }
 
+        /// <summary>
+        /// Marca al usuario como autenticado y almacena el token.
+        /// </summary>
         public async Task MarkUserAsAuthenticated(string token)
         {
             var claims = ParseClaimsFromJwt(token);
@@ -60,6 +69,9 @@ namespace WebApp.Auth
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
 
+        /// <summary>
+        /// Marca al usuario como desconectado y elimina el token.
+        /// </summary>
         public async Task MarkUserAsLoggedOut()
         {
             await _localStorage.RemoveItemAsync("authToken");
@@ -68,6 +80,9 @@ namespace WebApp.Auth
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
         }
 
+        /// <summary>
+        /// Analiza y extrae los claims del token JWT.
+        /// </summary>
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
@@ -126,6 +141,9 @@ namespace WebApp.Auth
             return claims;
         }
 
+        /// <summary>
+        /// Convierte una cadena Base64 sin padding a un array de bytes.
+        /// </summary>
         private byte[] ParseBase64WithoutPadding(string base64)
         {
             switch (base64.Length % 4)

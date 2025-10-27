@@ -13,7 +13,6 @@ public class CookingSharpDbContext : DbContext
     {
     }
 
-    // DbSets para cada una de nuestras entidades
     public DbSet<User> Users { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<RecipeStep> RecipeSteps { get; set; }
@@ -24,8 +23,7 @@ public class CookingSharpDbContext : DbContext
     public DbSet<Appeal> Appeals { get; set; }
 
     /// <summary>
-    /// Configura el modelo de la base de datos utilizando las clases de configuración
-    /// que se encuentran en este mismo ensamblado (proyecto).
+    /// Configura el modelo de la base de datos aplicando las configuraciones de las entidades.
     /// </summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

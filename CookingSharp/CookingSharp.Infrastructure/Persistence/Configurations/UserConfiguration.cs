@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingSharp.Infrastructure.Persistence.Configurations;
 
+/// <summary>
+/// Configuración de Entity Framework para la entidad User.
+/// </summary>
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)

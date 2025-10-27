@@ -7,11 +7,6 @@ using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain.Entities;
 using CookingSharp.Domain.Enums;
 
-
-// Se eliminan los 'usings' a la capa de Infrastructure
-// using CookingSharp.Infrastructure;
-// using Microsoft.Extensions.Options;
-
 namespace CookingSharp.Application.Services;
 
 /// <summary>
@@ -22,7 +17,6 @@ public class RecipeService : IRecipeService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
-    // Se elimina el campo: private readonly CloudinarySettings _cloudinarySettings;
 
     /// <summary>
     /// Inicializa una nueva instancia de la clase <see cref="RecipeService"/>.
@@ -38,8 +32,13 @@ public class RecipeService : IRecipeService
     }
 
     /// <summary>
-    /// Crea una nueva receta de forma asíncrona (sin imagen).
+    /// Crea una nueva receta de forma asíncrona.
     /// </summary>
+    /// <param name="recipeCreateDto">DTO con los datos de la receta a crear.</param>
+    /// <param name="creatorUserId">ID del usuario creador.</param>
+    /// <returns>El DTO de la receta recién creada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si el usuario o alguna categoría no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si alguna categoría no existe.</exception>
     public async Task<RecipeResponseDTO> CreateAsync(RecipeCreateDTO recipeCreateDto, int creatorUserId)
     {
         _ = await _unitOfWork.Users.GetByIdAsync(creatorUserId) ?? throw new NotFoundException(nameof(User), creatorUserId);
@@ -68,6 +67,7 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Obtiene todas las recetas con sus detalles de forma asíncrona.
     /// </summary>
+    /// <returns>Una colección de DTOs de recetas.</returns>
     public async Task<IEnumerable<RecipeResponseDTO>> GetAllAsync()
     {
         return await GetAllAsync(null, null);
@@ -76,6 +76,9 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Obtiene todas las recetas con sus detalles de forma asíncrona, opcionalmente filtradas.
     /// </summary>
+    /// <param name="searchTerm">Término de búsqueda opcional.</param>
+    /// <param name="categoryId">ID de categoría opcional para filtrar.</param>
+    /// <returns>Una colección de DTOs de recetas.</returns>
     public async Task<IEnumerable<RecipeResponseDTO>> GetAllAsync(string? searchTerm = null, int? categoryId = null)
     {
         var recipes = await _unitOfWork.Recipes.GetAllWithDetailsAsync(searchTerm, categoryId);
@@ -85,6 +88,7 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Obtiene una versión resumida de todas las recetas publicadas de forma asíncrona.
     /// </summary>
+    /// <returns>Una colección de DTOs resumidos de recetas publicadas.</returns>
     public async Task<IEnumerable<RecipeSummaryDTO>> GetAllSummariesAsync()
     {
         var recipes = await _unitOfWork.Recipes.GetAllWithDetailsAsync();
@@ -95,6 +99,9 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Obtiene una receta por su ID con sus detalles de forma asíncrona.
     /// </summary>
+    /// <param name="id">ID de la receta.</param>
+    /// <returns>El DTO de la receta encontrada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si la receta no existe.</exception>
     public async Task<RecipeResponseDTO?> GetByIdAsync(int id)
     {
         var recipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
@@ -102,8 +109,10 @@ public class RecipeService : IRecipeService
     }
 
     /// <summary>
-    /// Obtiene las recetas (en formato resumen) de un usuario específico.
+    /// Obtiene las recetas resumidas de un usuario específico.
     /// </summary>
+    /// <param name="userId">ID del usuario.</param>
+    /// <returns>Una colección de DTOs resumidos de recetas.</returns>
     public async Task<IEnumerable<RecipeSummaryDTO>> GetRecipesByUserIdAsync(int userId)
     {
         var recipes = await _unitOfWork.Recipes.GetByUserIdWithDetailsAsync(userId);
@@ -111,8 +120,10 @@ public class RecipeService : IRecipeService
     }
 
     /// <summary>
-    /// Obtiene las recetas completas (con pasos) de un usuario específico.
+    /// Obtiene las recetas completas de un usuario específico.
     /// </summary>
+    /// <param name="userId">ID del usuario.</param>
+    /// <returns>Una colección de DTOs completos de recetas.</returns>
     public async Task<IEnumerable<RecipeResponseDTO>> GetFullRecipesByUserIdAsync(int userId)
     {
         var recipes = await _unitOfWork.Recipes.GetByUserIdWithDetailsAsync(userId);
@@ -122,6 +133,10 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Actualiza una receta existente de forma asíncrona.
     /// </summary>
+    /// <param name="id">ID de la receta a actualizar.</param>
+    /// <param name="recipeUpdateDto">DTO con los nuevos datos de la receta.</param>
+    /// <exception cref="NotFoundException">Se lanza si la receta no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si la receta no está en estado borrador o alguna categoría no existe.</exception>
     public async Task UpdateAsync(int id, RecipeUpdateDTO recipeUpdateDto)
     {
         var recipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
@@ -163,6 +178,10 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Actualiza únicamente el estado de una receta de forma asíncrona.
     /// </summary>
+    /// <param name="id">ID de la receta.</param>
+    /// <param name="statusUpdateDto">DTO con el nuevo estado.</param>
+    /// <exception cref="NotFoundException">Se lanza si la receta no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si el estado proporcionado no es válido.</exception>
     public async Task UpdateStatusAsync(int id, RecipeStatusUpdateDTO statusUpdateDto)
     {
         var recipe = await _unitOfWork.Recipes.GetByIdWithMenusAsync(id)
@@ -178,7 +197,6 @@ public class RecipeService : IRecipeService
             default: throw new BadRequestException("El estado proporcionado no es válido.");
         }
 
-        // 4. Comparamos el estado antiguo con el nuevo.
         var newStatus = recipe.Status;
         if (oldStatus == RecipeStatus.Published && newStatus != RecipeStatus.Published)
         {
@@ -193,6 +211,8 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Elimina una receta por su ID de forma asíncrona.
     /// </summary>
+    /// <param name="id">ID de la receta a eliminar.</param>
+    /// <exception cref="NotFoundException">Se lanza si la receta no existe.</exception>
     public async Task DeleteAsync(int id)
     {
         var recipe = await _unitOfWork.Recipes.GetByIdWithMenusAsync(id)
@@ -214,6 +234,7 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Obtiene el número total de recetas de forma asíncrona.
     /// </summary>
+    /// <returns>El número total de recetas.</returns>
     public async Task<int> GetTotalCountAsync()
     {
         return await _unitOfWork.Recipes.CountAsync();
@@ -222,6 +243,9 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Obtiene una versión resumida de todas las recetas publicadas de forma asíncrona, opcionalmente filtrada.
     /// </summary>
+    /// <param name="searchTerm">Término de búsqueda opcional.</param>
+    /// <param name="categoryId">ID de categoría opcional para filtrar.</param>
+    /// <returns>Una colección de DTOs resumidos de recetas publicadas.</returns>
     public async Task<IEnumerable<RecipeSummaryDTO>> GetAllPublishedSummariesAsync(string? searchTerm = null, int? categoryId = null)
     {
         var recipes = await _unitOfWork.Recipes.GetAllPublishedWithDetailsAsync(searchTerm, categoryId);
@@ -231,6 +255,11 @@ public class RecipeService : IRecipeService
     /// <summary>
     /// Crea una nueva receta con una imagen de forma asíncrona. Si no se proporciona imagen, se asigna una por defecto.
     /// </summary>
+    /// <param name="dto">DTO con los datos de la receta.</param>
+    /// <param name="userId">ID del usuario creador.</param>
+    /// <returns>El DTO de la receta recién creada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si el usuario no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si alguna categoría no existe.</exception>
     public async Task<RecipeResponseDTO> CreateWithImageAsync(RecipeCreateDTO dto, int userId)
     {
         _ = await _unitOfWork.Users.GetByIdAsync(userId) ?? throw new NotFoundException(nameof(User), userId);

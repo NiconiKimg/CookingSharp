@@ -23,6 +23,10 @@ namespace CookingSharp.Application.Services
             _pdfGenerator = pdfGenerator;
         }
 
+        /// <summary>
+        /// Genera un reporte PDF de las recetas mejor valoradas.
+        /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerateTopRatedRecipesReportAsync()
         {
             var reportData = await GetTopRatedRecipesDataAsync(10);
@@ -74,6 +78,10 @@ namespace CookingSharp.Application.Services
             });
         }
 
+        /// <summary>
+        /// Genera un reporte PDF de la contribución de chefs.
+        /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerateChefContributionReportAsync()
         {
             var reportData = await GetChefContributionDataAsync();
@@ -104,8 +112,9 @@ namespace CookingSharp.Application.Services
         }
 
         /// <summary>
-        /// Orquesta la generación del reporte de engagement vs. complejidad de recetas.
+        /// Genera un reporte PDF de engagement vs. complejidad de recetas.
         /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerateRecipeEngagementReportAsync()
         {
             var rawData = (await _unitOfWork.RecipeAnalysis.GetRecipeAnalysisDataAsync()).ToList();
@@ -115,7 +124,7 @@ namespace CookingSharp.Application.Services
                 return _pdfGenerator.GenerateRecipeEngagementReport(Enumerable.Empty<RecipeEngagementReportDto>());
             }
 
-            const int minVotesRequired = 2; // Mismo umbral que el otro reporte para consistencia
+            const int minVotesRequired = 2;
             var globalAverageRating = rawData.Sum(d => d.AverageRating * d.VoteCount) / rawData.Sum(d => d.VoteCount);
 
             var reportData = rawData
@@ -138,8 +147,9 @@ namespace CookingSharp.Application.Services
         }
 
         /// <summary>
-        /// Orquesta la generación del reporte de rendimiento por categoría.
+        /// Genera un reporte PDF de rendimiento por categoría.
         /// </summary>
+        /// <returns>Array de bytes del PDF generado.</returns>
         public async Task<byte[]> GenerateCategoryPerformanceReportAsync()
         {
             var performanceData = await _unitOfWork.CategoryPerformance.GetCategoryPerformanceDataAsync();

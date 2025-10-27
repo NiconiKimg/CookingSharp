@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingSharp.Infrastructure.Persistence.Configurations;
 
+/// <summary>
+/// Configuración de Entity Framework para la entidad Category.
+/// </summary>
 public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)

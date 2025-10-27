@@ -97,20 +97,15 @@ public class MenusController : BaseApiController
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> Update(int id, MenuCreateUpdateDTO menuDto)
     {
-        // 1. Obtener el menú para verificar la propiedad.
         var menu = await _menuService.GetByIdAsync(id);
-
-        // 2. Obtener la información del usuario que realiza la petición desde el token JWT.
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;
 
-        // 3. Lógica de Autorización: Permitir la acción solo si el usuario es el autor O si es un Admin.
         if (menu.UserId != currentUserId && currentUserRole != "Admin")
         {
-            return Forbid(); // Devuelve un 403 Forbidden si el usuario no tiene permisos.
+            return Forbid();
         }
 
-        // 4. Si la autorización es exitosa, proceder con la actualización.
         await _menuService.UpdateAsync(id, menuDto);
         return NoContent();
     }
@@ -129,7 +124,6 @@ public class MenusController : BaseApiController
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> Delete(int id)
     {
-        // Lógica de autorización idéntica a la del método Update.
         var menu = await _menuService.GetByIdAsync(id);
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;

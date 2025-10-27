@@ -66,7 +66,6 @@ public class Menu
     /// </summary>
     public void AddRecipe(Recipe recipe)
     {
-        // TODO: añadir lógica para evitar duplicados si fuera un requisito.
         Recipes.Add(recipe);
     }
 

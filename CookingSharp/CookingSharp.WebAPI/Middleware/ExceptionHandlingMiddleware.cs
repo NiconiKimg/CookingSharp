@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CookingSharp.WebAPI.Middleware;
 
+/// <summary>
+/// Middleware para el manejo centralizado de excepciones en la API.
+/// </summary>
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -16,6 +19,9 @@ public class ExceptionHandlingMiddleware
         _next = next;
     }
 
+    /// <summary>
+    /// Invoca el siguiente middleware en el pipeline y captura excepciones.
+    /// </summary>
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -28,6 +34,9 @@ public class ExceptionHandlingMiddleware
         }
     }
 
+    /// <summary>
+    /// Maneja la excepción y devuelve una respuesta HTTP apropiada.
+    /// </summary>
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         HttpStatusCode statusCode;

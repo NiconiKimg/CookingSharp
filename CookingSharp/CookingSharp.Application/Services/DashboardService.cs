@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CookingSharp.Application.Services;
 
+/// <summary>
+/// Implementación del servicio para gestionar datos del dashboard.
+/// </summary>
 public class DashboardService : IDashboardService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -17,17 +20,18 @@ public class DashboardService : IDashboardService
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Obtiene los datos para la página principal, incluyendo recetas y menús mejor valorados.
+    /// </summary>
+    /// <returns>DTO con los datos de la página principal.</returns>
     public async Task<HomePageDTO> GetHomePageDataAsync()
     {
-        // 1. Obtener las entidades del dominio usando los nuevos métodos del repositorio.
         var topRecipesEntities = await _unitOfWork.Recipes.GetTopRatedRecipesAsync(3);
         var topMenusEntities = await _unitOfWork.Menus.GetTopRatedMenusAsync(3);
 
-        // 2. Usar AutoMapper para convertir las entidades a DTOs.
         var topRecipesDtos = _mapper.Map<List<RecipeSummaryDTO>>(topRecipesEntities);
         var topMenusDtos = _mapper.Map<List<MenuSummaryDTO>>(topMenusEntities);
 
-        // 3. Devolver el DTO contenedor.
         return new HomePageDTO
         {
             TopRatedRecipes = topRecipesDtos,

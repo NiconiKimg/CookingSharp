@@ -3,6 +3,9 @@ using System.Text.Json;
 
 namespace WebApp.Services
 {
+    /// <summary>
+    /// Servicio para interactuar con el almacenamiento local del navegador.
+    /// </summary>
     public class LocalStorageService : ILocalStorageService
     {
         private readonly IJSRuntime _jsRuntime;
@@ -12,6 +15,9 @@ namespace WebApp.Services
             _jsRuntime = jsRuntime;
         }
 
+        /// <summary>
+        /// Obtiene un elemento del almacenamiento local.
+        /// </summary>
         public async Task<T> GetItemAsync<T>(string key)
         {
             var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", key);
@@ -21,11 +27,17 @@ namespace WebApp.Services
             return JsonSerializer.Deserialize<T>(json);
         }
 
+        /// <summary>
+        /// Establece un elemento en el almacenamiento local.
+        /// </summary>
         public async Task SetItemAsync<T>(string key, T value)
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", key, JsonSerializer.Serialize(value));
         }
 
+        /// <summary>
+        /// Elimina un elemento del almacenamiento local.
+        /// </summary>
         public async Task RemoveItemAsync(string key)
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", key);

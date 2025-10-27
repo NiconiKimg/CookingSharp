@@ -75,12 +75,6 @@ public class RecipeApiClient
     /// </summary>
     /// <param name="id">ID de la receta a actualizar.</param>
     /// <param name="dto">DTO con los nuevos datos.</param>
-    /// <returns>Verdadero si la actualización fue exitosa.</returns>
-    /// <summary>
-    /// Actualiza una receta existente.
-    /// </summary>
-    /// <param name="id">ID de la receta a actualizar.</param>
-    /// <param name="dto">DTO con los nuevos datos.</param>
     /// <returns>Lanza una excepción si la actualización falla.</returns>
     public async Task UpdateAsync(int id, RecipeUpdateDTO dto)
     {

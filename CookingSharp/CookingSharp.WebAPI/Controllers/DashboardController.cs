@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Controlador para obtener datos agregados del dashboard.
+/// </summary>
 public class DashboardController : BaseApiController
 {
     private readonly IDashboardService _dashboardService;
@@ -13,6 +16,9 @@ public class DashboardController : BaseApiController
         _dashboardService = dashboardService;
     }
 
+    /// <summary>
+    /// Obtiene los datos principales para la página de inicio.
+    /// </summary>
     [AllowAnonymous]
     [HttpGet("home")]
     public async Task<IActionResult> GetHomePageData()

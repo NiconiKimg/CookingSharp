@@ -18,11 +18,10 @@ namespace CookingSharp.Clients
             set
             {
                 _jwtToken = value;
-                _claims.Clear(); // Limpiar claims antiguos al cambiar el token.
+                _claims.Clear();
 
                 if (!string.IsNullOrEmpty(_jwtToken))
                 {
-                    // Si se establece un nuevo token, decodificarlo para extraer los claims.
                     var handler = new JwtSecurityTokenHandler();
                     var token = handler.ReadJwtToken(_jwtToken);
                     _claims.AddRange(token.Claims);

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CookingSharp.WebAPI.Controllers
 {
+    /// <summary>
+    /// Controlador para gestionar las valoraciones de menús.
+    /// </summary>
     [Authorize]
     [Route("api/menus/{menuId}/ratings")]
     public class MenuRatingsController : BaseApiController
@@ -18,6 +21,9 @@ namespace CookingSharp.WebAPI.Controllers
             _menuRatingService = menuRatingService;
         }
 
+        /// <summary>
+        /// Añade o actualiza la valoración de un usuario para un menú.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> RateMenu(int menuId, [FromBody] RatingCreateUpdateDTO ratingDto)
         {

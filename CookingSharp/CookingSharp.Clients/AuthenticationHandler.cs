@@ -13,7 +13,6 @@ public class AuthenticationHandler : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        // SessionManager es una clase estática simple para almacenar el token después del login.
         if (!string.IsNullOrEmpty(SessionManager.JwtToken))
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.JwtToken);

@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingSharp.Infrastructure.Persistence.Configurations;
 
+/// <summary>
+/// Configuración de Entity Framework para la entidad MenuRating.
+/// </summary>
 public class MenuRatingConfiguration : IEntityTypeConfiguration<MenuRating>
 {
     public void Configure(EntityTypeBuilder<MenuRating> builder)

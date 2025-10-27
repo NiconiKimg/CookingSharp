@@ -6,17 +6,21 @@ using System.Reflection;
 
 namespace CookingSharp.Application;
 
+/// <summary>
+/// Clase de extensión para registrar los servicios de la capa de aplicación.
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Registra todos los servicios de la capa de aplicación en el contenedor de inyección de dependencias.
+    /// </summary>
+    /// <param name="services">Colección de servicios.</param>
+    /// <returns>La colección de servicios para permitir encadenamiento.</returns>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        // Registro de AutoMapper
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-        // Registro de FluentValidation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // Registro de los Servicios de Aplicación
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRecipeService, RecipeService>();

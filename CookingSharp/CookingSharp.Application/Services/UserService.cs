@@ -27,6 +27,7 @@ namespace CookingSharp.Application.Services
         /// <summary>
         /// Obtiene todos los usuarios activos del sistema de forma asíncrona.
         /// </summary>
+        /// <returns>Una colección de DTOs de usuario.</returns>
         public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
         {
             return await GetAllAsync(null);
@@ -36,6 +37,7 @@ namespace CookingSharp.Application.Services
         /// Obtiene todos los usuarios activos del sistema de forma asíncrona, opcionalmente filtrados.
         /// </summary>
         /// <param name="searchTerm">Término de búsqueda opcional.</param>
+        /// <returns>Una colección de DTOs de usuario.</returns>
         public async Task<IEnumerable<UserResponseDTO>> GetAllAsync(string? searchTerm = null)
         {
             var users = await _unitOfWork.Users.GetAllAsync(searchTerm);
@@ -45,6 +47,9 @@ namespace CookingSharp.Application.Services
         /// <summary>
         /// Obtiene un usuario por su ID de forma asíncrona.
         /// </summary>
+        /// <param name="id">ID del usuario.</param>
+        /// <returns>El DTO del usuario encontrado.</returns>
+        /// <exception cref="NotFoundException">Se lanza si el usuario no existe.</exception>
         public async Task<UserResponseDTO?> GetByIdAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
@@ -54,6 +59,10 @@ namespace CookingSharp.Application.Services
         /// <summary>
         /// Actualiza el perfil de un usuario existente de forma asíncrona.
         /// </summary>
+        /// <param name="id">ID del usuario a actualizar.</param>
+        /// <param name="userUpdateDto">DTO con los nuevos datos del usuario.</param>
+        /// <exception cref="NotFoundException">Se lanza si el usuario no existe.</exception>
+        /// <exception cref="BadRequestException">Se lanza si el email ya está en uso.</exception>
         public async Task UpdateAsync(int id, UserUpdateDTO userUpdateDto)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
@@ -69,8 +78,11 @@ namespace CookingSharp.Application.Services
         }
 
         /// <summary>
-        /// Desactiva lógicamente un usuario (Soft Delete) por su ID de forma asíncrona.
+        /// Desactiva un usuario de forma asíncrona.
         /// </summary>
+        /// <param name="id">ID del usuario a desactivar.</param>
+        /// <exception cref="NotFoundException">Se lanza si el usuario no existe.</exception>
+        /// <exception cref="BadRequestException">Se lanza si se intenta eliminar un administrador.</exception>
         public async Task DeleteAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
@@ -89,6 +101,7 @@ namespace CookingSharp.Application.Services
         /// <summary>
         /// Obtiene el número total de usuarios del sistema de forma asíncrona.
         /// </summary>
+        /// <returns>El número total de usuarios.</returns>
         public async Task<int> GetTotalCountAsync()
         {
             return await _unitOfWork.Users.CountAsync();

@@ -58,6 +58,10 @@ public class MenuService : IMenuService
         return _mapper.Map<IEnumerable<MenuResponseDTO>>(userMenus);
     }
 
+    /// <summary>
+    /// Obtiene todos los menús en formato resumido de forma asíncrona.
+    /// </summary>
+    /// <returns>Una colección de DTOs resumidos de menús.</returns>
     public async Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync()
     {
         var menus = await _unitOfWork.Menus.GetAllWithDetailsAsync();
@@ -78,6 +82,12 @@ public class MenuService : IMenuService
         return _mapper.Map<MenuResponseDTO>(menu);
     }
 
+    /// <summary>
+    /// Obtiene todos los menús en formato resumido de forma asíncrona, opcionalmente filtrados.
+    /// </summary>
+    /// <param name="nameFilter">Filtro opcional por nombre del menú.</param>
+    /// <param name="authorFilter">Filtro opcional por nombre del autor.</param>
+    /// <returns>Una colección de DTOs resumidos de menús.</returns>
     public async Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync(string? nameFilter = null, string? authorFilter = null)
     {
         var menus = await _unitOfWork.Menus.GetAllWithDetailsAsync(nameFilter, authorFilter);
@@ -96,7 +106,6 @@ public class MenuService : IMenuService
 
         menu.UpdateDetails(menuDto.Name, menuDto.Description);
 
-        // Limpiar recetas existentes y añadir las nuevas
         menu.Recipes.Clear();
         foreach (var recipeId in menuDto.RecipeIds)
         {

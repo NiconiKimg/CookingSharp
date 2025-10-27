@@ -1,2 +1,22 @@
 ﻿namespace CookingSharp.Domain.Enums;
-public enum AppealStatus { Pending, Approved, Rejected }
+
+/// <summary>
+/// Estados posibles de una solicitud de promoción a Chef.
+/// </summary>
+public enum AppealStatus
+{
+    /// <summary>
+    /// La solicitud está pendiente de revisión.
+    /// </summary>
+    Pending,
+
+    /// <summary>
+    /// La solicitud ha sido aprobada.
+    /// </summary>
+    Approved,
+
+    /// <summary>
+    /// La solicitud ha sido rechazada.
+    /// </summary>
+    Rejected
+}

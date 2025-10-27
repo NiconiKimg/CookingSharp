@@ -16,18 +16,18 @@ using System.Windows.Forms;
 namespace CookingSharp.WindowsForms
 {
     /// <summary>
-    /// Clase principal de la aplicación. Responsable de la configuración, inyección de dependencias,
-    /// y del control del flujo principal de autenticación y navegación.
+    /// Clase principal de la aplicaciï¿½n. Responsable de la configuraciï¿½n, inyecciï¿½n de dependencias,
+    /// y del control del flujo principal de autenticaciï¿½n y navegaciï¿½n.
     /// </summary>
     internal static class Program
     {
         /// <summary>
-        /// Proveedor de servicios de inyección de dependencias para toda la aplicación.
+        /// Proveedor de servicios de inyecciï¿½n de dependencias para toda la aplicaciï¿½n.
         /// </summary>
         public static IServiceProvider? ServiceProvider { get; private set; }
 
         /// <summary>
-        /// Punto de entrada principal de la aplicación.
+        /// Punto de entrada principal de la aplicaciï¿½n.
         /// </summary>
         [STAThread]
         static void Main()
@@ -38,24 +38,24 @@ namespace CookingSharp.WindowsForms
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider();
 
-            // Bucle principal que gestiona el ciclo de vida de la sesión.
+            // Bucle principal que gestiona el ciclo de vida de la sesiï¿½n.
             while (true)
             {
-                SessionManager.Logout(); // Asegura que cualquier sesión anterior esté cerrada.
+                SessionManager.Logout(); // Asegura que cualquier sesiï¿½n anterior estï¿½ cerrada.
 
                 using (var loginForm = ServiceProvider.GetRequiredService<FrmLogin>())
                 {
-                    // Muestra el formulario de login como un diálogo modal.
+                    // Muestra el formulario de login como un diï¿½logo modal.
                     if (loginForm.ShowDialog() == DialogResult.OK)
                     {
                         // Si el login es exitoso, lanza el dashboard correspondiente.
-                        // El código se detendrá aquí hasta que el dashboard se cierre.
+                        // El cï¿½digo se detendrï¿½ aquï¿½ hasta que el dashboard se cierre.
                         LaunchDashboardBasedOnRole();
                     }
                     else
                     {
                         // Si el usuario cierra el login con la 'X' o cancela,
-                        // se rompe el bucle y la aplicación termina.
+                        // se rompe el bucle y la aplicaciï¿½n termina.
                         break;
                     }
                 }
@@ -63,14 +63,13 @@ namespace CookingSharp.WindowsForms
         }
 
         /// <summary>
-        /// Configura el contenedor de inyección de dependencias (DI) para la aplicación.
+        /// Configura el contenedor de inyecciï¿½n de dependencias (DI) para la aplicaciï¿½n.
         /// </summary>
         private static void ConfigureServices(IServiceCollection services)
         {
             const string baseApiAddress = "https://localhost:7111";
             services.AddApiClients(baseApiAddress);
 
-            // Formularios
             services.AddTransient<FrmLogin>();
             services.AddTransient<FrmDashboard>();
             services.AddTransient<FrmChefDashboard>();
@@ -82,7 +81,6 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<frmAppeal>();
             services.AddTransient<FrmRecipe>();
 
-            // User Controls
             services.AddTransient<UC_AdminPanel>();
             services.AddTransient<UC_Categories>();
             services.AddTransient<UC_Users>();
@@ -118,11 +116,9 @@ namespace CookingSharp.WindowsForms
                     break;
                 default:
                     MessageBox.Show("Rol de usuario no reconocido. Volviendo a la pantalla de inicio.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return; // Vuelve al bucle principal que mostrará el login.
+                    return;
             }
 
-            // Inicia el bucle de mensajes para el formulario del dashboard.
-            // El código en Main() esperará aquí hasta que este formulario se cierre.
             System.Windows.Forms.Application.Run(mainForm);
         }
     }

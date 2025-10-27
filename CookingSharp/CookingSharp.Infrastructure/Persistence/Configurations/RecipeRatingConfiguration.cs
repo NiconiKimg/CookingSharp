@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingSharp.Infrastructure.Persistence.Configurations;
 
+/// <summary>
+/// Configuración de Entity Framework para la entidad RecipeRating.
+/// </summary>
 public class RecipeRatingConfiguration : IEntityTypeConfiguration<RecipeRating>
 {
     public void Configure(EntityTypeBuilder<RecipeRating> builder)
@@ -16,7 +19,6 @@ public class RecipeRatingConfiguration : IEntityTypeConfiguration<RecipeRating>
 
         builder.HasIndex(r => new { r.UserId, r.RecipeId }).IsUnique();
 
-        
         builder.HasOne(r => r.User)
             .WithMany(u => u.RecipeRatings)
             .HasForeignKey(r => r.UserId)

@@ -10,6 +10,9 @@ using System;
 
 namespace CookingSharp.Infrastructure.Auth;
 
+/// <summary>
+/// Implementación del generador de tokens JWT para autenticación.
+/// </summary>
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly IConfiguration _configuration;
@@ -19,6 +22,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _configuration = configuration;
     }
 
+    /// <summary>
+    /// Genera un token JWT para un usuario.
+    /// </summary>
+    /// <param name="user">Usuario para el cual se generará el token.</param>
+    /// <returns>Token JWT como cadena de texto.</returns>
     public string GenerateToken(User user)
     {
         var secretKey = _configuration["JwtSettings:Secret"];

@@ -55,7 +55,6 @@ namespace CookingSharp.Clients
             }
             catch
             {
-                // En caso de error (ej. API no disponible), devuelve 0 para no romper la interfaz.
                 return 0;
             }
         }

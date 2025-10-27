@@ -1,18 +1,16 @@
 ﻿using CookingSharp.Domain.Enums;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace CookingSharp.Domain.Entities;
 
 /// <summary>
-/// Representa a un usuario en el dominio del negocio.
-/// Esta entidad protege sus invariantes (reglas) a través de setters privados y métodos de modificación.
+/// Representa a un usuario del sistema.
 /// </summary>
 public class User
 {
     /// <summary>
-    /// Identificador único del usuario, generado por la base de datos.
+    /// Identificador único del usuario.
     /// </summary>
     public int Id { get; private set; }
 
@@ -32,7 +30,7 @@ public class User
     public string Email { get; private set; }
 
     /// <summary>
-    /// Hash de la contraseña del usuario. Nunca se debe almacenar la contraseña en texto plano.
+    /// Hash de la contraseña del usuario.
     /// </summary>
     public string Password { get; private set; }
 
@@ -42,7 +40,7 @@ public class User
     public UserRole Role { get; private set; }
 
     /// <summary>
-    /// Indica si la cuenta del usuario está activa. Si es falso, se considera un borrado lógico.
+    /// Indica si la cuenta del usuario está activa.
     /// </summary>
     public bool IsActive { get; private set; }
 
@@ -53,24 +51,21 @@ public class User
     public ICollection<MenuRating> MenuRatings { get; private set; } = new List<MenuRating>();
     public ICollection<Appeal> Appeals { get; private set; } = new List<Appeal>();
 
-    /// <summary>
-    /// Constructor privado sin parámetros requerido por EF Core para la materialización de entidades.
-    /// </summary>
     private User() { }
 
     /// <summary>
-    /// Constructor público para crear una nueva instancia de Usuario válida.
+    /// Constructor para crear una nueva instancia de Usuario válida.
     /// </summary>
     /// <param name="name">Nombre del usuario.</param>
     /// <param name="surname">Apellido del usuario.</param>
     /// <param name="email">Correo electrónico del usuario.</param>
-    /// <param name="hashedPassword">La contraseña ya hasheada.</param>
+    /// <param name="hashedPassword">Contraseña hasheada del usuario.</param>
     public User(string name, string surname, string email, string hashedPassword)
     {
         UpdateProfile(name, surname, email);
         ChangePassword(hashedPassword);
-        Role = UserRole.Apprentice; // Todos los usuarios nuevos comienzan como aprendices.
-        IsActive = true; // Todos los usuarios nuevos están activos por defecto.
+        Role = UserRole.Apprentice;
+        IsActive = true;
     }
 
     /// <summary>
@@ -91,8 +86,9 @@ public class User
     }
 
     /// <summary>
-    /// Cambia la contraseña del usuario. Se espera que la nueva contraseña ya venga hasheada.
+    /// Cambia la contraseña del usuario.
     /// </summary>
+    /// <param name="newHashedPassword">Nueva contraseña hasheada.</param>
     public void ChangePassword(string newHashedPassword)
     {
         if (string.IsNullOrWhiteSpace(newHashedPassword))
@@ -102,7 +98,7 @@ public class User
     }
 
     /// <summary>
-    /// Promueve el rol del usuario a Chef, únicamente si su rol actual es Aprendiz.
+    /// Promueve el rol del usuario a Chef.
     /// </summary>
     public void PromoteToChef()
     {
@@ -113,7 +109,7 @@ public class User
     }
 
     /// <summary>
-    /// Desactiva lógicamente al usuario (Soft Delete).
+    /// Desactiva el usuario.
     /// </summary>
     public void Deactivate()
     {

@@ -18,31 +18,22 @@ public static class DependencyInjection
     /// <returns>La colección de servicios para encadenamiento.</returns>
     public static IServiceCollection AddApiClients(this IServiceCollection services, string baseAddress)
     {
-        // Registra el AuthenticationHandler que añadirá el token JWT a las peticiones.
         services.AddTransient<AuthenticationHandler>();
 
-        // Función auxiliar para configurar las propiedades base de cada HttpClient.
         Action<HttpClient> configureClient = client =>
         {
             client.BaseAddress = new Uri(baseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         };
 
-        // Función auxiliar para configurar el manejador de mensajes.
-        // Esto es necesario en desarrollo si usas un certificado SSL autofirmado.
         Func<HttpMessageHandler> configureHandler = () => new HttpClientHandler
         {
-            // Esto permite el uso de certificados SSL no válidos.
-            // Solo debe usarse en entornos de desarrollo.
-            // En producción, la API debe tener un certificado SSL válido y esta línea debe ser eliminada.
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         };
 
-        // El AuthApiClient no necesita el AuthenticationHandler porque su propósito es obtener el token.
         services.AddHttpClient<AuthApiClient>(configureClient)
             .ConfigurePrimaryHttpMessageHandler(configureHandler);
 
-        // El resto de los clientes se encadenan con el AuthenticationHandler para enviar el token.
         services.AddHttpClient<CategoryApiClient>(configureClient)
             .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(configureHandler);

@@ -4,18 +4,20 @@ using CookingSharp.Domain.Entities;
 
 namespace CookingSharp.Application.Common.Mapping;
 
+/// <summary>
+/// Perfil de mapeo de AutoMapper que define las conversiones entre entidades de dominio y DTOs.
+/// </summary>
 public class MappingProfile : Profile
 {
+    /// <summary>
+    /// Constructor que configura todos los mapeos del sistema.
+    /// </summary>
     public MappingProfile()
     {
-        // User Mappings
         CreateMap<User, UserResponseDTO>();
 
-        // Category Mappings
         CreateMap<Category, CategoryResponseDTO>();
         CreateMap<CategoryCreateUpdateDTO, Category>();
-
-        // Recipe Mappings
         CreateMap<Recipe, RecipeSummaryDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
             .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id))
@@ -37,12 +39,10 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
             .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.User.Id));
 
-        // Appeal Mappings
         CreateMap<Appeal, AppealResponseDTO>()
             .ForMember(dest => dest.ApplicantName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
             .ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.User.Id));
 
-        // Menu Mappings
         CreateMap<Menu, MenuResponseDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => $"{src.User.Name} {src.User.Surname}"))
             .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0))
@@ -54,7 +54,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src =>
                 src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0));
 
-        // Recipe Summary Mapping
         CreateMap<Recipe, RecipeSummaryDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.User.Name))
             .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src =>

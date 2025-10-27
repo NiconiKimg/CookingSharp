@@ -6,6 +6,9 @@ using CookingSharp.Domain.Entities;
 
 namespace CookingSharp.Application.Services
 {
+    /// <summary>
+    /// Implementación del servicio de valoración de menús.
+    /// </summary>
     public class MenuRatingService : IMenuRatingService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -15,6 +18,13 @@ namespace CookingSharp.Application.Services
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// Añade o actualiza la valoración de un usuario para un menú específico.
+        /// </summary>
+        /// <param name="menuId">ID del menú a valorar.</param>
+        /// <param name="ratingDto">DTO con la puntuación en estrellas.</param>
+        /// <param name="userId">ID del usuario que realiza la valoración.</param>
+        /// <exception cref="NotFoundException">Se lanza si el menú o el usuario no existen.</exception>
         public async Task RateMenuAsync(int menuId, RatingCreateUpdateDTO ratingDto, int userId)
         {
             _ = await _unitOfWork.Menus.GetByIdAsync(menuId) ?? throw new NotFoundException(nameof(Menu), menuId);
