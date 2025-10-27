@@ -7,6 +7,9 @@
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Inicio</MudNavLink>
     <MudNavLink Href="recipes" Icon="@Icons.Material.Filled.MenuBook">Explorar Recetas</MudNavLink>
+    <AuthorizeView Roles="Apprentice">
+        <MudNavLink Href="apply-for-chef" Icon="@Icons.Material.Filled.Upgrade">Ser Chef</MudNavLink>
+    </AuthorizeView>
 
     <AuthorizeView Roles="Chef, Admin">
         <Authorized>

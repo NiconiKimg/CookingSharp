@@ -24,4 +24,10 @@ public interface IRecipeService
 
     Task UpdateAsync(int id, RecipeUpdateDTO recipeUpdateDto);
     Task DeleteAsync(int id);
+
+    /// <summary>
+    /// Obtiene el número total de recetas en el sistema.
+    /// </summary>
+    /// <returns>El conteo total de recetas.</returns>
+    Task<int> GetTotalCountAsync();
 }

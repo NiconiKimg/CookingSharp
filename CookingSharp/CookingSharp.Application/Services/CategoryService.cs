@@ -45,12 +45,13 @@ public class CategoryService : ICategoryService
     }
 
     /// <summary>
-    /// Obtiene todas las categorías de forma asíncrona.
+    /// Obtiene todas las categorías de forma asíncrona, opcionalmente filtradas por un término de búsqueda.
     /// </summary>
+    /// <param name="searchTerm">El término opcional para buscar en los nombres de las categorías.</param>
     /// <returns>Una colección de DTOs de categoría.</returns>
-    public async Task<IEnumerable<CategoryResponseDTO>> GetAllAsync()
+    public async Task<IEnumerable<CategoryResponseDTO>> GetAllAsync(string? searchTerm = null)
     {
-        var categories = await _unitOfWork.Categories.GetAllAsync();
+        var categories = await _unitOfWork.Categories.GetAllAsync(searchTerm);
         return _mapper.Map<IEnumerable<CategoryResponseDTO>>(categories);
     }
 
@@ -98,5 +99,14 @@ public class CategoryService : ICategoryService
         var category = await _unitOfWork.Categories.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Category), id);
         _unitOfWork.Categories.Delete(category);
         await _unitOfWork.CompleteAsync();
+    }
+
+    /// <summary>
+    /// Obtiene el número total de categorías de forma asíncrona.
+    /// </summary>
+    /// <returns>El número total de categorías.</returns>
+    public async Task<int> GetTotalCountAsync()
+    {
+        return await _unitOfWork.Categories.CountAsync();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CookingSharp.Domain.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CookingSharp.Application.Contracts;
@@ -15,4 +16,11 @@ public interface ICategoryRepository : IGenericRepository<Category>
     /// <param name="excludeId">Un ID de categoría opcional para excluir de la búsqueda.</param>
     /// <returns>True si el nombre ya existe, de lo contrario False.</returns>
     Task<bool> ExistsWithNameAsync(string name, int? excludeId = null);
+
+    /// <summary>
+    /// Obtiene todas las entidades de un tipo de forma asíncrona, con una opción para filtrar por un término de búsqueda.
+    /// </summary>
+    /// <param name="searchTerm">El término opcional para filtrar las categorías por nombre.</param>
+    /// <returns>Una colección de todas las entidades que coinciden con el filtro.</returns>
+    Task<IEnumerable<Category>> GetAllAsync(string? searchTerm = null);
 }

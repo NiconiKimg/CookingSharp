@@ -9,9 +9,20 @@ namespace CookingSharp.Application.Services.Contracts;
 /// </summary>
 public interface ICategoryService
 {
-    Task<IEnumerable<CategoryResponseDTO>> GetAllAsync();
+    /// <summary>
+    /// Obtiene todas las categorías, opcionalmente filtradas por un término de búsqueda.
+    /// </summary>
+    /// <param name="searchTerm">Término de búsqueda opcional.</param>
+    /// <returns>Una colección de DTOs de categoría.</returns>
+    Task<IEnumerable<CategoryResponseDTO>> GetAllAsync(string? searchTerm = null);
     Task<CategoryResponseDTO?> GetByIdAsync(int id);
     Task<CategoryResponseDTO> CreateAsync(CategoryCreateUpdateDTO categoryCreateUpdateDto);
     Task UpdateAsync(int id, CategoryCreateUpdateDTO categoryCreateUpdateDto);
     Task DeleteAsync(int id);
+
+    /// <summary>
+    /// Obtiene el número total de categorías.
+    /// </summary>
+    /// <returns>El conteo total de categorías.</returns>
+    Task<int> GetTotalCountAsync();
 }

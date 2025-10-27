@@ -14,5 +14,11 @@ namespace CookingSharp.Application.Contracts
         /// </summary>
         /// <returns>Una colección de entidades Appeal con el usuario cargado.</returns>
         Task<IEnumerable<Appeal>> GetPendingWithUserDetailsAsync();
+
+        /// <summary>
+        /// Cuenta el número de solicitudes en estado "Pendiente".
+        /// </summary>
+        /// <returns>El número de solicitudes pendientes.</returns>
+        Task<int> CountPendingAsync();
     }
 }
