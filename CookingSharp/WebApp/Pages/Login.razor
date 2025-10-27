@@ -67,7 +67,7 @@
                 if (result != null && !string.IsNullOrWhiteSpace(result.Token))
                 {
                     var customAuthStateProvider = (CustomAuthStateProvider)AuthStateProvider;
-                    customAuthStateProvider.MarkUserAsAuthenticated(result.Token);
+                    await customAuthStateProvider.MarkUserAsAuthenticated(result.Token);
 
                     NavManager.NavigateTo("/");
                     return;

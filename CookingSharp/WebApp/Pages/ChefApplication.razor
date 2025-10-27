@@ -69,7 +69,7 @@
 
     private async Task OpenCreateApplicationDialog()
     {
-        var dialog = DialogService.Show<CreateAppealDialog>("Nueva Solicitud");
+        var dialog = await DialogService.ShowAsync<CreateAppealDialog>("Nueva Solicitud");
         var result = await dialog.Result;
 
         bool cancelled = false;
