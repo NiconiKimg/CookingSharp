@@ -14,6 +14,12 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
     public RecipeRepository(CookingSharpDbContext context) : base(context)
     {
     }
+    public async Task<Recipe?> GetByIdWithMenusAsync(int id)
+    {
+        return await _dbSet
+            .Include(r => r.Menus)
+            .FirstOrDefaultAsync(r => r.Id == id);
+    }
 
     public async Task<IEnumerable<Recipe>> GetTopRatedRecipesAsync(int count)
     {

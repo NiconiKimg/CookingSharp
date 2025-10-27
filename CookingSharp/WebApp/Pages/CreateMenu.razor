@@ -2,6 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @using WebApp.DTOs
 @using Microsoft.AspNetCore.Authorization
+@using System.Linq
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
@@ -48,19 +49,20 @@
                     <MudPaper Height="300px" Class="overflow-y-auto pa-2 mt-4 mud-border-solid mud-border-lines-default rounded-lg">
                         @if (_isLoadingRecipes)
                         {
-                            <MudProgressCircular Indeterminate="true" />
+                            <div class="d-flex justify-center align-center mud-height-full"><MudProgressCircular Indeterminate="true" /></div>
                         }
                         else if (_filteredRecipes.Any())
                         {
                             <MudList T="int" Dense="true">
                                 @foreach (var recipe in _filteredRecipes)
                                 {
-                                    var currentRecipeId = recipe.Id;
+                                    var recipeId = recipe.Id;
                                     <MudListItem T="int">
                                         <MudCheckBox T="bool"
                                                      Label="@recipe.Name"
-                                                     Checked="@(_model.SelectedRecipeIds.Contains(currentRecipeId))"
-                                                     CheckedChanged="@((bool isChecked) => OnRecipeChecked(currentRecipeId, isChecked))" />
+                                                     Value="@(_model.SelectedRecipeIds.Contains(recipeId))"
+                                                     ValueChanged="@((bool isChecked) => OnRecipeChecked(recipeId, isChecked))"
+                                                     Color="Color.Primary" />
                                     </MudListItem>
                                 }
                             </MudList>
@@ -70,7 +72,6 @@
                             <MudText Align="Align.Center" Class="mt-4">No se encontraron recetas publicadas que coincidan con los filtros.</MudText>
                         }
                     </MudPaper>
-                    <ValidationMessage For="@(() => _model.SelectedRecipeIds)" />
 
                     <MudText Typo="Typo.caption" Class="mt-2">Recetas seleccionadas: @_model.SelectedRecipeIds.Count</MudText>
                 </MudCardContent>
@@ -89,8 +90,10 @@
 @code {
     private MenuCreateModel _model = new();
     private EditContext _editContext = default!;
+    
     private List<RecipeSummaryDTO> _allMyRecipes = new();
     private List<RecipeSummaryDTO> _filteredRecipes = new();
+    
     private List<CategoryResponseDTO> _allCategories = new();
     private bool _isLoadingRecipes = true;
 
@@ -110,8 +113,6 @@
 
             var allRecipesFromApi = recipesTask.Result ?? new();
 
-            // --- AQUÍ ESTÁ EL CAMBIO ---
-            // Filtramos la lista para quedarnos solo con las recetas publicadas.
             _allMyRecipes = allRecipesFromApi
                 .Where(r => r.Status == "Published")
                 .ToList();
@@ -145,8 +146,7 @@
 
         _filteredRecipes = recipes.ToList();
     }
-    
-    // El checkbox sigue fallando, vamos a usar el enfoque del modelo de vista que es a prueba de balas.
+
     private void OnRecipeChecked(int recipeId, bool isChecked)
     {
         if (isChecked)
@@ -160,9 +160,10 @@
         {
             _model.SelectedRecipeIds.Remove(recipeId);
         }
-        _editContext.NotifyFieldChanged(new FieldIdentifier(_model, nameof(_model.SelectedRecipeIds)));
-    }
 
+        _editContext.NotifyFieldChanged(new FieldIdentifier(_model, nameof(_model.SelectedRecipeIds)));
+        StateHasChanged();
+    }
 
     private void OnNameFilterChanged(string value)
     {
@@ -221,16 +222,6 @@
         [Required(ErrorMessage = "La descripción es obligatoria.")]
         public string Description { get; set; } = "";
 
-        [EnsureOneElement(ErrorMessage = "Debes seleccionar al menos una receta.")]
         public List<int> SelectedRecipeIds { get; set; } = new();
-    }
-
-    public class EnsureOneElementAttribute : ValidationAttribute
-    {
-        public override bool IsValid(object? value)
-        {
-            var list = value as System.Collections.IList;
-            return list != null && list.Count > 0;
-        }
     }
 }

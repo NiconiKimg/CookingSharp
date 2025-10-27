@@ -160,27 +160,28 @@ public class RecipeService : IRecipeService
     /// </summary>
     public async Task UpdateStatusAsync(int id, RecipeStatusUpdateDTO statusUpdateDto)
     {
-        var recipe = await _unitOfWork.Recipes.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
+        var recipe = await _unitOfWork.Recipes.GetByIdWithMenusAsync(id)
+            ?? throw new NotFoundException(nameof(Recipe), id);
 
+        var oldStatus = recipe.Status;
         switch (statusUpdateDto.Status.ToLower())
         {
-            case "published":
-                recipe.Publish();
-                break;
-            case "archived":
-                recipe.Archive();
-                break;
-            case "draft":
-                recipe.Unblock();
-                break;
-            case "blocked":
-                recipe.Block();
-                break;
-            default:
-                throw new BadRequestException("El estado proporcionado no es válido.");
+            case "published": recipe.Publish(); break;
+            case "archived": recipe.Archive(); break;
+            case "draft": recipe.Unblock(); break;
+            case "blocked": recipe.Block(); break;
+            default: throw new BadRequestException("El estado proporcionado no es válido.");
         }
 
-        _unitOfWork.Recipes.Update(recipe);
+        // 4. Comparamos el estado antiguo con el nuevo.
+        var newStatus = recipe.Status;
+        if (oldStatus == RecipeStatus.Published && newStatus != RecipeStatus.Published)
+        {
+            if (recipe.Menus.Any())
+            {
+                _unitOfWork.Menus.DeleteRange(recipe.Menus);
+            }
+        }
         await _unitOfWork.CompleteAsync();
     }
 
@@ -189,13 +190,18 @@ public class RecipeService : IRecipeService
     /// </summary>
     public async Task DeleteAsync(int id)
     {
-        var recipe = await _unitOfWork.Recipes.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
+        var recipe = await _unitOfWork.Recipes.GetByIdWithMenusAsync(id)
+            ?? throw new NotFoundException(nameof(Recipe), id);
+
+        if (recipe.Menus.Any())
+        {
+            _unitOfWork.Menus.DeleteRange(recipe.Menus);
+        }
 
         if (!string.IsNullOrEmpty(recipe.ImagePublicId) && recipe.ImagePublicId != _photoService.GetDefaultImage().PublicId)
         {
             await _photoService.DeletePhotoAsync(recipe.ImagePublicId);
         }
-
         _unitOfWork.Recipes.Delete(recipe);
         await _unitOfWork.CompleteAsync();
     }
