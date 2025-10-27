@@ -1,16 +1,9 @@
-﻿namespace CookingSharp.WindowsForms.Features.Apprentice
+﻿namespace CookingSharp.WindowsForms.Features.Chef
 {
-    partial class UC_RecipiesApprentice
+    partial class UC_Chef_ExploreRecipes
     {
-        /// <summary> 
-        /// Variable del diseñador necesaria.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Limpiar los recursos que se estén usando.
-        /// </summary>
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,19 +15,14 @@
 
         #region Código generado por el Diseñador de componentes
 
-        /// <summary> 
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
-        /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_RecipiesApprentice));
             pnlHeader = new Panel();
             headerLayout = new TableLayoutPanel();
             lblTitle = new Label();
             pnlGridContainer = new Panel();
             splitContainer1 = new SplitContainer();
-            dgvRecipesApprentice = new DataGridView();
+            dgvRecipes = new DataGridView();
             pnlDetails = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             lblDetailName = new Label();
@@ -55,7 +43,7 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvRecipesApprentice).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRecipes).BeginInit();
             pnlDetails.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             pnlSearch.SuspendLayout();
@@ -84,7 +72,7 @@
             headerLayout.RowCount = 1;
             headerLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             headerLayout.Size = new Size(742, 91);
-            headerLayout.TabIndex = 2;
+            headerLayout.TabIndex = 3;
             // 
             // lblTitle
             // 
@@ -94,46 +82,46 @@
             lblTitle.ForeColor = Color.FromArgb(64, 64, 64);
             lblTitle.Location = new Point(3, 29);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(241, 32);
+            lblTitle.Size = new Size(203, 32);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Recetas Disponibles";
+            lblTitle.Text = "Explorar Recetas";
             // 
             // pnlGridContainer
             // 
-            pnlGridContainer.BackColor = Color.FromArgb(222, 226, 230);
+            pnlGridContainer.BackColor = Color.WhiteSmoke;
             pnlGridContainer.Controls.Add(splitContainer1);
             pnlGridContainer.Dock = DockStyle.Fill;
             pnlGridContainer.Location = new Point(20, 171);
             pnlGridContainer.Name = "pnlGridContainer";
-            pnlGridContainer.Padding = new Padding(1);
+            pnlGridContainer.Padding = new Padding(0, 11, 0, 0);
             pnlGridContainer.Size = new Size(742, 474);
-            pnlGridContainer.TabIndex = 4;
+            pnlGridContainer.TabIndex = 5;
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(1, 1);
+            splitContainer1.Location = new Point(0, 11);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(dgvRecipesApprentice);
+            splitContainer1.Panel1.Controls.Add(dgvRecipes);
             // 
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(pnlDetails);
-            splitContainer1.Size = new Size(740, 472);
+            splitContainer1.Size = new Size(742, 463);
             splitContainer1.SplitterDistance = 350;
             splitContainer1.TabIndex = 1;
             // 
-            // dgvRecipesApprentice
+            // dgvRecipes
             // 
-            dgvRecipesApprentice.Dock = DockStyle.Fill;
-            dgvRecipesApprentice.Location = new Point(0, 0);
-            dgvRecipesApprentice.Name = "dgvRecipesApprentice";
-            dgvRecipesApprentice.Size = new Size(350, 472);
-            dgvRecipesApprentice.TabIndex = 0;
-            dgvRecipesApprentice.SelectionChanged += dgvRecipesApprentice_SelectionChanged;
+            dgvRecipes.Dock = DockStyle.Fill;
+            dgvRecipes.Location = new Point(0, 0);
+            dgvRecipes.Name = "dgvRecipes";
+            dgvRecipes.Size = new Size(350, 463);
+            dgvRecipes.TabIndex = 0;
+            dgvRecipes.SelectionChanged += dgvRecipes_SelectionChanged;
             // 
             // pnlDetails
             // 
@@ -143,7 +131,7 @@
             pnlDetails.Location = new Point(0, 0);
             pnlDetails.Name = "pnlDetails";
             pnlDetails.Padding = new Padding(15, 17, 15, 17);
-            pnlDetails.Size = new Size(386, 472);
+            pnlDetails.Size = new Size(388, 463);
             pnlDetails.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -166,7 +154,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 91F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(356, 438);
+            tableLayoutPanel1.Size = new Size(358, 429);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // lblDetailName
@@ -215,7 +203,7 @@
             lstDetailCategories.ItemHeight = 17;
             lstDetailCategories.Location = new Point(3, 107);
             lstDetailCategories.Name = "lstDetailCategories";
-            lstDetailCategories.Size = new Size(350, 85);
+            lstDetailCategories.Size = new Size(352, 85);
             lstDetailCategories.TabIndex = 3;
             // 
             // label2
@@ -238,7 +226,7 @@
             lstDetailSteps.ItemHeight = 17;
             lstDetailSteps.Location = new Point(3, 232);
             lstDetailSteps.Name = "lstDetailSteps";
-            lstDetailSteps.Size = new Size(350, 203);
+            lstDetailSteps.Size = new Size(352, 194);
             lstDetailSteps.TabIndex = 5;
             // 
             // pnlSearch
@@ -251,7 +239,7 @@
             pnlSearch.Name = "pnlSearch";
             pnlSearch.Padding = new Padding(3, 11, 3, 0);
             pnlSearch.Size = new Size(742, 57);
-            pnlSearch.TabIndex = 7;
+            pnlSearch.TabIndex = 6;
             // 
             // cmbCategoryFilter
             // 
@@ -292,7 +280,7 @@
             // 
             picSearchIcon.BackColor = Color.White;
             picSearchIcon.Dock = DockStyle.Left;
-            picSearchIcon.Image = (Image)resources.GetObject("picSearchIcon.Image");
+            picSearchIcon.Image = Properties.Resources.searchIcon1;
             picSearchIcon.Location = new Point(0, 0);
             picSearchIcon.Name = "picSearchIcon";
             picSearchIcon.Padding = new Padding(5, 6, 5, 6);
@@ -301,7 +289,7 @@
             picSearchIcon.TabIndex = 2;
             picSearchIcon.TabStop = false;
             // 
-            // UC_RecipiesApprentice
+            // UC_Chef_ExploreRecipes
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -309,7 +297,7 @@
             Controls.Add(pnlGridContainer);
             Controls.Add(pnlSearch);
             Controls.Add(pnlHeader);
-            Name = "UC_RecipiesApprentice";
+            Name = "UC_Chef_ExploreRecipes";
             Padding = new Padding(20, 23, 20, 23);
             Size = new Size(782, 668);
             pnlHeader.ResumeLayout(false);
@@ -320,7 +308,7 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvRecipesApprentice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRecipes).EndInit();
             pnlDetails.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
@@ -329,7 +317,6 @@
             pnlSearchContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picSearchIcon).EndInit();
             ResumeLayout(false);
-
         }
 
         #endregion
@@ -339,7 +326,7 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel pnlGridContainer;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dgvRecipesApprentice;
+        private System.Windows.Forms.DataGridView dgvRecipes;
         private System.Windows.Forms.Panel pnlDetails;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label lblDetailName;

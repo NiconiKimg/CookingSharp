@@ -18,8 +18,8 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
         }
 
         /// <summary>
-        ///Obtiene todas las solicitudes pendientes de la base de datos, incluyendo
-        ///la información del usuario asociado a cada solicitud.
+        /// Obtiene todas las solicitudes pendientes de la base de datos, incluyendo
+        /// la información del usuario asociado a cada solicitud.
         /// </summary>
         public async Task<IEnumerable<Appeal>> GetPendingWithUserDetailsAsync()
         {
@@ -34,9 +34,17 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
         /// </summary>
         public async Task<int> CountPendingAsync()
         {
-            // Realiza el conteo directamente en la base de datos para máxima eficiencia,
-            // aplicando un filtro para contar solo las entidades con estado 'Pending'.
             return await _dbSet.CountAsync(a => a.Status == AppealStatus.Pending);
+        }
+
+        /// <summary>
+        /// Verifica si un usuario tiene alguna solicitud en estado "Pendiente".
+        /// </summary>
+        /// <param name="userId">El ID del usuario a verificar.</param>
+        /// <returns>True si el usuario tiene una solicitud pendiente, de lo contrario False.</returns>
+        public async Task<bool> HasPendingAppealAsync(int userId)
+        {
+            return await _dbSet.AnyAsync(a => a.UserId == userId && a.Status == AppealStatus.Pending);
         }
     }
 }

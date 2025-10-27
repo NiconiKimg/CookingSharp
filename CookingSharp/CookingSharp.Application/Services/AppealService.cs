@@ -41,6 +41,11 @@ namespace CookingSharp.Application.Services
                 throw new BadRequestException("Solo los aprendices pueden solicitar ser chefs.");
             }
 
+            if (await _unitOfWork.Appeals.HasPendingAppealAsync(applicantUserId))
+            {
+                throw new BadRequestException("Ya tienes una solicitud pendiente. Por favor, espera a que sea revisada.");
+            }
+
             var appeal = new Appeal(appealDto.Description, applicantUserId);
 
             await _unitOfWork.Appeals.AddAsync(appeal);

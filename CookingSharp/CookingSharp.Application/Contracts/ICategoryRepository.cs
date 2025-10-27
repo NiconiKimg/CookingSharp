@@ -19,8 +19,9 @@ public interface ICategoryRepository : IGenericRepository<Category>
 
     /// <summary>
     /// Obtiene todas las entidades de un tipo de forma asíncrona, con una opción para filtrar por un término de búsqueda.
+    /// Este método oculta la implementación base de IGenericRepository.
     /// </summary>
     /// <param name="searchTerm">El término opcional para filtrar las categorías por nombre.</param>
     /// <returns>Una colección de todas las entidades que coinciden con el filtro.</returns>
-    Task<IEnumerable<Category>> GetAllAsync(string? searchTerm = null);
+    new Task<IEnumerable<Category>> GetAllAsync(string? searchTerm = null);
 }

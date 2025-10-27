@@ -81,9 +81,10 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<UC_Users>();
             services.AddTransient<UC_Appeals>();
             services.AddTransient<UC_Recipes>();
-            services.AddTransient<UC_RecipesChef>();
+            services.AddTransient<UC_Chef_MyRecipes>();
             services.AddTransient<UC_AppealsApprentice>();
             services.AddTransient<UC_RecipiesApprentice>();
+            services.AddTransient<UC_Chef_ExploreRecipes>();
         }
 
         /// <summary>

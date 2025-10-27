@@ -41,6 +41,11 @@ public class User
     /// </summary>
     public UserRole Role { get; private set; }
 
+    /// <summary>
+    /// Indica si la cuenta del usuario está activa. Si es falso, se considera un borrado lógico.
+    /// </summary>
+    public bool IsActive { get; private set; }
+
     public ICollection<Recipe> Recipes { get; private set; } = new List<Recipe>();
     public ICollection<Menu> Menus { get; private set; } = new List<Menu>();
     public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
@@ -65,6 +70,7 @@ public class User
         UpdateProfile(name, surname, email);
         ChangePassword(hashedPassword);
         Role = UserRole.Apprentice; // Todos los usuarios nuevos comienzan como aprendices.
+        IsActive = true; // Todos los usuarios nuevos están activos por defecto.
     }
 
     /// <summary>
@@ -104,5 +110,13 @@ public class User
         {
             Role = UserRole.Chef;
         }
+    }
+
+    /// <summary>
+    /// Desactiva lógicamente al usuario (Soft Delete).
+    /// </summary>
+    public void Deactivate()
+    {
+        IsActive = false;
     }
 }

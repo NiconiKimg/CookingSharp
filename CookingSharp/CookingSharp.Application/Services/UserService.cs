@@ -24,11 +24,20 @@ namespace CookingSharp.Application.Services
         }
 
         /// <summary>
-        /// Obtiene todos los usuarios del sistema de forma asíncrona.
+        /// Obtiene todos los usuarios activos del sistema de forma asíncrona.
         /// </summary>
         public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
         {
-            var users = await _unitOfWork.Users.GetAllAsync();
+            return await GetAllAsync(null);
+        }
+
+        /// <summary>
+        /// Obtiene todos los usuarios activos del sistema de forma asíncrona, opcionalmente filtrados.
+        /// </summary>
+        /// <param name="searchTerm">Término de búsqueda opcional.</param>
+        public async Task<IEnumerable<UserResponseDTO>> GetAllAsync(string? searchTerm = null)
+        {
+            var users = await _unitOfWork.Users.GetAllAsync(searchTerm);
             return _mapper.Map<IEnumerable<UserResponseDTO>>(users);
         }
 
@@ -59,12 +68,15 @@ namespace CookingSharp.Application.Services
         }
 
         /// <summary>
-        /// Elimina un usuario por su ID de forma asíncrona.
+        /// Desactiva lógicamente un usuario (Soft Delete) por su ID de forma asíncrona.
         /// </summary>
         public async Task DeleteAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
-            _unitOfWork.Users.Delete(user);
+
+            user.Deactivate();
+
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.CompleteAsync();
         }
 

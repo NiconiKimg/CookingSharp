@@ -1,4 +1,5 @@
 ﻿using CookingSharp.Domain.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CookingSharp.Application.Contracts;
@@ -23,4 +24,12 @@ public interface IUserRepository : IGenericRepository<User>
     /// <param name="excludeId">Un ID de usuario opcional para excluir de la búsqueda (útil al actualizar).</param>
     /// <returns>True si el email ya está en uso, de lo contrario False.</returns>
     Task<bool> ExistsWithEmailAsync(string email, int? excludeId = null);
+
+    /// <summary>
+    /// Obtiene todas las entidades de un tipo de forma asíncrona, con una opción para filtrar por un término de búsqueda.
+    /// Este método oculta la implementación base de IGenericRepository.
+    /// </summary>
+    /// <param name="searchTerm">El término opcional para filtrar los usuarios por nombre, apellido o email.</param>
+    /// <returns>Una colección de todas las entidades que coinciden con el filtro.</returns>
+    new Task<IEnumerable<User>> GetAllAsync(string? searchTerm = null);
 }

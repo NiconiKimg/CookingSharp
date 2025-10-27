@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             this.pnlHeader = new System.Windows.Forms.Panel();
-            this.headerLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.flpActions = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnUnblockRecipe = new System.Windows.Forms.Button();
             this.btnBlockRecipe = new System.Windows.Forms.Button();
+            this.btnUnblockRecipe = new System.Windows.Forms.Button();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.pnlGridContainer = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvRecipes = new System.Windows.Forms.DataGridView();
@@ -45,9 +43,12 @@
             this.lstDetailCategories = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lstDetailSteps = new System.Windows.Forms.ListBox();
+            this.pnlSearch = new System.Windows.Forms.Panel();
+            this.cmbCategoryFilter = new System.Windows.Forms.ComboBox();
+            this.pnlSearchContainer = new System.Windows.Forms.Panel();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.picSearchIcon = new System.Windows.Forms.PictureBox();
             this.pnlHeader.SuspendLayout();
-            this.headerLayout.SuspendLayout();
-            this.flpActions.SuspendLayout();
             this.pnlGridContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -56,32 +57,58 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecipes)).BeginInit();
             this.pnlDetails.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.pnlSearch.SuspendLayout();
+            this.pnlSearchContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picSearchIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlHeader
             // 
             this.pnlHeader.BackColor = System.Drawing.Color.White;
-            this.pnlHeader.Controls.Add(this.headerLayout);
+            this.pnlHeader.Controls.Add(this.btnBlockRecipe);
+            this.pnlHeader.Controls.Add(this.btnUnblockRecipe);
+            this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(20, 20);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(742, 80);
             this.pnlHeader.TabIndex = 2;
             // 
-            // headerLayout
+            // btnBlockRecipe
             // 
-            this.headerLayout.ColumnCount = 2;
-            this.headerLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.headerLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.headerLayout.Controls.Add(this.lblTitle, 0, 0);
-            this.headerLayout.Controls.Add(this.flpActions, 1, 0);
-            this.headerLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.headerLayout.Location = new System.Drawing.Point(0, 0);
-            this.headerLayout.Name = "headerLayout";
-            this.headerLayout.RowCount = 1;
-            this.headerLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.headerLayout.Size = new System.Drawing.Size(742, 80);
-            this.headerLayout.TabIndex = 3;
+            this.btnBlockRecipe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBlockRecipe.BackColor = System.Drawing.Color.White;
+            this.btnBlockRecipe.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBlockRecipe.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnBlockRecipe.FlatAppearance.BorderSize = 2;
+            this.btnBlockRecipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBlockRecipe.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnBlockRecipe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnBlockRecipe.Location = new System.Drawing.Point(619, 21);
+            this.btnBlockRecipe.Name = "btnBlockRecipe";
+            this.btnBlockRecipe.Size = new System.Drawing.Size(120, 40);
+            this.btnBlockRecipe.TabIndex = 2;
+            this.btnBlockRecipe.Text = "Bloquear";
+            this.btnBlockRecipe.UseVisualStyleBackColor = false;
+            this.btnBlockRecipe.Click += new System.EventHandler(this.btnBlockRecipe_Click);
+            // 
+            // btnUnblockRecipe
+            // 
+            this.btnUnblockRecipe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUnblockRecipe.BackColor = System.Drawing.Color.White;
+            this.btnUnblockRecipe.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUnblockRecipe.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(135)))), ((int)(((byte)(84)))));
+            this.btnUnblockRecipe.FlatAppearance.BorderSize = 2;
+            this.btnUnblockRecipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUnblockRecipe.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnUnblockRecipe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(135)))), ((int)(((byte)(84)))));
+            this.btnUnblockRecipe.Location = new System.Drawing.Point(493, 21);
+            this.btnUnblockRecipe.Name = "btnUnblockRecipe";
+            this.btnUnblockRecipe.Size = new System.Drawing.Size(120, 40);
+            this.btnUnblockRecipe.TabIndex = 3;
+            this.btnUnblockRecipe.Text = "Desbloquear";
+            this.btnUnblockRecipe.UseVisualStyleBackColor = false;
+            this.btnUnblockRecipe.Click += new System.EventHandler(this.btnUnblockRecipe_Click);
             // 
             // lblTitle
             // 
@@ -95,70 +122,21 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Gestión de Recetas";
             // 
-            // flpActions
-            // 
-            this.flpActions.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.flpActions.AutoSize = true;
-            this.flpActions.Controls.Add(this.btnUnblockRecipe);
-            this.flpActions.Controls.Add(this.btnBlockRecipe);
-            this.flpActions.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
-            this.flpActions.Location = new System.Drawing.Point(475, 17);
-            this.flpActions.Name = "flpActions";
-            this.flpActions.Size = new System.Drawing.Size(264, 46);
-            this.flpActions.TabIndex = 1;
-            this.flpActions.WrapContents = false;
-            // 
-            // btnUnblockRecipe
-            // 
-            this.btnUnblockRecipe.BackColor = System.Drawing.Color.White;
-            this.btnUnblockRecipe.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUnblockRecipe.Enabled = false;
-            this.btnUnblockRecipe.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(135)))), ((int)(((byte)(84)))));
-            this.btnUnblockRecipe.FlatAppearance.BorderSize = 2;
-            this.btnUnblockRecipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUnblockRecipe.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnUnblockRecipe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(135)))), ((int)(((byte)(84)))));
-            this.btnUnblockRecipe.Location = new System.Drawing.Point(3, 3);
-            this.btnUnblockRecipe.Name = "btnUnblockRecipe";
-            this.btnUnblockRecipe.Size = new System.Drawing.Size(120, 40);
-            this.btnUnblockRecipe.TabIndex = 3;
-            this.btnUnblockRecipe.Text = "Desbloquear";
-            this.btnUnblockRecipe.UseVisualStyleBackColor = false;
-            this.btnUnblockRecipe.Click += new System.EventHandler(this.btnUnblockRecipe_Click);
-            // 
-            // btnBlockRecipe
-            // 
-            this.btnBlockRecipe.BackColor = System.Drawing.Color.White;
-            this.btnBlockRecipe.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnBlockRecipe.Enabled = false;
-            this.btnBlockRecipe.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
-            this.btnBlockRecipe.FlatAppearance.BorderSize = 2;
-            this.btnBlockRecipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBlockRecipe.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnBlockRecipe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
-            this.btnBlockRecipe.Location = new System.Drawing.Point(129, 3);
-            this.btnBlockRecipe.Name = "btnBlockRecipe";
-            this.btnBlockRecipe.Size = new System.Drawing.Size(132, 40);
-            this.btnBlockRecipe.TabIndex = 2;
-            this.btnBlockRecipe.Text = "Bloquear";
-            this.btnBlockRecipe.UseVisualStyleBackColor = false;
-            this.btnBlockRecipe.Click += new System.EventHandler(this.btnBlockRecipe_Click);
-            // 
             // pnlGridContainer
             // 
-            this.pnlGridContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.pnlGridContainer.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlGridContainer.Controls.Add(this.splitContainer1);
             this.pnlGridContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlGridContainer.Location = new System.Drawing.Point(20, 100);
+            this.pnlGridContainer.Location = new System.Drawing.Point(20, 150);
             this.pnlGridContainer.Name = "pnlGridContainer";
-            this.pnlGridContainer.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlGridContainer.Size = new System.Drawing.Size(742, 469);
+            this.pnlGridContainer.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.pnlGridContainer.Size = new System.Drawing.Size(742, 419);
             this.pnlGridContainer.TabIndex = 3;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(1, 1);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 10);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -168,7 +146,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.pnlDetails);
-            this.splitContainer1.Size = new System.Drawing.Size(740, 467);
+            this.splitContainer1.Size = new System.Drawing.Size(742, 409);
             this.splitContainer1.SplitterDistance = 350;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -177,7 +155,7 @@
             this.dgvRecipes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecipes.Location = new System.Drawing.Point(0, 0);
             this.dgvRecipes.Name = "dgvRecipes";
-            this.dgvRecipes.Size = new System.Drawing.Size(350, 467);
+            this.dgvRecipes.Size = new System.Drawing.Size(350, 409);
             this.dgvRecipes.TabIndex = 0;
             this.dgvRecipes.SelectionChanged += new System.EventHandler(this.dgvRecipes_SelectionChanged);
             // 
@@ -189,7 +167,7 @@
             this.pnlDetails.Location = new System.Drawing.Point(0, 0);
             this.pnlDetails.Name = "pnlDetails";
             this.pnlDetails.Padding = new System.Windows.Forms.Padding(15);
-            this.pnlDetails.Size = new System.Drawing.Size(386, 467);
+            this.pnlDetails.Size = new System.Drawing.Size(388, 409);
             this.pnlDetails.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -212,7 +190,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(356, 437);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(358, 379);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // lblDetailName
@@ -237,7 +215,7 @@
             this.lblDetailDescription.MaximumSize = new System.Drawing.Size(350, 0);
             this.lblDetailDescription.Name = "lblDetailDescription";
             this.lblDetailDescription.Padding = new System.Windows.Forms.Padding(0, 0, 0, 15);
-            this.lblDetailDescription.Size = new System.Drawing.Size(350, 49);
+            this.lblDetailDescription.Size = new System.Drawing.Size(352, 49);
             this.lblDetailDescription.TabIndex = 1;
             this.lblDetailDescription.Text = "Los detalles de la receta seleccionada se mostrarán aquí.";
             // 
@@ -261,7 +239,7 @@
             this.lstDetailCategories.ItemHeight = 17;
             this.lstDetailCategories.Location = new System.Drawing.Point(3, 119);
             this.lstDetailCategories.Name = "lstDetailCategories";
-            this.lstDetailCategories.Size = new System.Drawing.Size(350, 74);
+            this.lstDetailCategories.Size = new System.Drawing.Size(352, 74);
             this.lstDetailCategories.TabIndex = 3;
             // 
             // label2
@@ -284,8 +262,68 @@
             this.lstDetailSteps.ItemHeight = 17;
             this.lstDetailSteps.Location = new System.Drawing.Point(3, 231);
             this.lstDetailSteps.Name = "lstDetailSteps";
-            this.lstDetailSteps.Size = new System.Drawing.Size(350, 203);
+            this.lstDetailSteps.Size = new System.Drawing.Size(352, 145);
             this.lstDetailSteps.TabIndex = 5;
+            // 
+            // pnlSearch
+            // 
+            this.pnlSearch.BackColor = System.Drawing.Color.White;
+            this.pnlSearch.Controls.Add(this.cmbCategoryFilter);
+            this.pnlSearch.Controls.Add(this.pnlSearchContainer);
+            this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlSearch.Location = new System.Drawing.Point(20, 100);
+            this.pnlSearch.Name = "pnlSearch";
+            this.pnlSearch.Padding = new System.Windows.Forms.Padding(3, 10, 3, 0);
+            this.pnlSearch.Size = new System.Drawing.Size(742, 50);
+            this.pnlSearch.TabIndex = 4;
+            // 
+            // cmbCategoryFilter
+            // 
+            this.cmbCategoryFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCategoryFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cmbCategoryFilter.FormattingEnabled = true;
+            this.cmbCategoryFilter.Location = new System.Drawing.Point(332, 14);
+            this.cmbCategoryFilter.Name = "cmbCategoryFilter";
+            this.cmbCategoryFilter.Size = new System.Drawing.Size(200, 25);
+            this.cmbCategoryFilter.TabIndex = 4;
+            this.cmbCategoryFilter.SelectedIndexChanged += new System.EventHandler(this.cmbCategoryFilter_SelectedIndexChanged);
+            // 
+            // pnlSearchContainer
+            // 
+            this.pnlSearchContainer.BackColor = System.Drawing.Color.White;
+            this.pnlSearchContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlSearchContainer.Controls.Add(this.txtSearch);
+            this.pnlSearchContainer.Controls.Add(this.picSearchIcon);
+            this.pnlSearchContainer.Location = new System.Drawing.Point(6, 12);
+            this.pnlSearchContainer.Name = "pnlSearchContainer";
+            this.pnlSearchContainer.Size = new System.Drawing.Size(320, 30);
+            this.pnlSearchContainer.TabIndex = 3;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(30, 0);
+            this.txtSearch.Multiline = true;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.PlaceholderText = "Buscar por nombre, autor...";
+            this.txtSearch.Size = new System.Drawing.Size(288, 28);
+            this.txtSearch.TabIndex = 1;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // picSearchIcon
+            // 
+            this.picSearchIcon.BackColor = System.Drawing.Color.White;
+            this.picSearchIcon.Dock = System.Windows.Forms.DockStyle.Left;
+            this.picSearchIcon.Image = global::CookingSharp.WindowsForms.Properties.Resources.searchIcon;
+            this.picSearchIcon.Location = new System.Drawing.Point(0, 0);
+            this.picSearchIcon.Name = "picSearchIcon";
+            this.picSearchIcon.Padding = new System.Windows.Forms.Padding(5);
+            this.picSearchIcon.Size = new System.Drawing.Size(30, 28);
+            this.picSearchIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picSearchIcon.TabIndex = 2;
+            this.picSearchIcon.TabStop = false;
             // 
             // UC_Recipes
             // 
@@ -293,14 +331,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.pnlGridContainer);
+            this.Controls.Add(this.pnlSearch);
             this.Controls.Add(this.pnlHeader);
             this.Name = "UC_Recipes";
             this.Padding = new System.Windows.Forms.Padding(20);
             this.Size = new System.Drawing.Size(782, 589);
             this.pnlHeader.ResumeLayout(false);
-            this.headerLayout.ResumeLayout(false);
-            this.headerLayout.PerformLayout();
-            this.flpActions.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
             this.pnlGridContainer.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -310,6 +347,10 @@
             this.pnlDetails.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.pnlSearch.ResumeLayout(false);
+            this.pnlSearchContainer.ResumeLayout(false);
+            this.pnlSearchContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picSearchIcon)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -317,14 +358,10 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.TableLayoutPanel headerLayout;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.FlowLayoutPanel flpActions;
-        private System.Windows.Forms.Button btnBlockRecipe;
         private System.Windows.Forms.Panel pnlGridContainer;
-        private System.Windows.Forms.DataGridView dgvRecipes;
-        private System.Windows.Forms.Button btnUnblockRecipe;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.DataGridView dgvRecipes;
         private System.Windows.Forms.Panel pnlDetails;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label lblDetailName;
@@ -333,5 +370,14 @@
         private System.Windows.Forms.ListBox lstDetailCategories;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstDetailSteps;
+        private System.Windows.Forms.Panel pnlSearch;
+        private System.Windows.Forms.ComboBox cmbCategoryFilter;
+        private System.Windows.Forms.Panel pnlSearchContainer;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.PictureBox picSearchIcon;
+        private System.Windows.Forms.Button btnBlockRecipe;
+        private System.Windows.Forms.Button btnUnblockRecipe;
+        private System.Windows.Forms.TableLayoutPanel headerLayout;
+        private System.Windows.Forms.FlowLayoutPanel flpActions;
     }
 }

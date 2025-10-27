@@ -45,6 +45,15 @@ public class CategoryService : ICategoryService
     }
 
     /// <summary>
+    /// Obtiene todas las categorías de forma asíncrona.
+    /// </summary>
+    /// <returns>Una colección de DTOs de categoría.</returns>
+    public async Task<IEnumerable<CategoryResponseDTO>> GetAllAsync()
+    {
+        return await GetAllAsync(null);
+    }
+
+    /// <summary>
     /// Obtiene todas las categorías de forma asíncrona, opcionalmente filtradas por un término de búsqueda.
     /// </summary>
     /// <param name="searchTerm">El término opcional para buscar en los nombres de las categorías.</param>

@@ -15,6 +15,12 @@ namespace CookingSharp.Application.Services.Contracts
         Task<IEnumerable<UserResponseDTO>> GetAllAsync();
 
         /// <summary>
+        /// Obtiene todos los usuarios del sistema, opcionalmente filtrados.
+        /// </summary>
+        /// <param name="searchTerm">Término de búsqueda opcional.</param>
+        Task<IEnumerable<UserResponseDTO>> GetAllAsync(string? searchTerm = null);
+
+        /// <summary>
         /// Obtiene un usuario por su ID.
         /// </summary>
         Task<UserResponseDTO?> GetByIdAsync(int id);

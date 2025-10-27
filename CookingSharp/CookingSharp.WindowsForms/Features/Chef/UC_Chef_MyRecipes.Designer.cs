@@ -1,6 +1,6 @@
 ﻿namespace CookingSharp.WindowsForms.Features.Chef
 {
-    partial class UC_RecipesChef
+    partial class UC_Chef_MyRecipes
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -35,6 +35,10 @@
             this.btnDeleteRecipe = new System.Windows.Forms.Button();
             this.btnModifyRecipe = new System.Windows.Forms.Button();
             this.btnCreateRecipe = new System.Windows.Forms.Button();
+            // Nuevos botones
+            this.btnPublish = new System.Windows.Forms.Button();
+            this.btnArchive = new System.Windows.Forms.Button();
+            this.btnToDraft = new System.Windows.Forms.Button();
             this.pnlGridContainer = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvRecipesChef = new System.Windows.Forms.DataGridView();
@@ -100,13 +104,16 @@
             // 
             this.flpActions.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.flpActions.AutoSize = true;
+            this.flpActions.Controls.Add(this.btnToDraft);
+            this.flpActions.Controls.Add(this.btnArchive);
+            this.flpActions.Controls.Add(this.btnPublish);
             this.flpActions.Controls.Add(this.btnDeleteRecipe);
             this.flpActions.Controls.Add(this.btnModifyRecipe);
             this.flpActions.Controls.Add(this.btnCreateRecipe);
             this.flpActions.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
-            this.flpActions.Location = new System.Drawing.Point(321, 17);
+            this.flpActions.Location = new System.Drawing.Point(120, 17);
             this.flpActions.Name = "flpActions";
-            this.flpActions.Size = new System.Drawing.Size(418, 46);
+            this.flpActions.Size = new System.Drawing.Size(619, 46);
             this.flpActions.TabIndex = 1;
             this.flpActions.WrapContents = false;
             // 
@@ -162,6 +169,48 @@
             this.btnCreateRecipe.Text = "Crear Nueva Receta";
             this.btnCreateRecipe.UseVisualStyleBackColor = false;
             this.btnCreateRecipe.Click += new System.EventHandler(this.btnCreateRecipe_Click);
+            //
+            // btnPublish
+            //
+            this.btnPublish.BackColor = System.Drawing.Color.White;
+            this.btnPublish.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPublish.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnPublish.ForeColor = System.Drawing.Color.FromArgb(25, 135, 84);
+            this.btnPublish.Location = new System.Drawing.Point(428, 3);
+            this.btnPublish.Name = "btnPublish";
+            this.btnPublish.Size = new System.Drawing.Size(120, 40);
+            this.btnPublish.TabIndex = 3;
+            this.btnPublish.Text = "Publicar";
+            this.btnPublish.UseVisualStyleBackColor = false;
+            this.btnPublish.Click += new System.EventHandler(this.btnPublish_Click);
+            //
+            // btnArchive
+            //
+            this.btnArchive.BackColor = System.Drawing.Color.White;
+            this.btnArchive.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnArchive.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnArchive.ForeColor = System.Drawing.Color.FromArgb(255, 193, 7);
+            this.btnArchive.Location = new System.Drawing.Point(554, 3);
+            this.btnArchive.Name = "btnArchive";
+            this.btnArchive.Size = new System.Drawing.Size(120, 40);
+            this.btnArchive.TabIndex = 4;
+            this.btnArchive.Text = "Archivar";
+            this.btnArchive.UseVisualStyleBackColor = false;
+            this.btnArchive.Click += new System.EventHandler(this.btnArchive_Click);
+            //
+            // btnToDraft
+            //
+            this.btnToDraft.BackColor = System.Drawing.Color.White;
+            this.btnToDraft.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnToDraft.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnToDraft.ForeColor = System.Drawing.Color.Gray;
+            this.btnToDraft.Location = new System.Drawing.Point(680, 3);
+            this.btnToDraft.Name = "btnToDraft";
+            this.btnToDraft.Size = new System.Drawing.Size(130, 40);
+            this.btnToDraft.TabIndex = 5;
+            this.btnToDraft.Text = "Pasar a Borrador";
+            this.btnToDraft.UseVisualStyleBackColor = false;
+            this.btnToDraft.Click += new System.EventHandler(this.btnToDraft_Click);
             // 
             // pnlGridContainer
             // 
@@ -198,7 +247,7 @@
             this.dgvRecipesChef.Name = "dgvRecipesChef";
             this.dgvRecipesChef.Size = new System.Drawing.Size(350, 467);
             this.dgvRecipesChef.TabIndex = 0;
-            this.dgvRecipesChef.SelectionChanged += new System.EventHandler(this.dgvRecipes_SelectionChanged);
+            this.dgvRecipesChef.SelectionChanged += new System.EventHandler(this.dgvRecipesChef_SelectionChanged);
             // 
             // pnlDetails
             // 
@@ -306,14 +355,14 @@
             this.lstDetailSteps.Size = new System.Drawing.Size(350, 203);
             this.lstDetailSteps.TabIndex = 5;
             // 
-            // UC_RecipesChef
+            // UC_Chef_MyRecipes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.pnlGridContainer);
             this.Controls.Add(this.pnlHeader);
-            this.Name = "UC_RecipesChef";
+            this.Name = "UC_Chef_MyRecipes";
             this.Padding = new System.Windows.Forms.Padding(20);
             this.Size = new System.Drawing.Size(782, 589);
             this.pnlHeader.ResumeLayout(false);
@@ -330,7 +379,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -353,5 +401,8 @@
         private System.Windows.Forms.ListBox lstDetailCategories;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstDetailSteps;
+        private System.Windows.Forms.Button btnPublish;
+        private System.Windows.Forms.Button btnArchive;
+        private System.Windows.Forms.Button btnToDraft;
     }
 }
