@@ -23,6 +23,7 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
         public IAppealRepository Appeals { get; private set; }
         public IMenuRatingRepository MenuRatings { get; private set; }
         public IRecipeAnalysisRepository RecipeAnalysis { get; private set; }
+        public ICategoryPerformanceRepository CategoryPerformance { get; private set; }
 
         public UnitOfWork(CookingSharpDbContext context, IConfiguration configuration)
         {
@@ -37,6 +38,7 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
             Appeals = new AppealRepository(_context);
             MenuRatings = new MenuRatingRepository(_context);
             RecipeAnalysis = new RecipeAnalysisRepository(configuration);
+            CategoryPerformance = new CategoryPerformanceRepository(configuration);
         }
 
         /// <summary>

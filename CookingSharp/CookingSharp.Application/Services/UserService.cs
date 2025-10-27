@@ -4,6 +4,7 @@ using CookingSharp.Application.Contracts;
 using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain.Entities;
+using CookingSharp.Domain.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -73,6 +74,11 @@ namespace CookingSharp.Application.Services
         public async Task DeleteAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id) ?? throw new NotFoundException(nameof(User), id);
+
+            if (user.Role == UserRole.Admin)
+            {
+                throw new BadRequestException("No está permitido eliminar a otro administrador.");
+            }
 
             user.Deactivate();
 

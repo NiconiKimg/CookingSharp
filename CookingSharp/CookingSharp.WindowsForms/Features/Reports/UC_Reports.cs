@@ -44,6 +44,13 @@ namespace CookingSharp.WindowsForms.Features.Reports
                                  (Button)sender);
         }
 
+        private async void btnGenerateCategoryPerformanceReport_Click(object sender, EventArgs e)
+        {
+            await GenerateReport(async () => await _reportApiClient.GetCategoryPerformanceReportAsync(),
+                                 "Reporte_Rendimiento_Categorias",
+                                 (Button)sender);
+        }
+
         /// <summary>
         /// Lógica genérica para generar y guardar un reporte, manejando el estado del botón.
         /// </summary>
@@ -68,7 +75,7 @@ namespace CookingSharp.WindowsForms.Features.Reports
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error de conexión al generar el reporte: {ex.Message}",
+                MessageBox.Show($"Ocurrió un error al generar el reporte: {ex.Message}",
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally

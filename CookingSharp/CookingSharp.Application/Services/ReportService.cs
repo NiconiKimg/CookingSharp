@@ -136,5 +136,14 @@ namespace CookingSharp.Application.Services
 
             return _pdfGenerator.GenerateRecipeEngagementReport(reportData);
         }
+
+        /// <summary>
+        /// Orquesta la generación del reporte de rendimiento por categoría.
+        /// </summary>
+        public async Task<byte[]> GenerateCategoryPerformanceReportAsync()
+        {
+            var performanceData = await _unitOfWork.CategoryPerformance.GetCategoryPerformanceDataAsync();
+            return _pdfGenerator.GenerateCategoryPerformanceReport(performanceData);
+        }
     }
 }

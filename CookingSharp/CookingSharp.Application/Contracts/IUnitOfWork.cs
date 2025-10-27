@@ -15,6 +15,7 @@ public interface IUnitOfWork : IDisposable
     IAppealRepository Appeals { get; }
     IMenuRatingRepository MenuRatings { get; }
     IRecipeAnalysisRepository RecipeAnalysis { get; }
+    ICategoryPerformanceRepository CategoryPerformance { get; }
 
     /// <summary>
     /// Guarda todos los cambios realizados en el contexto de esta unidad de trabajo en la base de datos de forma asíncrona.

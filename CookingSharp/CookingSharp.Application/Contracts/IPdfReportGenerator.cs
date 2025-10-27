@@ -28,5 +28,7 @@ namespace CookingSharp.Application.Contracts
         /// <param name="data">Los datos procesados del análisis de recetas.</param>
         /// <returns>Un array de bytes que representa el archivo PDF.</returns>
         byte[] GenerateRecipeEngagementReport(IEnumerable<RecipeEngagementReportDto> data);
+
+        byte[] GenerateCategoryPerformanceReport(IEnumerable<CategoryPerformanceDto> data);
     }
 }

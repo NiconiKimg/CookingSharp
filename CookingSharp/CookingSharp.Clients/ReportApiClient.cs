@@ -46,17 +46,27 @@ namespace CookingSharp.Clients
             return await HandleResponse(response);
         }
 
+        /// <summary>
+        /// Obtiene el reporte de rendimiento por categoría como un array de bytes.
+        /// </summary>
+        /// <returns>El archivo PDF como byte[], o null si ocurre un error o no hay contenido.</returns>
+        public async Task<byte[]?> GetCategoryPerformanceReportAsync()
+        {
+            var response = await _httpClient.GetAsync($"{Endpoint}/performance/categories");
+            return await HandleResponse(response);
+        }
+
         private async Task<byte[]?> HandleResponse(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return null; // No hay datos
+                    return null; 
                 }
                 return await response.Content.ReadAsByteArrayAsync();
             }
-            return null; // Error
+            return null;
         }
     }
 }

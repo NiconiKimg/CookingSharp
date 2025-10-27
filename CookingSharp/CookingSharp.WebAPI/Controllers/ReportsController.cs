@@ -10,6 +10,7 @@ namespace CookingSharp.WebAPI.Controllers
     /// Controlador para la generación de reportes en formato PDF.
     /// </summary>
     [Authorize(Roles = "Admin")]
+    [Route("api/reports")] // AÑADIR ESTA LÍNEA PARA FORZAR LA RUTA EN MINÚSCULAS
     public class ReportsController : BaseApiController
     {
         private readonly IReportService _reportService;
@@ -92,6 +93,33 @@ namespace CookingSharp.WebAPI.Controllers
                 }
 
                 string fileName = $"Reporte_Analisis_Engagement_{DateTime.Now:yyyyMMdd}.pdf";
+                return File(pdfBytes, "application/pdf", fileName);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Ocurrió un error interno al generar el reporte.");
+            }
+        }
+
+        /// <summary>
+        /// Genera y devuelve el reporte de rendimiento por categoría en formato PDF.
+        /// </summary>
+        /// <returns>Un archivo PDF.</returns>
+        [HttpGet("performance/categories")]
+        [ProducesResponseType(typeof(FileContentResult), 200)]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> GetCategoryPerformanceReport()
+        {
+            try
+            {
+                byte[] pdfBytes = await _reportService.GenerateCategoryPerformanceReportAsync();
+
+                if (pdfBytes == null || pdfBytes.Length == 0)
+                {
+                    return NoContent();
+                }
+
+                string fileName = $"Reporte_Rendimiento_Categorias_{DateTime.Now:yyyyMMdd}.pdf";
                 return File(pdfBytes, "application/pdf", fileName);
             }
             catch (Exception)

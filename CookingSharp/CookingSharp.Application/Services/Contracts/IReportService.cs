@@ -24,5 +24,7 @@ namespace CookingSharp.Application.Services.Contracts
         /// </summary>
         /// <returns>Un array de bytes que representa el archivo PDF.</returns>
         Task<byte[]> GenerateRecipeEngagementReportAsync();
+
+        Task<byte[]> GenerateCategoryPerformanceReportAsync();
     }
 }

@@ -2,15 +2,8 @@
 {
     partial class UC_Reports
     {
-        /// <summary> 
-        /// Variable del diseñador necesaria.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Limpiar los recursos que se estén usando.
-        /// </summary>
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -32,6 +25,7 @@
             this.btnGeneratePopularityReport = new System.Windows.Forms.Button();
             this.btnGenerateContributionReport = new System.Windows.Forms.Button();
             this.btnGenerateEngagementReport = new System.Windows.Forms.Button();
+            this.btnGenerateCategoryPerformanceReport = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlContent.SuspendLayout();
             this.flpReports.SuspendLayout();
@@ -73,6 +67,7 @@
             this.flpReports.Controls.Add(this.btnGeneratePopularityReport);
             this.flpReports.Controls.Add(this.btnGenerateContributionReport);
             this.flpReports.Controls.Add(this.btnGenerateEngagementReport);
+            this.flpReports.Controls.Add(this.btnGenerateCategoryPerformanceReport);
             this.flpReports.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpReports.Location = new System.Drawing.Point(0, 0);
             this.flpReports.Name = "flpReports";
@@ -143,6 +138,27 @@
             this.btnGenerateEngagementReport.UseVisualStyleBackColor = false;
             this.btnGenerateEngagementReport.Click += new System.EventHandler(this.btnGenerateEngagementReport_Click);
             // 
+            // btnGenerateCategoryPerformanceReport
+            // 
+            this.btnGenerateCategoryPerformanceReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.btnGenerateCategoryPerformanceReport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGenerateCategoryPerformanceReport.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.btnGenerateCategoryPerformanceReport.FlatAppearance.BorderSize = 2;
+            this.btnGenerateCategoryPerformanceReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGenerateCategoryPerformanceReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnGenerateCategoryPerformanceReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnGenerateCategoryPerformanceReport.Image = ((System.Drawing.Image)(resources.GetObject("categoryIcon")));
+            this.btnGenerateCategoryPerformanceReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGenerateCategoryPerformanceReport.Location = new System.Drawing.Point(272, 63);
+            this.btnGenerateCategoryPerformanceReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
+            this.btnGenerateCategoryPerformanceReport.Name = "btnGenerateCategoryPerformanceReport";
+            this.btnGenerateCategoryPerformanceReport.Padding = new System.Windows.Forms.Padding(4);
+            this.btnGenerateCategoryPerformanceReport.Size = new System.Drawing.Size(260, 52);
+            this.btnGenerateCategoryPerformanceReport.TabIndex = 5;
+            this.btnGenerateCategoryPerformanceReport.Text = "     Rendimiento Categorías";
+            this.btnGenerateCategoryPerformanceReport.UseVisualStyleBackColor = false;
+            this.btnGenerateCategoryPerformanceReport.Click += new System.EventHandler(this.btnGenerateCategoryPerformanceReport_Click);
+            // 
             // UC_Reports
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -170,5 +186,6 @@
         private System.Windows.Forms.Button btnGeneratePopularityReport;
         private System.Windows.Forms.Button btnGenerateContributionReport;
         private System.Windows.Forms.Button btnGenerateEngagementReport;
+        private System.Windows.Forms.Button btnGenerateCategoryPerformanceReport;
     }
 }
