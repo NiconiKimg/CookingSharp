@@ -9,6 +9,7 @@ using CookingSharp.WindowsForms.RecipesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;
 using Microsoft.Extensions.DependencyInjection;
+using CookingSharp.WindowsForms.Features.Reports;
 using System;
 using System.Windows.Forms;
 
@@ -91,6 +92,7 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<UC_Chef_ExploreRecipes>();
             services.AddTransient<UC_AppealsApprentice>();
             services.AddTransient<UC_RecipiesApprentice>();
+            services.AddTransient<UC_Reports>();
         }
 
         /// <summary>

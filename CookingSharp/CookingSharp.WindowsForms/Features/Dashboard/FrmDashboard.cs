@@ -1,6 +1,7 @@
 using CookingSharp.Clients;
 using CookingSharp.WindowsForms.AppealsControl;
 using CookingSharp.WindowsForms.CategoriesControl;
+using CookingSharp.WindowsForms.Features.Reports;
 using CookingSharp.WindowsForms.RecipesControl;
 using CookingSharp.WindowsForms.UserControls;
 using CookingSharp.WindowsForms.Users;
@@ -29,7 +30,7 @@ namespace CookingSharp.WindowsForms
             InitializeComponent();
             this.Load += FrmDashboard_Load;
             this.btnUserOptions.Cursor = Cursors.Hand;
-            this.FormClosing += Dashboard_FormClosing; // Suscripción al evento de cierre.
+            this.FormClosing += Dashboard_FormClosing;
         }
 
         #region Event Handlers
@@ -68,6 +69,11 @@ namespace CookingSharp.WindowsForms
         /// Navega a la vista de gestión de recetas.
         /// </summary>
         private void btnNavRecetas_Click(object sender, EventArgs e) => LoadRecipesControl();
+
+        /// <summary>
+        /// Navega a la vista de generación de reportes.
+        /// </summary>
+        private void btnNavReportes_Click(object sender, EventArgs e) => LoadReportsControl();
 
         /// <summary>
         /// Maneja el clic en el botón de cerrar sesión. Activa el flag y cierra el formulario para volver al login.
@@ -115,6 +121,11 @@ namespace CookingSharp.WindowsForms
         /// </summary>
         public void NavigateToAppeals() => LoadAppealsControl();
 
+        /// <summary>
+        /// Permite que los User Controls hijos soliciten la navegación a la sección de Reportes.
+        /// </summary>
+        public void NavigateToReports() => LoadReportsControl();
+
         #region Private Helper Methods
 
         /// <summary>
@@ -140,6 +151,7 @@ namespace CookingSharp.WindowsForms
         private void LoadUsersControl() => LoadControl<UC_Users>();
         private void LoadAppealsControl() => LoadControl<UC_Appeals>();
         private void LoadRecipesControl() => LoadControl<UC_Recipes>();
+        private void LoadReportsControl() => LoadControl<UC_Reports>();
 
         #endregion
     }

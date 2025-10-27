@@ -55,6 +55,9 @@
     <Compile Update="Features\Recipes\UC_Recipes.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Features\Reports\UC_Reports.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Features\Users\FrmUsersCreate.cs">
       <SubType>Form</SubType>
     </Compile>

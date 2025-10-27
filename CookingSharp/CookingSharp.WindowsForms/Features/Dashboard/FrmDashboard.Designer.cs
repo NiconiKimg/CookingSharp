@@ -49,6 +49,7 @@
             btnNavUsuarios = new System.Windows.Forms.Button();
             btnNavSolicitudes = new System.Windows.Forms.Button();
             btnNavCategorias = new System.Windows.Forms.Button();
+            btnNavReportes = new System.Windows.Forms.Button();
             pnlMainContent = new System.Windows.Forms.Panel();
             tlpMainLayout.SuspendLayout();
             pnlHeader.SuspendLayout();
@@ -143,7 +144,7 @@
             picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
-            picLogo.Click += picLogo_Click;
+            picLogo.Click += new System.EventHandler(this.picLogo_Click);
             // 
             // lblAppName
             // 
@@ -275,22 +276,24 @@
             tlpNavigation.BackColor = System.Drawing.Color.Transparent;
             tlpNavigation.ColumnCount = 1;
             tlpNavigation.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tlpNavigation.Controls.Add(lblMenuGestionTitle, 0, 0);
-            tlpNavigation.Controls.Add(btnNavRecetas, 0, 1);
-            tlpNavigation.Controls.Add(btnNavUsuarios, 0, 2);
-            tlpNavigation.Controls.Add(btnNavSolicitudes, 0, 3);
-            tlpNavigation.Controls.Add(btnNavCategorias, 0, 4);
+            tlpNavigation.Controls.Add(this.lblMenuGestionTitle, 0, 0);
+            tlpNavigation.Controls.Add(this.btnNavRecetas, 0, 1);
+            tlpNavigation.Controls.Add(this.btnNavUsuarios, 0, 2);
+            tlpNavigation.Controls.Add(this.btnNavSolicitudes, 0, 3);
+            tlpNavigation.Controls.Add(this.btnNavCategorias, 0, 4);
+            tlpNavigation.Controls.Add(this.btnNavReportes, 0, 5);
             tlpNavigation.Dock = System.Windows.Forms.DockStyle.Top;
             tlpNavigation.Location = new System.Drawing.Point(0, 0);
             tlpNavigation.Margin = new System.Windows.Forms.Padding(2);
             tlpNavigation.Name = "tlpNavigation";
-            tlpNavigation.RowCount = 5;
+            tlpNavigation.RowCount = 6; // RowCount actualizado
             tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tlpNavigation.Size = new System.Drawing.Size(250, 191);
+            tlpNavigation.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tlpNavigation.Size = new System.Drawing.Size(250, 230);
             tlpNavigation.TabIndex = 2;
             // 
             // lblMenuGestionTitle
@@ -326,7 +329,7 @@
             btnNavRecetas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnNavRecetas.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             btnNavRecetas.UseVisualStyleBackColor = true;
-            btnNavRecetas.Click += btnNavRecetas_Click;
+            btnNavRecetas.Click += new System.EventHandler(this.btnNavRecetas_Click);
             // 
             // btnNavUsuarios
             // 
@@ -347,7 +350,7 @@
             btnNavUsuarios.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnNavUsuarios.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             btnNavUsuarios.UseVisualStyleBackColor = true;
-            btnNavUsuarios.Click += btnNavUsuarios_Click;
+            btnNavUsuarios.Click += new System.EventHandler(this.btnNavUsuarios_Click);
             // 
             // btnNavSolicitudes
             // 
@@ -368,7 +371,7 @@
             btnNavSolicitudes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnNavSolicitudes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             btnNavSolicitudes.UseVisualStyleBackColor = true;
-            btnNavSolicitudes.Click += btnNavSolicitudes_Click;
+            btnNavSolicitudes.Click += new System.EventHandler(this.btnNavSolicitudes_Click);
             // 
             // btnNavCategorias
             // 
@@ -389,7 +392,28 @@
             btnNavCategorias.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnNavCategorias.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             btnNavCategorias.UseVisualStyleBackColor = true;
-            btnNavCategorias.Click += btnNavCategorias_Click;
+            btnNavCategorias.Click += new System.EventHandler(this.btnNavCategorias_Click);
+            // 
+            // btnNavReportes
+            // 
+            btnNavReportes.Cursor = System.Windows.Forms.Cursors.Hand;
+            btnNavReportes.Dock = System.Windows.Forms.DockStyle.Fill;
+            btnNavReportes.FlatAppearance.BorderSize = 0;
+            btnNavReportes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnNavReportes.Font = new System.Drawing.Font("Segoe UI", 10F);
+            btnNavReportes.ForeColor = System.Drawing.Color.WhiteSmoke;
+            btnNavReportes.Image = Properties.Resources.recipeConfirmationIcon;
+            btnNavReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNavReportes.Location = new System.Drawing.Point(3, 192);
+            btnNavReportes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            btnNavReportes.Name = "btnNavReportes";
+            btnNavReportes.Size = new System.Drawing.Size(244, 36);
+            btnNavReportes.TabIndex = 6;
+            btnNavReportes.Text = "    Reportes";
+            btnNavReportes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNavReportes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            btnNavReportes.UseVisualStyleBackColor = true;
+            btnNavReportes.Click += new System.EventHandler(this.btnNavReportes_Click);
             // 
             // pnlMainContent
             // 
@@ -431,6 +455,7 @@
             tlpNavigation.ResumeLayout(false);
             tlpNavigation.PerformLayout();
             ResumeLayout(false);
+
         }
 
         #endregion
@@ -456,7 +481,6 @@
         private System.Windows.Forms.Label lblSubtittleNav;
         internal System.Windows.Forms.Panel pnlMainContent;
         private System.Windows.Forms.Button btnNavSolicitudes;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripUser;
-        private System.Windows.Forms.ToolStripMenuItem cerraSesiónToolStripMenuItem;
+        private System.Windows.Forms.Button btnNavReportes;
     }
 }
