@@ -1,7 +1,6 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,10 +18,8 @@ namespace CookingSharp.WindowsForms.RecipesControl
         private readonly System.Windows.Forms.Timer _searchTimer;
 
         /// <summary>
-        /// Constructor del User Control de Recetas.
+        /// Inicializa una nueva instancia de la clase <see cref="UC_Recipes"/>.
         /// </summary>
-        /// <param name="recipeApiClient">Cliente para interactuar con la API de recetas.</param>
-        /// <param name="categoryApiClient">Cliente para interactuar con la API de categorías.</param>
         public UC_Recipes(RecipeApiClient recipeApiClient, CategoryApiClient categoryApiClient)
         {
             InitializeComponent();
@@ -45,8 +42,22 @@ namespace CookingSharp.WindowsForms.RecipesControl
             DisplayRecipeDetails(null);
         }
 
-        private async void btnBlockRecipe_Click(object sender, EventArgs e) => await ProcessRecipeStatusChange("Blocked");
-        private async void btnUnblockRecipe_Click(object sender, EventArgs e) => await ProcessRecipeStatusChange("Published");
+        /// <summary>
+        /// Maneja el clic en el botón para bloquear una receta. Cambia su estado a "Blocked".
+        /// </summary>
+        private async void btnBlockRecipe_Click(object sender, EventArgs e)
+        {
+            await ProcessRecipeStatusChange("Blocked", "bloquear");
+        }
+
+        /// <summary>
+        /// Maneja el clic en el botón para desbloquear una receta. Cambia su estado a "Draft".
+        /// </summary>
+        private async void btnUnblockRecipe_Click(object sender, EventArgs e)
+        {
+            // CORRECCIÓN CLAVE: Al desbloquear, el estado vuelve a "Draft" (Borrador), no a "Published".
+            await ProcessRecipeStatusChange("Draft", "desbloquear y devolver a borrador");
+        }
 
         private void dgvRecipes_SelectionChanged(object sender, EventArgs e)
         {
@@ -54,27 +65,18 @@ namespace CookingSharp.WindowsForms.RecipesControl
             UpdateButtonsState();
         }
 
-        /// <summary>
-        /// Reinicia el temporizador de búsqueda al cambiar el texto.
-        /// </summary>
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            _searchTimer.Stop(); // Reinicia el temporizador si el usuario sigue escribiendo
+            _searchTimer.Stop();
             _searchTimer.Start();
         }
 
-        /// <summary>
-        /// Reinicia el temporizador de búsqueda al cambiar la categoría seleccionada.
-        /// </summary>
         private void cmbCategoryFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _searchTimer.Stop();
             _searchTimer.Start();
         }
 
-        /// <summary>
-        /// Ejecuta la búsqueda cuando el temporizador finaliza.
-        /// </summary>
         private async void SearchTimer_Tick(object sender, EventArgs e)
         {
             _searchTimer.Stop();
@@ -100,37 +102,35 @@ namespace CookingSharp.WindowsForms.RecipesControl
             }
         }
 
-        private async Task ProcessRecipeStatusChange(string newStatus)
+        /// <summary>
+        /// Procesa el cambio de estado de una receta, mostrando un diálogo de confirmación.
+        /// </summary>
+        /// <param name="newStatus">El nuevo estado para la receta (ej: "Blocked", "Draft").</param>
+        /// <param name="actionText">El texto que describe la acción para el mensaje de confirmación (ej: "bloquear").</param>
+        private async Task ProcessRecipeStatusChange(string newStatus, string actionText)
         {
             var selectedRecipe = GetSelectedRecipe();
             if (selectedRecipe is null) return;
 
-            string action = newStatus == "Blocked" ? "bloquear" : "desbloquear";
-            if (selectedRecipe.Status.Equals(newStatus, StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show($"La receta ya se encuentra en estado '{newStatus}'.", "Acción no requerida", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (MessageBox.Show($"¿Está seguro de que desea {action} esta receta?", "Confirmar Acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show($"¿Está seguro de que desea {actionText} la receta '{selectedRecipe.Name}'?", "Confirmar Acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
                     var updateDto = new RecipeStatusUpdateDTO { Status = newStatus };
-                    // CORRECCIÓN: Se utiliza _recipeApiClient en lugar del _apiClient genérico.
                     if (await _recipeApiClient.UpdateStatusAsync(selectedRecipe.Id, updateDto))
                     {
                         int? categoryId = (cmbCategoryFilter.SelectedItem as CategoryResponseDTO)?.Id;
                         await LoadRecipes(txtSearch.Text, categoryId);
+                        DisplayRecipeDetails(null); // Limpiar detalles ya que la receta puede desaparecer de la lista
                     }
                     else
                     {
-                        MessageBox.Show($"No se pudo {action} la receta.", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"No se pudo {actionText} la receta.", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al {action} la receta: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al {actionText} la receta: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -155,35 +155,9 @@ namespace CookingSharp.WindowsForms.RecipesControl
         {
             dgvRecipes.AutoGenerateColumns = false;
             dgvRecipes.Columns.Clear();
-
-            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "NameColumn",
-                DataPropertyName = "Name",
-                HeaderText = "Nombre",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 40,
-                MinimumWidth = 200
-            });
-
-            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "AuthorNameColumn",
-                DataPropertyName = "AuthorName",
-                HeaderText = "Autor",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 150
-            });
-
-            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "StatusColumn",
-                DataPropertyName = "Status",
-                HeaderText = "Estado",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 120
-            });
-
+            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn { Name = "NameColumn", DataPropertyName = "Name", HeaderText = "Nombre", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, FillWeight = 40, MinimumWidth = 200 });
+            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn { Name = "AuthorNameColumn", DataPropertyName = "AuthorName", HeaderText = "Autor", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells, MinimumWidth = 150 });
+            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn { Name = "StatusColumn", DataPropertyName = "Status", HeaderText = "Estado", AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells, MinimumWidth = 120 });
             dgvRecipes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRecipes.MultiSelect = false;
             dgvRecipes.ReadOnly = true;
@@ -191,7 +165,6 @@ namespace CookingSharp.WindowsForms.RecipesControl
             dgvRecipes.RowHeadersVisible = false;
             dgvRecipes.BackgroundColor = Color.White;
             dgvRecipes.BorderStyle = BorderStyle.None;
-
             dgvRecipes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
             dgvRecipes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvRecipes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -200,7 +173,6 @@ namespace CookingSharp.WindowsForms.RecipesControl
             dgvRecipes.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvRecipes.EnableHeadersVisualStyles = false;
             dgvRecipes.ColumnHeadersHeight = 40;
-
             dgvRecipes.DefaultCellStyle.BackColor = Color.White;
             dgvRecipes.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
             dgvRecipes.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
@@ -234,11 +206,29 @@ namespace CookingSharp.WindowsForms.RecipesControl
             return dgvRecipes.CurrentRow?.DataBoundItem as RecipeResponseDTO;
         }
 
+        /// <summary>
+        /// Actualiza la visibilidad y el estado de los botones de acción según el estado de la receta seleccionada.
+        /// </summary>
         private void UpdateButtonsState()
         {
-            bool hasSelection = dgvRecipes.SelectedRows.Count > 0;
-            btnBlockRecipe.Enabled = hasSelection;
-            btnUnblockRecipe.Enabled = hasSelection;
+            var selectedRecipe = GetSelectedRecipe();
+
+            // Ocultar todos los botones de acción al inicio
+            btnBlockRecipe.Visible = false;
+            btnUnblockRecipe.Visible = false;
+
+            if (selectedRecipe != null)
+            {
+                // Lógica de visibilidad condicional
+                if (selectedRecipe.Status.Equals("Published", StringComparison.OrdinalIgnoreCase))
+                {
+                    btnBlockRecipe.Visible = true;
+                }
+                else if (selectedRecipe.Status.Equals("Blocked", StringComparison.OrdinalIgnoreCase))
+                {
+                    btnUnblockRecipe.Visible = true;
+                }
+            }
         }
 
         #endregion
