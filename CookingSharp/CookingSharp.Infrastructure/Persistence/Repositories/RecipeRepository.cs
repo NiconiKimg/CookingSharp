@@ -29,6 +29,7 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             .Include(r => r.User)
             .Include(r => r.Categories)
             .Include(r => r.Ratings)
+            .Include(r => r.Steps)
             .AsNoTracking()
             .ToListAsync();
     }
