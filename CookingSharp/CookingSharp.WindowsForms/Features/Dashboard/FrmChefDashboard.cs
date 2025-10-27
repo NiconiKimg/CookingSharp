@@ -1,5 +1,5 @@
 ﻿using CookingSharp.Clients;
-using CookingSharp.WindowsForms.Features.Chef; // Asegúrate de tener este using
+using CookingSharp.WindowsForms.Features.Chef;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
@@ -7,68 +7,56 @@ using System.Windows.Forms;
 namespace CookingSharp.WindowsForms.Features.Dashboard
 {
     /// <summary>
-    /// Dashboard principal para el rol de Chef.
+    /// Formulario principal del panel del Chef.
+    /// Permite la navegación entre la gestión de sus propias recetas y la exploración de recetas públicas.
     /// </summary>
     public partial class FrmChefDashboard : Form
     {
+        /// <summary>
+        /// Flag para diferenciar entre un cierre de sesión (volver al login) y un cierre completo de la aplicación.
+        /// </summary>
+        private bool _isLoggingOut = false;
+
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="FrmChefDashboard"/>.
+        /// </summary>
         public FrmChefDashboard()
         {
             InitializeComponent();
             this.Load += FrmChefDashboard_Load;
             this.btnUserOptions.Cursor = Cursors.Hand;
+            this.FormClosing += Dashboard_FormClosing; // Suscripción al evento de cierre.
         }
 
+        #region Event Handlers
+
+        /// <summary>
+        /// Maneja el evento de carga del formulario. Carga la vista de "Mis Recetas" por defecto.
+        /// </summary>
         private void FrmChefDashboard_Load(object sender, EventArgs e)
         {
-            // Cargar la vista de "Mis Recetas" por defecto al iniciar
             LoadMyRecipesView();
-
             lblUserEmail.Text = SessionManager.GetUserEmail();
             lblUserRole.Text = SessionManager.GetUserRole();
         }
 
         /// <summary>
-        /// Carga el User Control para gestionar las recetas propias del Chef.
+        /// Navega a la vista de gestión de las recetas del propio Chef.
         /// </summary>
-        private void LoadMyRecipesView()
-        {
-            LoadControl<UC_Chef_MyRecipes>();
-        }
+        private void btnNavMisRecetas_Click(object sender, EventArgs e) => LoadMyRecipesView();
 
         /// <summary>
-        /// Carga el User Control para explorar las recetas de otros Chefs.
+        /// Navega a la vista de exploración de recetas públicas.
         /// </summary>
-        private void LoadExploreView()
-        {
-            LoadControl<UC_Chef_ExploreRecipes>();
-        }
+        private void btnNavExplorar_Click(object sender, EventArgs e) => LoadExploreView();
 
         /// <summary>
-        /// Manejador del evento Click para el botón de navegación "Mis Recetas".
+        /// Maneja el clic en el logo para volver a la vista principal ("Mis Recetas").
         /// </summary>
-        private void btnNavMisRecetas_Click(object sender, EventArgs e)
-        {
-            LoadMyRecipesView();
-        }
+        private void picLogo_Click(object sender, EventArgs e) => LoadMyRecipesView();
 
         /// <summary>
-        /// Manejador del evento Click para el botón de navegación "Explorar".
-        /// </summary>
-        private void btnNavExplorar_Click(object sender, EventArgs e)
-        {
-            LoadExploreView();
-        }
-
-        /// <summary>
-        /// Manejador del evento Click en el logo para volver a la vista principal.
-        /// </summary>
-        private void picLogo_Click(object sender, EventArgs e)
-        {
-            LoadMyRecipesView(); // Vuelve a "Mis Recetas" por defecto
-        }
-
-        /// <summary>
-        /// Maneja el evento de clic en el botón de opciones de usuario para iniciar el proceso de cierre de sesión.
+        /// Maneja el clic en el botón de cerrar sesión. Activa el flag de logout y cierra el formulario para volver al login.
         /// </summary>
         private void btnUserOptions_Click(object sender, EventArgs e)
         {
@@ -76,10 +64,52 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
 
             if (confirmResult == DialogResult.Yes)
             {
-                SessionManager.Logout();
-                this.Close();
+                // Activamos el flag para indicar que es un cierre de sesión intencionado.
+                _isLoggingOut = true;
+                this.Close(); // Esto disparará el evento FormClosing.
             }
         }
+
+        /// <summary>
+        /// Maneja el evento que se dispara cuando el formulario está a punto de cerrarse.
+        /// </summary>
+        private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Si el flag _isLoggingOut es true, simplemente permitimos que el formulario se cierre.
+            if (_isLoggingOut)
+            {
+                return;
+            }
+
+            // Si el cierre fue por otra razón (clic en la 'X'), mostramos la confirmación para salir de la app.
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                var confirmResult = MessageBox.Show("¿Está seguro de que desea salir de la aplicación?", "Confirmar Salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
+                else
+                {
+                    e.Cancel = true; // Cancela el evento de cierre.
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private Helper Methods
+
+        /// <summary>
+        /// Carga el User Control para gestionar las recetas propias del Chef.
+        /// </summary>
+        private void LoadMyRecipesView() => LoadControl<UC_Chef_MyRecipes>();
+
+        /// <summary>
+        /// Carga el User Control para explorar las recetas de otros Chefs.
+        /// </summary>
+        private void LoadExploreView() => LoadControl<UC_Chef_ExploreRecipes>();
 
         /// <summary>
         /// Carga dinámicamente un UserControl en el panel de contenido principal.
@@ -87,19 +117,17 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         /// <typeparam name="T">El tipo de UserControl a cargar.</typeparam>
         private void LoadControl<T>() where T : UserControl
         {
-            // Primero, debemos registrar los nuevos UserControls en la inyección de dependencias.
-            // Esto se hará en Program.cs
-
             var control = Program.ServiceProvider?.GetRequiredService<T>();
-
             if (control == null)
             {
-                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}. Asegúrese de que esté registrado en Program.cs.", "Error de Configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"No se pudo cargar el módulo de tipo {typeof(T).Name}.", "Error de Configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             pnlMainContent.Controls.Clear();
             control.Dock = DockStyle.Fill;
             pnlMainContent.Controls.Add(control);
         }
+
+        #endregion
     }
 }

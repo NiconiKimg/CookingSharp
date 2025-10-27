@@ -3,6 +3,7 @@ using CookingSharp.Application.Contracts.Infrastructure;
 using CookingSharp.Infrastructure.Auth;
 using CookingSharp.Infrastructure.Persistence;
 using CookingSharp.Infrastructure.Persistence.Repositories;
+using CookingSharp.Infrastructure.Reporting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
         services.AddScoped<IPhotoService, PhotoService>();
+
+        services.AddScoped<IPdfReportGenerator, PdfReportGenerator>();
 
         return services;
     }

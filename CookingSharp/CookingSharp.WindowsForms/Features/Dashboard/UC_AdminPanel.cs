@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.UserControls
 {
+    /// <summary>
+    /// User Control principal del panel de administración, mostrando KPIs y acciones rápidas.
+    /// </summary>
     public partial class UC_AdminPanel : UserControl
     {
         private readonly UserApiClient _userApiClient;
@@ -96,11 +99,15 @@ namespace CookingSharp.WindowsForms.UserControls
         }
 
         /// <summary>
-        /// Maneja el clic en el botón de atajo para ver reportes.
+        /// Maneja el clic en el botón de atajo para navegar a la sección de reportes.
         /// </summary>
         private void btnViewReports_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("La funcionalidad de reportes aún no ha sido implementada.", "Próximamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Busca el formulario padre (FrmDashboard) y llama a su método de navegación.
+            if (this.ParentForm is FrmDashboard dashboard)
+            {
+                dashboard.NavigateToReports();
+            }
         }
     }
 }

@@ -71,6 +71,10 @@ public static class DependencyInjection
             .AddHttpMessageHandler<AuthenticationHandler>()
             .ConfigurePrimaryHttpMessageHandler(configureHandler);
 
+        services.AddHttpClient<ReportApiClient>(configureClient)
+            .AddHttpMessageHandler<AuthenticationHandler>()
+            .ConfigurePrimaryHttpMessageHandler(configureHandler);
+
         return services;
     }
 }
