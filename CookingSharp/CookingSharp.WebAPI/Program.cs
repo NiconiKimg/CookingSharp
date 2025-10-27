@@ -1,4 +1,5 @@
 using CookingSharp.Application;
+using CookingSharp.Application.Services;
 using CookingSharp.Infrastructure;
 using CookingSharp.WebAPI.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +23,7 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

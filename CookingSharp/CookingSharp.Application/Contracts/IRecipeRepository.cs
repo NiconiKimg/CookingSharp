@@ -20,4 +20,6 @@ public interface IRecipeRepository : IGenericRepository<Recipe>
     /// Obtiene una receta por el ID del autor, incluyendo sus datos relacionados.
     /// </summary>
     Task<IEnumerable<Recipe>> GetByUserIdWithDetailsAsync(int userId);
+    Task<IEnumerable<Recipe>> GetTopRatedRecipesAsync(int count);
+
 }

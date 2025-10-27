@@ -11,6 +11,17 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
     public RecipeRepository(CookingSharpDbContext context) : base(context)
     {
     }
+    public async Task<IEnumerable<Recipe>> GetTopRatedRecipesAsync(int count)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Include(r => r.User) 
+            .Include(r => r.Ratings)
+            .Where(r => r.Ratings.Any())
+            .OrderByDescending(r => r.Ratings.Average(rt => rt.Stars))
+            .Take(count)
+            .ToListAsync();
+    }
 
     public async Task<IEnumerable<Recipe>> GetAllWithDetailsAsync()
     {
@@ -40,4 +51,5 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             .Where(r => r.UserId == userId)
             .ToListAsync();
     }
+
 }

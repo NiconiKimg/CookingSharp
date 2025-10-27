@@ -43,5 +43,18 @@ public class MappingProfile : Profile
 
         // Menu Mappings
         CreateMap<Menu, MenuResponseDTO>();
+
+        // Menu Summary Mapping
+        CreateMap<Menu, MenuSummaryDTO>()
+            .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.User.Name))
+            .ForMember(dest => dest.RecipeCount, opt => opt.MapFrom(src => src.Recipes.Count))
+            .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src =>
+                src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0));
+
+        // Recipe Summary Mapping
+        CreateMap<Recipe, RecipeSummaryDTO>()
+            .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.User.Name))
+            .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src =>
+                src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0));
     }
 }
