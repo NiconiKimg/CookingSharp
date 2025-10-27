@@ -7,4 +7,6 @@ namespace CookingSharp.Application.Contracts;
 /// </summary>
 public interface IMenuRepository : IGenericRepository<Menu>
 {
+    Task<IEnumerable<Menu>> GetTopRatedMenusAsync(int count);
+
 }

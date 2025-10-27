@@ -1,32 +1,77 @@
 ﻿@page "/"
+@using WebApp.DTOs
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject ISnackbar Snackbar
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+<MudContainer MaxWidth="MaxWidth.Large">
 
-    <MudPaper Width="100%" Elevation="0" Variant="Variant.Filled" Style="min-height: 45vh;" 
-              Class="d-flex flex-column justify-center align-center pa-6 rounded-lg">
-        
-        <MudIcon Icon="@Icons.Material.Filled.RestaurantMenu" Color="Color.Primary" Size="Size.Large" Class="mb-4" />
-
-        <MudText Typo="Typo.h2" Align="Align.Center" GutterBottom="true">Bienvenido a CookingSharp</MudText>
-        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Dark" Style="opacity: 0.7; max-width: 600px;">
-            Tu recetario colaborativo para gestionar y compartir tus creaciones culinarias.
-        </MudText>
-
-    </MudPaper>
-
-    <MudDivider Class="my-8" />
-
-    <div class="d-flex flex-column align-center">
-        <MudText Typo="Typo.h4" GutterBottom="true">Próximamente...</MudText>
-        <MudText Typo="Typo.body1" Color="Color.Dark" Style="opacity: 0.8;">
-            Aquí se mostrarán las recetas y menús mejor valorados por la comunidad.
-        </MudText>
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="mt-6" />
+    <div class="text-center mt-8 mb-12">
+        <MudText Typo="Typo.h2" GutterBottom="true">Bienvenido a CookingSharp</MudText>
+        <MudText Typo="Typo.h5" Color="Color.Dark" Style="opacity: 0.7;">Descubre las creaciones más populares de nuestra comunidad.</MudText>
     </div>
+
+    @if (_isLoading)
+    {
+        <div class="d-flex justify-center">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large"/>
+        </div>
+    }
+    else if (homePageData == null || (!homePageData.TopRatedRecipes.Any() && !homePageData.TopRatedMenus.Any()))
+    {
+        <MudAlert Severity="Severity.Info">Aún no hay suficiente contenido para mostrar. ¡Sé el primero en crear una receta!</MudAlert>
+    }
+    else
+    {
+        <!-- Sección de Mejores Recetas -->
+        @if(homePageData.TopRatedRecipes.Any())
+        {
+            <MudText Typo="Typo.h4" GutterBottom="true" Class="mb-4">Recetas Mejor Valoradas</MudText>
+            <MudGrid Spacing="4" Class="mb-8">
+                @foreach (var recipe in homePageData.TopRatedRecipes)
+                {
+                    <MudItem xs="12" sm="6" md="4">
+                        <RecipeCard Recipe="recipe" />
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+
+        <!-- Sección de Mejores Menús -->
+        @if(homePageData.TopRatedMenus.Any())
+        {
+            <MudText Typo="Typo.h4" GutterBottom="true" Class="mb-4">Menús Populares</MudText>
+            <MudGrid Spacing="4">
+                @foreach (var menu in homePageData.TopRatedMenus)
+                {
+                    <MudItem xs="12" sm="6" md="4">
+                        <MenuCard Menu="menu" />
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+    }
 
 </MudContainer>
 
 @code {
-    // El bloque de código está vacío por ahora.
-    // La lógica para cargar los menús y recetas mejor valorados se añadirá aquí más adelante.
+    private HomePageDTO? homePageData;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            homePageData = await Http.GetFromJsonAsync<HomePageDTO>("api/dashboard/home");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar el dashboard: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
 }
