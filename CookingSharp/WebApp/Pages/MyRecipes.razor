@@ -33,12 +33,33 @@
             <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small">@context.Status</MudChip>
         </MudTd>
         <MudTd DataLabel="Acciones" Style="text-align:right">
+
             @if (context.Status == "Draft")
             {
-                <MudButton OnClick="@(() => PublishRecipe(context))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" Class="ml-2">Publicar</MudButton>
+                <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Published", "publicar"))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small">Publicar</MudButton>
             }
-            <MudButton OnClick="@(() => EditRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Default" Size="Size.Small" Class="ml-2">Editar</MudButton>
+            @if (context.Status == "Published")
+            {
+                <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Archived", "archivar"))" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small">Archivar</MudButton>
+            }
+            @if (context.Status == "Archived")
+            {
+                <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Draft", "mover a borrador"))" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small">A Borrador</MudButton>
+            }
+
+            <MudTooltip Text="Solo se pueden editar recetas en estado 'Borrador'" Disabled="@(context.Status == "Draft")">
+                <MudButton OnClick="@(() => EditRecipe(context.Id))"
+                           Variant="Variant.Filled"
+                           Color="Color.Default"
+                           Size="Size.Small"
+                           Class="ml-2"
+                           Disabled="@(context.Status != "Draft")">
+                    Editar
+                </MudButton>
+            </MudTooltip>
+
             <MudIconButton OnClick="@(() => DeleteRecipe(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ml-2" />
+
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -53,7 +74,7 @@
 </MudTable>
 
 @code {
-    private MudTable<RecipeResponseDTO> _table;
+    private MudTable<RecipeResponseDTO> _table = null!;
     private IEnumerable<RecipeResponseDTO> _recipes = new List<RecipeResponseDTO>();
     private int _totalItems;
 
@@ -61,7 +82,7 @@
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<List<RecipeResponseDTO>>("api/recipes/my-recipes", cancellationToken);
+            var response = await Http.GetFromJsonAsync<List<RecipeResponseDTO>>("api/recipes/my-full-recipes", cancellationToken);
             _recipes = response ?? new List<RecipeResponseDTO>();
         }
         catch (Exception ex)
@@ -78,6 +99,7 @@
     {
         "Published" => Color.Success,
         "Draft" => Color.Default,
+        "Archived" => Color.Warning,
         "Blocked" => Color.Error,
         _ => Color.Info
     };
@@ -87,50 +109,50 @@
         NavigationManager.NavigateTo($"/recipes/edit/{recipeId}");
     }
 
-    private async Task PublishRecipe(RecipeResponseDTO recipe)
+    private async Task ChangeRecipeStatus(RecipeResponseDTO recipe, string newStatus, string actionText)
     {
         bool? result = await DialogService.ShowMessageBox(
-            "Confirmar Publicación", 
-            (MarkupString)$"¿Estás seguro de que quieres publicar la receta <strong>' {recipe.Name} '</strong> ? Una vez publicada, será visible para todos.",
-            yesText: "Publicar", 
+            $"Confirmar Acción: {actionText.First().ToString().ToUpper() + actionText.Substring(1)}",
+            (MarkupString)$"¿Estás seguro de que quieres {actionText} la receta <strong>'{recipe.Name}'</strong>?",
+            yesText: "Confirmar",
             cancelText: "Cancelar");
-        
-        if (result == true)
+
+        if (result != true) return;
+
+        var dto = new { Status = newStatus };
+        try
         {
-            var dto = new { Status = "Published" };
-            try
+            var response = await Http.PatchAsJsonAsync($"api/recipes/{recipe.Id}/status", dto);
+            if (response.IsSuccessStatusCode)
             {
-                var response = await Http.PatchAsJsonAsync($"api/recipes/{recipe.Id}/status", dto);
-                if (response.IsSuccessStatusCode)
-                {
-                    Snackbar.Add("¡Receta publicada con éxito!", Severity.Success);
-                    await _table.ReloadServerData();
-                }
-                else
-                {
-                    Snackbar.Add("Error al publicar la receta.", Severity.Error);
-                }
+                Snackbar.Add($"¡Receta actualizada a '{newStatus}' con éxito!", Severity.Success);
+                await _table.ReloadServerData();
             }
-            catch (Exception ex)
+            else
             {
-                Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+                Snackbar.Add($"Error al cambiar el estado de la receta.", Severity.Error);
             }
         }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
     }
+
     private async Task DeleteRecipe(RecipeResponseDTO recipe)
     {
         bool? result = await DialogService.ShowMessageBox(
-            "Confirmar Eliminación", 
-            (MarkupString)$"¿Estás seguro de que deseas eliminar la receta <strong>' {recipe.Name} '</strong> ?",
+            "Confirmar Eliminación",
+            (MarkupString)$"¿Estás seguro de que deseas eliminar la receta <strong>'{recipe.Name}'</strong>?",
             yesText: "Eliminar",
             cancelText: "Cancelar");
-        
+
         if (result == true)
         {
             try
             {
                 var response = await Http.DeleteAsync($"api/recipes/{recipe.Id}");
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Receta eliminada con éxito.", Severity.Success);

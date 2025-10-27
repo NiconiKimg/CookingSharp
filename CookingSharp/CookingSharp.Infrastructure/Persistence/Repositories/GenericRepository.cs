@@ -55,5 +55,11 @@ namespace CookingSharp.Infrastructure.Persistence.Repositories
         {
             return await _dbSet.CountAsync();
         }
+        /// <inheritdoc />
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
     }
 }

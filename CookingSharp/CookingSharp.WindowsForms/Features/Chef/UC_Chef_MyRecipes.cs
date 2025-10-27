@@ -53,6 +53,12 @@ namespace CookingSharp.WindowsForms.Features.Chef
             var selectedRecipe = GetSelectedRecipe();
             if (selectedRecipe == null) return;
 
+            if (selectedRecipe.Status != "Draft")
+            {
+                MessageBox.Show("Solo se pueden modificar recetas que están en estado 'Borrador'.", "Acción no permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             using (var editForm = new FrmRecipe(_recipeApiClient, _categoryApiClient, selectedRecipe))
             {
                 if (editForm.ShowDialog() == DialogResult.OK)

@@ -1,10 +1,7 @@
 ﻿using CookingSharp.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Web; // Necesario para HttpUtility
+using System.Web;
+using System.Text.Json;
 
 namespace CookingSharp.Clients;
 
@@ -79,10 +76,54 @@ public class RecipeApiClient
     /// <param name="id">ID de la receta a actualizar.</param>
     /// <param name="dto">DTO con los nuevos datos.</param>
     /// <returns>Verdadero si la actualización fue exitosa.</returns>
-    public async Task<bool> UpdateAsync(int id, RecipeUpdateDTO dto)
+    /// <summary>
+    /// Actualiza una receta existente.
+    /// </summary>
+    /// <param name="id">ID de la receta a actualizar.</param>
+    /// <param name="dto">DTO con los nuevos datos.</param>
+    /// <returns>Lanza una excepción si la actualización falla.</returns>
+    public async Task UpdateAsync(int id, RecipeUpdateDTO dto)
     {
-        var response = await _httpClient.PutAsJsonAsync($"{Endpoint}/{id}", dto);
-        return response.IsSuccessStatusCode;
+        using var content = new MultipartFormDataContent();
+
+        content.Add(new StringContent(dto.Name), "Name");
+        content.Add(new StringContent(dto.Description), "Description");
+
+        foreach (var categoryId in dto.CategoryIds)
+        {
+            content.Add(new StringContent(categoryId.ToString()), "CategoryIds");
+        }
+
+        for (int i = 0; i < dto.Steps.Count; i++)
+        {
+            content.Add(new StringContent(dto.Steps.ElementAt(i).Instruction), $"Steps[{i}].Instruction");
+        }
+
+        var response = await _httpClient.PutAsync($"{Endpoint}/{id}", content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            string errorMessage = "La API devolvió un error inesperado.";
+
+            try
+            {
+                var jsonError = JsonDocument.Parse(errorResponse);
+                if (jsonError.RootElement.TryGetProperty("error", out var errorProp))
+                {
+                    errorMessage = errorProp.GetString() ?? errorMessage;
+                }
+            }
+            catch
+            {
+                if (!string.IsNullOrWhiteSpace(errorResponse))
+                {
+                    errorMessage = errorResponse;
+                }
+            }
+
+            throw new Exception(errorMessage);
+        }
     }
 
     /// <summary>

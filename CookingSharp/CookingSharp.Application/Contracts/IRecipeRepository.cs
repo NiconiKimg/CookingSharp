@@ -42,4 +42,9 @@ public interface IRecipeRepository : IGenericRepository<Recipe>
     /// <param name="categoryId">ID de categoría opcional.</param>
     /// <returns>Una colección de recetas publicadas.</returns>
     Task<IEnumerable<Recipe>> GetAllPublishedWithDetailsAsync(string? searchTerm = null, int? categoryId = null);
+    
+    /// <summary>
+    /// Obtiene una receta por su ID, incluyendo la colección de menús asociados.
+    /// </summary>
+    Task<Recipe?> GetByIdWithMenusAsync(int id);
 }
