@@ -15,6 +15,15 @@ public interface IMenuService
     /// <param name="userId">El ID del usuario (Chef).</param>
     Task<IEnumerable<MenuResponseDTO>> GetMenusByUserAsync(int userId);
 
+    /// <summary>
+    /// Obtiene una versión acotada de todos menús creados.
+    /// </summary>
+    Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync();
+
+    /// <summary>
+    /// Obtiene un menú por su ID.
+    /// </summary>
+    /// <param name="id">El ID del menu.</param>
     Task<MenuResponseDTO?> GetByIdAsync(int id);
 
     /// <summary>

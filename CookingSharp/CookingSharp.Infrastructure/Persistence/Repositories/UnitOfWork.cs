@@ -1,4 +1,5 @@
 ﻿using CookingSharp.Application.Contracts;
+using CookingSharp.Domain.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ public class UnitOfWork : IUnitOfWork
     public IRatingRepository Ratings { get; private set; }
     public IMenuRepository Menus { get; private set; }
     public IAppealRepository Appeals { get; private set; }
+    public IMenuRatingRepository MenuRatings { get; private set; }
 
     public UnitOfWork(CookingSharpDbContext context)
     {
@@ -34,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
         Ratings = new RatingRepository(_context);
         Menus = new MenuRepository(_context);
         Appeals = new AppealRepository(_context);
+        MenuRatings = new MenuRatingRepository(_context);
     }
 
     /// <summary>

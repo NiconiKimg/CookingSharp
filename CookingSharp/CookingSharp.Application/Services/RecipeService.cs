@@ -73,7 +73,7 @@ public class RecipeService : IRecipeService
 
         var publishedRecipes = recipes.Where(r => r.Status == RecipeStatus.Published);
 
-        return _mapper.Map<IEnumerable<RecipeSummaryDTO>>(recipes);
+        return _mapper.Map<IEnumerable<RecipeSummaryDTO>>(publishedRecipes);
     }
 
     /// <summary>
