@@ -62,5 +62,4 @@ public interface IRecipeService
     /// </summary>
     /// <param name="id">El ID de la receta a actualizar.</param>
     /// <param name="statusUpdateDto">El DTO con el nuevo estado.</param>
-    Task UpdateStatusAsync(int id, RecipeStatusUpdateDTO statusUpdateDto);
 }
