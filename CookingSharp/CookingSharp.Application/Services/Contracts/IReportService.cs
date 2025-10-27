@@ -1,6 +1,4 @@
-﻿using CookingSharp.Application.DTOs;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace CookingSharp.Application.Services.Contracts
 {
@@ -21,5 +19,10 @@ namespace CookingSharp.Application.Services.Contracts
         /// <returns>Un array de bytes que representa el archivo PDF.</returns>
         Task<byte[]> GenerateChefContributionReportAsync();
 
+        /// <summary>
+        /// Genera un reporte en formato PDF que analiza la complejidad vs. el engagement de las recetas.
+        /// </summary>
+        /// <returns>Un array de bytes que representa el archivo PDF.</returns>
+        Task<byte[]> GenerateRecipeEngagementReportAsync();
     }
 }

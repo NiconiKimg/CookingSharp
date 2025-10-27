@@ -1,5 +1,6 @@
 ﻿using CookingSharp.Application.Contracts;
 using CookingSharp.Application.Contracts.Infrastructure;
+using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Infrastructure.Auth;
 using CookingSharp.Infrastructure.Persistence;
 using CookingSharp.Infrastructure.Persistence.Repositories;
@@ -16,7 +17,8 @@ public static class DependencyInjection
     {
         // Configuración del DbContext
         services.AddDbContext<CookingSharpDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                sqlServerOptions => sqlServerOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
         // Registro del Unit of Work y Repositorios
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -26,7 +28,6 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
         services.AddScoped<IPhotoService, PhotoService>();
-
         services.AddScoped<IPdfReportGenerator, PdfReportGenerator>();
 
         return services;

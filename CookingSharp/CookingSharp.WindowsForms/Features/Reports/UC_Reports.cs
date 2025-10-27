@@ -1,6 +1,7 @@
 ﻿using CookingSharp.Clients;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.Features.Reports
@@ -22,63 +23,48 @@ namespace CookingSharp.WindowsForms.Features.Reports
             _reportApiClient = reportApiClient;
         }
 
-        /// <summary>
-        /// Maneja el evento Click del botón para generar el reporte de popularidad de recetas.
-        /// </summary>
         private async void btnGeneratePopularityReport_Click(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-            string originalText = button.Text;
-            button.Enabled = false;
-            button.Text = "Generando...";
+            await GenerateReport(async () => await _reportApiClient.GetPopularityReportAsync(),
+                                 "Reporte_Popularidad_Recetas",
+                                 (Button)sender);
+        }
 
-            try
-            {
-                byte[]? pdfBytes = await _reportApiClient.GetPopularityReportAsync();
+        private async void btnGenerateContributionReport_Click(object sender, EventArgs e)
+        {
+            await GenerateReport(async () => await _reportApiClient.GetChefContributionReportAsync(),
+                                 "Reporte_Contribucion_Chefs",
+                                 (Button)sender);
+        }
 
-                if (pdfBytes == null || pdfBytes.Length == 0)
-                {
-                    MessageBox.Show("No se pudo generar el reporte. Puede que no haya suficientes datos (se requiere un mínimo de recetas con valoraciones).",
-                                    "Datos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                SavePdf(pdfBytes, "Reporte_Popularidad_Recetas");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error de conexión al generar el reporte: {ex.Message}",
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                button.Enabled = true;
-                button.Text = originalText;
-            }
+        private async void btnGenerateEngagementReport_Click(object sender, EventArgs e)
+        {
+            await GenerateReport(async () => await _reportApiClient.GetRecipeEngagementReportAsync(),
+                                 "Reporte_Analisis_Engagement",
+                                 (Button)sender);
         }
 
         /// <summary>
-        /// Maneja el evento Click del botón para generar el reporte de contribución de chefs.
+        /// Lógica genérica para generar y guardar un reporte, manejando el estado del botón.
         /// </summary>
-        private async void btnGenerateContributionReport_Click(object sender, EventArgs e)
+        private async Task GenerateReport(Func<Task<byte[]?>> apiCall, string reportName, Button button)
         {
-            var button = (Button)sender;
             string originalText = button.Text;
             button.Enabled = false;
             button.Text = "Generando...";
 
             try
             {
-                byte[]? pdfBytes = await _reportApiClient.GetChefContributionReportAsync();
+                byte[]? pdfBytes = await apiCall();
 
                 if (pdfBytes == null || pdfBytes.Length == 0)
                 {
-                    MessageBox.Show("No se pudo generar el reporte. Asegúrese de que existan usuarios con el rol de 'Chef' y que hayan publicado recetas.",
+                    MessageBox.Show("No se pudo generar el reporte. Puede que no haya suficientes datos para el análisis.",
                                     "Datos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                SavePdf(pdfBytes, "Reporte_Contribucion_Chefs");
+                SavePdf(pdfBytes, reportName);
             }
             catch (Exception ex)
             {
@@ -87,16 +73,17 @@ namespace CookingSharp.WindowsForms.Features.Reports
             }
             finally
             {
-                button.Enabled = true;
-                button.Text = originalText;
+                if (!button.IsDisposed)
+                {
+                    button.Enabled = true;
+                    button.Text = originalText;
+                }
             }
         }
 
         /// <summary>
         /// Abre un diálogo para guardar el archivo PDF.
         /// </summary>
-        /// <param name="pdfBytes">Los bytes del archivo PDF.</param>
-        /// <param name="reportName">El nombre base para el archivo.</param>
         private void SavePdf(byte[] pdfBytes, string reportName)
         {
             using (var saveFileDialog = new SaveFileDialog())
@@ -107,9 +94,17 @@ namespace CookingSharp.WindowsForms.Features.Reports
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    File.WriteAllBytes(saveFileDialog.FileName, pdfBytes);
-                    MessageBox.Show($"Reporte guardado exitosamente en:\n{saveFileDialog.FileName}",
-                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    try
+                    {
+                        File.WriteAllBytes(saveFileDialog.FileName, pdfBytes);
+                        MessageBox.Show($"Reporte guardado exitosamente en:\n{saveFileDialog.FileName}",
+                                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"No se pudo guardar el archivo: {ex.Message}",
+                                        "Error al Guardar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }

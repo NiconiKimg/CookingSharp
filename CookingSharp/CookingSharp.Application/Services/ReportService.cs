@@ -1,8 +1,11 @@
 ﻿using CookingSharp.Application.Contracts;
 using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
-using CookingSharp.Domain.Enums;
 using CookingSharp.Domain.Entities;
+using CookingSharp.Domain.Enums;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CookingSharp.Application.Services
 {
@@ -20,18 +23,12 @@ namespace CookingSharp.Application.Services
             _pdfGenerator = pdfGenerator;
         }
 
-        /// <summary>
-        /// Orquesta la generación del reporte de popularidad de recetas.
-        /// </summary>
         public async Task<byte[]> GenerateTopRatedRecipesReportAsync()
         {
             var reportData = await GetTopRatedRecipesDataAsync(10);
             return _pdfGenerator.GeneratePopularityReport(reportData);
         }
 
-        /// <summary>
-        /// Obtiene y calcula los datos para el reporte de ranking de popularidad de recetas.
-        /// </summary>
         private async Task<IEnumerable<RecipePopularityReportDto>> GetTopRatedRecipesDataAsync(int top)
         {
             const int minVotesRequired = 2;
@@ -77,21 +74,12 @@ namespace CookingSharp.Application.Services
             });
         }
 
-        /// <summary>
-        /// Orquesta la generación del reporte de contribución por chef.
-        /// </summary>
         public async Task<byte[]> GenerateChefContributionReportAsync()
         {
-            // 1. Obtener los datos procesados.
             var reportData = await GetChefContributionDataAsync();
-
-            // 2. Delegar la creación del PDF a la capa de infraestructura.
             return _pdfGenerator.GenerateChefContributionReport(reportData);
         }
 
-        /// <summary>
-        /// Obtiene y calcula los datos para el reporte de contribución por chef.
-        /// </summary>
         private async Task<IEnumerable<ChefContributionReportDto>> GetChefContributionDataAsync()
         {
             var allUsers = await _unitOfWork.Users.GetAllAsync();
@@ -107,13 +95,46 @@ namespace CookingSharp.Application.Services
             .OrderByDescending(data => data.PublishedRecipesCount)
             .ToList();
 
-            // Añadir el ranking después de ordenar
             return reportData.Select((data, index) => new ChefContributionReportDto
             {
                 Rank = index + 1,
                 ChefName = data.ChefName,
                 PublishedRecipesCount = data.PublishedRecipesCount
             });
+        }
+
+        /// <summary>
+        /// Orquesta la generación del reporte de engagement vs. complejidad de recetas.
+        /// </summary>
+        public async Task<byte[]> GenerateRecipeEngagementReportAsync()
+        {
+            var rawData = (await _unitOfWork.RecipeAnalysis.GetRecipeAnalysisDataAsync()).ToList();
+
+            if (!rawData.Any() || rawData.Sum(d => d.VoteCount) == 0)
+            {
+                return _pdfGenerator.GenerateRecipeEngagementReport(Enumerable.Empty<RecipeEngagementReportDto>());
+            }
+
+            const int minVotesRequired = 2; // Mismo umbral que el otro reporte para consistencia
+            var globalAverageRating = rawData.Sum(d => d.AverageRating * d.VoteCount) / rawData.Sum(d => d.VoteCount);
+
+            var reportData = rawData
+                .Select(d => new RecipeEngagementReportDto
+                {
+                    RecipeId = d.RecipeId,
+                    RecipeName = d.RecipeName,
+                    AuthorName = d.AuthorName,
+                    StepCount = d.StepCount,
+                    CommentCount = d.CommentCount,
+                    SimpleAverageRating = d.AverageRating,
+                    VoteCount = d.VoteCount,
+                    WeightedAverageRating = d.VoteCount >= minVotesRequired
+                        ? ((double)d.VoteCount / (d.VoteCount + minVotesRequired) * d.AverageRating) +
+                          ((double)minVotesRequired / (d.VoteCount + minVotesRequired) * globalAverageRating)
+                        : globalAverageRating
+                }).ToList();
+
+            return _pdfGenerator.GenerateRecipeEngagementReport(reportData);
         }
     }
 }

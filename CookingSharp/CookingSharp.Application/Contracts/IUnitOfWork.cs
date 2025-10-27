@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace CookingSharp.Application.Contracts;
+﻿namespace CookingSharp.Application.Contracts;
 
 /// <summary>
 /// Define el patrón Unit of Work para agrupar transacciones de base de datos.
@@ -17,6 +14,7 @@ public interface IUnitOfWork : IDisposable
     IMenuRepository Menus { get; }
     IAppealRepository Appeals { get; }
     IMenuRatingRepository MenuRatings { get; }
+    IRecipeAnalysisRepository RecipeAnalysis { get; }
 
     /// <summary>
     /// Guarda todos los cambios realizados en el contexto de esta unidad de trabajo en la base de datos de forma asíncrona.

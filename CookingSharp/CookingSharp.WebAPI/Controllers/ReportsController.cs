@@ -72,5 +72,32 @@ namespace CookingSharp.WebAPI.Controllers
                 return StatusCode(500, "Ocurrió un error interno al generar el reporte.");
             }
         }
+
+        /// <summary>
+        /// Genera y devuelve el reporte de análisis de engagement de recetas en formato PDF.
+        /// </summary>
+        /// <returns>Un archivo PDF.</returns>
+        [HttpGet("analysis/engagement")]
+        [ProducesResponseType(typeof(FileContentResult), 200)]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> GetRecipeEngagementReport()
+        {
+            try
+            {
+                byte[] pdfBytes = await _reportService.GenerateRecipeEngagementReportAsync();
+
+                if (pdfBytes == null || pdfBytes.Length == 0)
+                {
+                    return NoContent();
+                }
+
+                string fileName = $"Reporte_Analisis_Engagement_{DateTime.Now:yyyyMMdd}.pdf";
+                return File(pdfBytes, "application/pdf", fileName);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Ocurrió un error interno al generar el reporte.");
+            }
+        }
     }
 }

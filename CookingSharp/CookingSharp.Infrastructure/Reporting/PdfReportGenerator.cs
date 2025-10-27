@@ -22,9 +22,6 @@ namespace CookingSharp.Infrastructure.Reporting
 
         #region Popularity Report
 
-        /// <summary>
-        /// Genera el reporte de popularidad de recetas.
-        /// </summary>
         public byte[] GeneratePopularityReport(IEnumerable<RecipePopularityReportDto> data)
         {
             var dataList = data.ToList();
@@ -116,9 +113,6 @@ namespace CookingSharp.Infrastructure.Reporting
 
         #region Chef Contribution Report
 
-        /// <summary>
-        /// Genera el reporte de contribución por chef.
-        /// </summary>
         public byte[] GenerateChefContributionReport(IEnumerable<ChefContributionReportDto> data)
         {
             var dataList = data.ToList();
@@ -196,6 +190,109 @@ namespace CookingSharp.Infrastructure.Reporting
             plot.Grid.IsVisible = false;
 
             return plot.GetImageBytes(600, 400);
+        }
+
+        #endregion
+
+        #region Recipe Engagement Report
+
+        /// <summary>
+        /// Genera el reporte de engagement vs. complejidad de recetas.
+        /// </summary>
+        public byte[] GenerateRecipeEngagementReport(IEnumerable<RecipeEngagementReportDto> data)
+        {
+            var dataList = data.ToList();
+            if (!dataList.Any())
+            {
+                return GenerateEmptyReport("Análisis de Recetas: Complejidad vs. Engagement", "No hay recetas publicadas con suficientes datos para analizar.");
+            }
+
+            byte[] chartBytes = GenerateEngagementBubbleChart(dataList);
+
+            return Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.Header().Element(c => Header(c, "Análisis de Recetas: Complejidad vs. Engagement"));
+                    page.Content().Element(content => EngagementContent(content, dataList, chartBytes));
+                    page.Footer().Element(Footer);
+                });
+            }).GeneratePdf();
+        }
+
+        private void EngagementContent(IContainer container, List<RecipeEngagementReportDto> data, byte[] chartImage)
+        {
+            container.PaddingVertical(1, Unit.Centimetre).Column(column =>
+            {
+                column.Item().Text("Relación entre Complejidad y Valoración Ponderada").Bold().FontSize(16);
+                column.Item().PaddingTop(5).Text("El tamaño de cada burbuja representa la cantidad de comentarios recibidos.").FontSize(10).Italic();
+                column.Item().PaddingTop(10).Image(chartImage, ImageScaling.FitWidth);
+                column.Item().PaddingVertical(20);
+                column.Item().Text("Datos Detallados de Recetas Analizadas").Bold().FontSize(16);
+                column.Item().PaddingTop(10).Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.RelativeColumn(4);
+                        columns.RelativeColumn(3);
+                        columns.ConstantColumn(50);
+                        columns.ConstantColumn(60);
+                        columns.ConstantColumn(70);
+                    });
+                    table.Header(header =>
+                    {
+                        header.Cell().Text("Receta");
+                        header.Cell().Text("Autor");
+                        header.Cell().AlignRight().Text("Pasos");
+                        header.Cell().AlignRight().Text("Comentarios");
+                        header.Cell().AlignRight().Text("Rating Pond.");
+                    });
+                    foreach (var item in data.OrderByDescending(x => x.WeightedAverageRating).ThenByDescending(x => x.CommentCount))
+                    {
+                        table.Cell().Text(item.RecipeName);
+                        table.Cell().Text(item.AuthorName);
+                        table.Cell().AlignRight().Text(item.StepCount.ToString());
+                        table.Cell().AlignRight().Text(item.CommentCount.ToString());
+                        table.Cell().AlignRight().Text(item.WeightedAverageRating.ToString("N2"));
+                    }
+                });
+            });
+        }
+
+        private byte[] GenerateEngagementBubbleChart(List<RecipeEngagementReportDto> data)
+        {
+            var plot = new Plot();
+            plot.Title("Complejidad (Nº Pasos) vs. Valoración Ponderada");
+            plot.XLabel("Número de Pasos");
+            plot.YLabel("Valoración Ponderada (1-5)");
+
+            if (data.Any())
+            {
+                double[] xs = data.Select(d => (double)d.StepCount).ToArray();
+                double[] ys = data.Select(d => d.WeightedAverageRating).ToArray();
+                var sp = plot.Add.Scatter(xs, ys);
+                sp.IsVisible = false;
+
+                foreach (var recipeData in data)
+                {
+                    var marker = plot.Add.Marker(recipeData.StepCount, recipeData.WeightedAverageRating);
+
+                    marker.Size = recipeData.CommentCount > 0 ? recipeData.CommentCount * 2 + 5f : 5f;
+                    marker.Shape = MarkerShape.FilledCircle;
+
+                    // ACCESO CORRECTO A LAS PROPIEDADES DE ESTILO (API no obsoleta)
+                    marker.MarkerStyle.FillColor = ScottPlot.Colors.Green.WithAlpha(100);
+                    marker.MarkerStyle.OutlineColor = ScottPlot.Colors.Green.WithAlpha(150);
+                    marker.MarkerStyle.OutlineWidth = 1;
+                }
+            }
+
+            plot.Axes.SetLimits(left: 0, bottom: 0, top: 5.5);
+            plot.Grid.IsVisible = true;
+
+            return plot.GetImageBytes(800, 600);
         }
 
         #endregion
