@@ -73,9 +73,15 @@ public class MenuService : IMenuService
     public async Task<MenuResponseDTO?> GetByIdAsync(int id)
     {
         var menu = await _unitOfWork.Menus.GetByIdWithDetailsAsync(id)
-                   ?? throw new NotFoundException(nameof(Menu), id);
+               ?? throw new NotFoundException(nameof(Menu), id);
 
         return _mapper.Map<MenuResponseDTO>(menu);
+    }
+
+    public async Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync(string? nameFilter = null, string? authorFilter = null)
+    {
+        var menus = await _unitOfWork.Menus.GetAllWithDetailsAsync(nameFilter, authorFilter);
+        return _mapper.Map<IEnumerable<MenuSummaryDTO>>(menus);
     }
 
     /// <summary>

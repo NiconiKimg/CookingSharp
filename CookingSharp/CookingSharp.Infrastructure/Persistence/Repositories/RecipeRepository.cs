@@ -1,5 +1,6 @@
 ﻿using CookingSharp.Application.Contracts;
 using CookingSharp.Domain.Entities;
+using CookingSharp.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using CookingSharp.Domain.Enums;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             .AsNoTracking()
             .Include(r => r.User)
             .Include(r => r.Ratings)
-            .Where(r => r.Ratings.Any())
+            .Where(r => r.Ratings.Any() && r.Status == RecipeStatus.Published)
             .OrderByDescending(r => r.Ratings.Average(rt => rt.Stars))
             .Take(count)
             .ToListAsync();

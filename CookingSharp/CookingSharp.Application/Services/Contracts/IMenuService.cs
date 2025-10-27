@@ -18,7 +18,7 @@ public interface IMenuService
     /// <summary>
     /// Obtiene una versión acotada de todos menús creados.
     /// </summary>
-    Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync();
+    Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync(string? nameFilter = null, string? authorFilter = null);
 
     /// <summary>
     /// Obtiene un menú por su ID.

@@ -146,7 +146,7 @@ public class RecipesController : BaseApiController
     /// Actualiza el estado de una receta (para el autor o un Admin).
     /// </summary>
     [HttpPatch("{id}/status")]
-    [Authorize(Roles = "Admin,Chef")]
+    [Authorize(Roles = "Chef, Admin")]
     [ProducesResponseType(204)]
     [ProducesResponseType(403)]
     [ProducesResponseType(404)]
@@ -166,7 +166,6 @@ public class RecipesController : BaseApiController
 
         return NoContent();
     }
-
     #endregion
 
     #region --- DELETE Endpoints ---

@@ -38,7 +38,6 @@
                 <MudButton OnClick="@(() => PublishRecipe(context))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" Class="ml-2">Publicar</MudButton>
             }
             <MudButton OnClick="@(() => EditRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Default" Size="Size.Small" Class="ml-2">Editar</MudButton>
-            
             <MudIconButton OnClick="@(() => DeleteRecipe(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ml-2" />
         </MudTd>
     </RowTemplate>
@@ -90,17 +89,13 @@
 
     private async Task PublishRecipe(RecipeResponseDTO recipe)
     {
-        var parameters = new DialogParameters
-        {
-            ["ContentText"] = $"¿Estás seguro de que quieres publicar la receta '{recipe.Name}'? Una vez publicada, será visible para todos los usuarios.",
-            ["ButtonText"] = "Publicar",
-            ["Color"] = Color.Success
-        };
-
-        var dialog = DialogService.Show<MudMessageBox>("Confirmar Publicación", parameters);
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
+        bool? result = await DialogService.ShowMessageBox(
+            "Confirmar Publicación", 
+            (MarkupString)$"¿Estás seguro de que quieres publicar la receta <strong>' {recipe.Name} '</strong> ? Una vez publicada, será visible para todos.",
+            yesText: "Publicar", 
+            cancelText: "Cancelar");
+        
+        if (result == true)
         {
             var dto = new { Status = "Published" };
             try
@@ -122,36 +117,35 @@
             }
         }
     }
-
-private async Task DeleteRecipe(RecipeResponseDTO recipe)
-{
-    bool? result = await DialogService.ShowMessageBox(
-        "Confirmar Eliminación", 
-        (MarkupString)$"¿Estás seguro de que deseas eliminar la receta <strong>' {recipe.Name} '</strong>?",
-        yesText: "Eliminar",
-        cancelText: "Cancelar");
-    
-    if (result == true)
+    private async Task DeleteRecipe(RecipeResponseDTO recipe)
     {
-        try
+        bool? result = await DialogService.ShowMessageBox(
+            "Confirmar Eliminación", 
+            (MarkupString)$"¿Estás seguro de que deseas eliminar la receta <strong>' {recipe.Name} '</strong> ?",
+            yesText: "Eliminar",
+            cancelText: "Cancelar");
+        
+        if (result == true)
         {
-            var response = await Http.DeleteAsync($"api/recipes/{recipe.Id}");
-            
-            if (response.IsSuccessStatusCode)
+            try
             {
-                Snackbar.Add("Receta eliminada con éxito.", Severity.Success);
-                await _table.ReloadServerData();
+                var response = await Http.DeleteAsync($"api/recipes/{recipe.Id}");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    Snackbar.Add("Receta eliminada con éxito.", Severity.Success);
+                    await _table.ReloadServerData();
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Snackbar.Add($"Error al eliminar la receta: {error}", Severity.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var error = await response.Content.ReadAsStringAsync();
-                Snackbar.Add($"Error al eliminar la receta: {error}", Severity.Error);
+                Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
             }
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
         }
     }
-}
 }

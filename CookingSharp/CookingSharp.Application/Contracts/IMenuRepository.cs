@@ -26,4 +26,9 @@ public interface IMenuRepository : IGenericRepository<Menu>
     /// </summary>
     Task<Menu?> GetByIdWithDetailsAsync(int id);
 
+    /// <summary>
+    /// Obtiene un menús con filtros.
+    /// </summary>
+    Task<IEnumerable<Menu>> GetAllWithDetailsAsync(string? nameFilter = null, string? authorFilter = null);
+
 }

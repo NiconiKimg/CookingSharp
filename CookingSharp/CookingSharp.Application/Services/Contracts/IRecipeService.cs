@@ -29,6 +29,8 @@ public interface IRecipeService
     Task<IEnumerable<RecipeSummaryDTO>> GetAllSummariesAsync();
     Task<IEnumerable<RecipeSummaryDTO>> GetRecipesByUserIdAsync(int userId);
     Task<RecipeResponseDTO> GetByIdAsync(int id);
+    Task UpdateStatusAsync(int recipeId, RecipeStatusUpdateDTO dto);
+
 
     /// <summary>
     /// Crea una nueva receta.
@@ -60,5 +62,4 @@ public interface IRecipeService
     /// </summary>
     /// <param name="id">El ID de la receta a actualizar.</param>
     /// <param name="statusUpdateDto">El DTO con el nuevo estado.</param>
-    Task UpdateStatusAsync(int id, RecipeStatusUpdateDTO statusUpdateDto);
 }

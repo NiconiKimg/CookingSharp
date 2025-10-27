@@ -55,6 +55,7 @@ public class RecipeUpdateDTO
     public string Description { get; set; }
     public ICollection<RecipeStepCreateDTO> Steps { get; set; }
     public ICollection<int> CategoryIds { get; set; }
+    public string Status { get; set; }
 }
 
 /// <summary>
