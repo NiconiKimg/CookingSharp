@@ -50,12 +50,11 @@ namespace CookingSharp.WindowsForms.Features.Chef
 
             if (_recipeToEdit != null)
             {
-                // Modo Edición
                 lblTitle.Text = "Editar Receta";
                 txtName.Text = _recipeToEdit.Name;
                 txtDescription.Text = _recipeToEdit.Description;
 
-                foreach (var step in _recipeToEdit.Steps)
+                foreach (var step in _recipeToEdit.Steps.OrderBy(s => s.StepNumber))
                 {
                     listBoxSteps.Items.Add(step.Instruction);
                 }
@@ -67,6 +66,10 @@ namespace CookingSharp.WindowsForms.Features.Chef
                         clbCategories.SetItemChecked(i, true);
                     }
                 }
+            }
+            else
+            {
+                lblTitle.Text = "Nueva Receta";
             }
         }
 
@@ -98,6 +101,9 @@ namespace CookingSharp.WindowsForms.Features.Chef
                 return;
             }
 
+            btnSave.Enabled = false;
+            btnSave.Text = "Guardando...";
+
             if (_recipeToEdit == null)
             {
                 await CreateRecipe();
@@ -106,6 +112,9 @@ namespace CookingSharp.WindowsForms.Features.Chef
             {
                 await UpdateRecipe();
             }
+
+            btnSave.Enabled = true;
+            btnSave.Text = "Guardar";
         }
 
         private async Task CreateRecipe()
@@ -146,19 +155,18 @@ namespace CookingSharp.WindowsForms.Features.Chef
 
             try
             {
-                bool success = await _recipeApiClient.UpdateAsync(_recipeToEdit.Id, recipeDto);
-                if (success)
-                {
-                    MessageBox.Show("Receta actualizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
+                await _recipeApiClient.UpdateAsync(_recipeToEdit.Id, recipeDto);
+
+                MessageBox.Show("Receta actualizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al actualizar la receta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"No se pudo actualizar la receta:\n\n{ex.Message}", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

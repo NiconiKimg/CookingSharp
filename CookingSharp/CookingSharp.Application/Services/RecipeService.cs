@@ -126,6 +126,11 @@ public class RecipeService : IRecipeService
     {
         var recipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
 
+        if (recipe.Status != RecipeStatus.Draft)
+        {
+            throw new BadRequestException($"Solo se pueden modificar recetas en estado Borrador. El estado actual de esta receta es {recipe.Status}.");
+        }
+
         if (recipeUpdateDto.Image != null)
         {
             if (!string.IsNullOrEmpty(recipe.ImagePublicId) && recipe.ImagePublicId != _photoService.GetDefaultImage().PublicId)
