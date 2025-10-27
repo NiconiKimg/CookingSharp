@@ -16,6 +16,32 @@ public class RecipeService : IRecipeService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
+    public async Task UpdateStatusAsync(int recipeId, RecipeStatusUpdateDTO dto)
+    {
+        var recipe = await _unitOfWork.Recipes.GetByIdAsync(recipeId)
+            ?? throw new NotFoundException(nameof(Recipe), recipeId);
+
+        switch (dto.Status)
+        {
+            case "Published":
+                recipe.Publish();
+                break;
+            case "Archived":
+                recipe.Archive();
+                break;
+            case "Blocked":
+                recipe.Block();
+                break;
+            case "Draft":
+                recipe.Unblock();
+                break;
+            default:
+                throw new ArgumentException("El estado proporcionado no es válido.", nameof(dto.Status));
+        }
+
+        await _unitOfWork.CompleteAsync();
+    }
+
     public RecipeService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;

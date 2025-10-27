@@ -13,6 +13,8 @@ public interface IRecipeService
     Task<IEnumerable<RecipeSummaryDTO>> GetAllSummariesAsync();
     Task<IEnumerable<RecipeSummaryDTO>> GetRecipesByUserIdAsync(int userId);
     Task<RecipeResponseDTO> GetByIdAsync(int id);
+    Task UpdateStatusAsync(int recipeId, RecipeStatusUpdateDTO dto);
+
 
     /// <summary>
     /// Crea una nueva receta.
