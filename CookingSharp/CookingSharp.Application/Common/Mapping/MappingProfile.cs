@@ -52,6 +52,11 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src =>
                 src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0));
 
+        CreateMap<Menu, MenuResponseDTO>()
+            .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.Ratings.Any() ? src.Ratings.Average(r => r.Stars) : 0.0))
+            .ForMember(dest => dest.RatingsCount, opt => opt.MapFrom(src => src.Ratings.Count))
+            .ForMember(dest => dest.Recipes, opt => opt.MapFrom(src => src.Recipes));
+
         // Recipe Summary Mapping
         CreateMap<Recipe, RecipeSummaryDTO>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.User.Name))

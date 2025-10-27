@@ -54,9 +54,14 @@ public class MenuService : IMenuService
     /// <returns>Una colección de DTOs de menú.</returns>
     public async Task<IEnumerable<MenuResponseDTO>> GetMenusByUserAsync(int userId)
     {
-        var allMenus = await _unitOfWork.Menus.GetAllAsync(); // Idealmente con un método de repositorio específico
-        var userMenus = allMenus.Where(m => m.UserId == userId);
+        var userMenus = await _unitOfWork.Menus.GetMenusByUserWithRecipesAsync(userId);
         return _mapper.Map<IEnumerable<MenuResponseDTO>>(userMenus);
+    }
+
+    public async Task<IEnumerable<MenuSummaryDTO>> GetAllSummariesAsync()
+    {
+        var menus = await _unitOfWork.Menus.GetAllWithDetailsAsync();
+        return _mapper.Map<IEnumerable<MenuSummaryDTO>>(menus);
     }
 
     /// <summary>
@@ -67,7 +72,9 @@ public class MenuService : IMenuService
     /// <exception cref="NotFoundException">Se lanza si el menú no existe.</exception>
     public async Task<MenuResponseDTO?> GetByIdAsync(int id)
     {
-        var menu = await _unitOfWork.Menus.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Menu), id);
+        var menu = await _unitOfWork.Menus.GetByIdWithDetailsAsync(id)
+                   ?? throw new NotFoundException(nameof(Menu), id);
+
         return _mapper.Map<MenuResponseDTO>(menu);
     }
 

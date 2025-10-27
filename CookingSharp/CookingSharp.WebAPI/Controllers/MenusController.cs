@@ -51,6 +51,18 @@ public class MenusController : BaseApiController
         return Ok(menu);
     }
 
+    /// <summary>
+    /// Obtiene una versión acotada de los menús.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("summaries")]
+    [ProducesResponseType(typeof(IEnumerable<MenuSummaryDTO>), 200)]
+    public async Task<IActionResult> GetAllSummaries()
+    {
+        var menuSummaries = await _menuService.GetAllSummariesAsync();
+        return Ok(menuSummaries);
+    }
+
     #endregion
 
     #region --- POST Endpoints ---
