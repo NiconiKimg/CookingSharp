@@ -17,163 +17,162 @@
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_Reports));
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.pnlContent = new System.Windows.Forms.Panel();
-            this.flpReports = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnGeneratePopularityReport = new System.Windows.Forms.Button();
-            this.btnGenerateContributionReport = new System.Windows.Forms.Button();
-            this.btnGenerateEngagementReport = new System.Windows.Forms.Button();
-            this.btnGenerateCategoryPerformanceReport = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
-            this.pnlContent.SuspendLayout();
-            this.flpReports.SuspendLayout();
-            this.SuspendLayout();
+            pnlHeader = new Panel();
+            lblTitle = new Label();
+            pnlContent = new Panel();
+            flpReports = new FlowLayoutPanel();
+            btnGeneratePopularityReport = new Button();
+            btnGenerateContributionReport = new Button();
+            btnGenerateEngagementReport = new Button();
+            btnGenerateCategoryPerformanceReport = new Button();
+            pnlHeader.SuspendLayout();
+            pnlContent.SuspendLayout();
+            flpReports.SuspendLayout();
+            SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.White;
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(20, 20);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(742, 80);
-            this.pnlHeader.TabIndex = 0;
+            pnlHeader.BackColor = Color.White;
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(20, 23);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(742, 91);
+            pnlHeader.TabIndex = 0;
             // 
             // lblTitle
             // 
-            this.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblTitle.Location = new System.Drawing.Point(3, 24);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(271, 32);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Generación de Reportes";
+            lblTitle.Anchor = AnchorStyles.Left;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(64, 64, 64);
+            lblTitle.Location = new Point(3, 27);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(288, 32);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Generación de Reportes";
             // 
             // pnlContent
             // 
-            this.pnlContent.Controls.Add(this.flpReports);
-            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(20, 100);
-            this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(742, 469);
-            this.pnlContent.TabIndex = 1;
+            pnlContent.Controls.Add(flpReports);
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.Location = new Point(20, 114);
+            pnlContent.Name = "pnlContent";
+            pnlContent.Size = new Size(742, 531);
+            pnlContent.TabIndex = 1;
             // 
             // flpReports
             // 
-            this.flpReports.Controls.Add(this.btnGeneratePopularityReport);
-            this.flpReports.Controls.Add(this.btnGenerateContributionReport);
-            this.flpReports.Controls.Add(this.btnGenerateEngagementReport);
-            this.flpReports.Controls.Add(this.btnGenerateCategoryPerformanceReport);
-            this.flpReports.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpReports.Location = new System.Drawing.Point(0, 0);
-            this.flpReports.Name = "flpReports";
-            this.flpReports.Padding = new System.Windows.Forms.Padding(3);
-            this.flpReports.Size = new System.Drawing.Size(742, 469);
-            this.flpReports.TabIndex = 0;
+            flpReports.Controls.Add(btnGeneratePopularityReport);
+            flpReports.Controls.Add(btnGenerateContributionReport);
+            flpReports.Controls.Add(btnGenerateEngagementReport);
+            flpReports.Controls.Add(btnGenerateCategoryPerformanceReport);
+            flpReports.Dock = DockStyle.Fill;
+            flpReports.Location = new Point(0, 0);
+            flpReports.Name = "flpReports";
+            flpReports.Padding = new Padding(3);
+            flpReports.Size = new Size(742, 531);
+            flpReports.TabIndex = 0;
             // 
             // btnGeneratePopularityReport
             // 
-            this.btnGeneratePopularityReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.btnGeneratePopularityReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGeneratePopularityReport.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
-            this.btnGeneratePopularityReport.FlatAppearance.BorderSize = 2;
-            this.btnGeneratePopularityReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGeneratePopularityReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnGeneratePopularityReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnGeneratePopularityReport.Image = ((System.Drawing.Image)(resources.GetObject("btnViewReports.Image")));
-            this.btnGeneratePopularityReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGeneratePopularityReport.Location = new System.Drawing.Point(6, 5);
-            this.btnGeneratePopularityReport.Margin = new System.Windows.Forms.Padding(3, 2, 10, 4);
-            this.btnGeneratePopularityReport.Name = "btnGeneratePopularityReport";
-            this.btnGeneratePopularityReport.Padding = new System.Windows.Forms.Padding(4);
-            this.btnGeneratePopularityReport.Size = new System.Drawing.Size(238, 52);
-            this.btnGeneratePopularityReport.TabIndex = 2;
-            this.btnGeneratePopularityReport.Text = "     Ranking de Recetas";
-            this.btnGeneratePopularityReport.UseVisualStyleBackColor = false;
-            this.btnGeneratePopularityReport.Click += new System.EventHandler(this.btnGeneratePopularityReport_Click);
+            btnGeneratePopularityReport.BackColor = Color.FromArgb(248, 249, 250);
+            btnGeneratePopularityReport.Cursor = Cursors.Hand;
+            btnGeneratePopularityReport.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+            btnGeneratePopularityReport.FlatAppearance.BorderSize = 2;
+            btnGeneratePopularityReport.FlatStyle = FlatStyle.Flat;
+            btnGeneratePopularityReport.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnGeneratePopularityReport.ForeColor = Color.FromArgb(64, 64, 64);
+            btnGeneratePopularityReport.Image = Properties.Resources.reporte;
+            btnGeneratePopularityReport.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGeneratePopularityReport.Location = new Point(6, 5);
+            btnGeneratePopularityReport.Margin = new Padding(3, 2, 10, 5);
+            btnGeneratePopularityReport.Name = "btnGeneratePopularityReport";
+            btnGeneratePopularityReport.Padding = new Padding(4, 5, 4, 5);
+            btnGeneratePopularityReport.Size = new Size(238, 59);
+            btnGeneratePopularityReport.TabIndex = 2;
+            btnGeneratePopularityReport.Text = "     Ranking de Recetas";
+            btnGeneratePopularityReport.UseVisualStyleBackColor = false;
+            btnGeneratePopularityReport.Click += btnGeneratePopularityReport_Click;
             // 
             // btnGenerateContributionReport
             // 
-            this.btnGenerateContributionReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.btnGenerateContributionReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGenerateContributionReport.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
-            this.btnGenerateContributionReport.FlatAppearance.BorderSize = 2;
-            this.btnGenerateContributionReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGenerateContributionReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnGenerateContributionReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnGenerateContributionReport.Image = ((System.Drawing.Image)(resources.GetObject("btnNewUser.Image")));
-            this.btnGenerateContributionReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGenerateContributionReport.Location = new System.Drawing.Point(257, 5);
-            this.btnGenerateContributionReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
-            this.btnGenerateContributionReport.Name = "btnGenerateContributionReport";
-            this.btnGenerateContributionReport.Padding = new System.Windows.Forms.Padding(4);
-            this.btnGenerateContributionReport.Size = new System.Drawing.Size(260, 52);
-            this.btnGenerateContributionReport.TabIndex = 3;
-            this.btnGenerateContributionReport.Text = "     Contribución por Chef";
-            this.btnGenerateContributionReport.UseVisualStyleBackColor = false;
-            this.btnGenerateContributionReport.Click += new System.EventHandler(this.btnGenerateContributionReport_Click);
+            btnGenerateContributionReport.BackColor = Color.FromArgb(248, 249, 250);
+            btnGenerateContributionReport.Cursor = Cursors.Hand;
+            btnGenerateContributionReport.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+            btnGenerateContributionReport.FlatAppearance.BorderSize = 2;
+            btnGenerateContributionReport.FlatStyle = FlatStyle.Flat;
+            btnGenerateContributionReport.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnGenerateContributionReport.ForeColor = Color.FromArgb(64, 64, 64);
+            btnGenerateContributionReport.Image = Properties.Resources.reporte;
+            btnGenerateContributionReport.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGenerateContributionReport.Location = new Point(257, 5);
+            btnGenerateContributionReport.Margin = new Padding(3, 2, 3, 5);
+            btnGenerateContributionReport.Name = "btnGenerateContributionReport";
+            btnGenerateContributionReport.Padding = new Padding(4, 5, 4, 5);
+            btnGenerateContributionReport.Size = new Size(260, 59);
+            btnGenerateContributionReport.TabIndex = 3;
+            btnGenerateContributionReport.Text = "     Contribución por Chef";
+            btnGenerateContributionReport.UseVisualStyleBackColor = false;
+            btnGenerateContributionReport.Click += btnGenerateContributionReport_Click;
             // 
             // btnGenerateEngagementReport
             // 
-            this.btnGenerateEngagementReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.btnGenerateEngagementReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGenerateEngagementReport.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
-            this.btnGenerateEngagementReport.FlatAppearance.BorderSize = 2;
-            this.btnGenerateEngagementReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGenerateEngagementReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnGenerateEngagementReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnGenerateEngagementReport.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckPending.Image")));
-            this.btnGenerateEngagementReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGenerateEngagementReport.Location = new System.Drawing.Point(6, 63);
-            this.btnGenerateEngagementReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
-            this.btnGenerateEngagementReport.Name = "btnGenerateEngagementReport";
-            this.btnGenerateEngagementReport.Padding = new System.Windows.Forms.Padding(4);
-            this.btnGenerateEngagementReport.Size = new System.Drawing.Size(260, 52);
-            this.btnGenerateEngagementReport.TabIndex = 4;
-            this.btnGenerateEngagementReport.Text = "     Análisis de Recetas";
-            this.btnGenerateEngagementReport.UseVisualStyleBackColor = false;
-            this.btnGenerateEngagementReport.Click += new System.EventHandler(this.btnGenerateEngagementReport_Click);
+            btnGenerateEngagementReport.BackColor = Color.FromArgb(248, 249, 250);
+            btnGenerateEngagementReport.Cursor = Cursors.Hand;
+            btnGenerateEngagementReport.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+            btnGenerateEngagementReport.FlatAppearance.BorderSize = 2;
+            btnGenerateEngagementReport.FlatStyle = FlatStyle.Flat;
+            btnGenerateEngagementReport.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnGenerateEngagementReport.ForeColor = Color.FromArgb(64, 64, 64);
+            btnGenerateEngagementReport.Image = Properties.Resources.reporte;
+            btnGenerateEngagementReport.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGenerateEngagementReport.Location = new Point(6, 71);
+            btnGenerateEngagementReport.Margin = new Padding(3, 2, 3, 5);
+            btnGenerateEngagementReport.Name = "btnGenerateEngagementReport";
+            btnGenerateEngagementReport.Padding = new Padding(4, 5, 4, 5);
+            btnGenerateEngagementReport.Size = new Size(260, 59);
+            btnGenerateEngagementReport.TabIndex = 4;
+            btnGenerateEngagementReport.Text = "     Análisis de Recetas";
+            btnGenerateEngagementReport.UseVisualStyleBackColor = false;
+            btnGenerateEngagementReport.Click += btnGenerateEngagementReport_Click;
             // 
             // btnGenerateCategoryPerformanceReport
             // 
-            this.btnGenerateCategoryPerformanceReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.btnGenerateCategoryPerformanceReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGenerateCategoryPerformanceReport.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
-            this.btnGenerateCategoryPerformanceReport.FlatAppearance.BorderSize = 2;
-            this.btnGenerateCategoryPerformanceReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGenerateCategoryPerformanceReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnGenerateCategoryPerformanceReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnGenerateCategoryPerformanceReport.Image = ((System.Drawing.Image)(resources.GetObject("categoryIcon")));
-            this.btnGenerateCategoryPerformanceReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGenerateCategoryPerformanceReport.Location = new System.Drawing.Point(272, 63);
-            this.btnGenerateCategoryPerformanceReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 4);
-            this.btnGenerateCategoryPerformanceReport.Name = "btnGenerateCategoryPerformanceReport";
-            this.btnGenerateCategoryPerformanceReport.Padding = new System.Windows.Forms.Padding(4);
-            this.btnGenerateCategoryPerformanceReport.Size = new System.Drawing.Size(260, 52);
-            this.btnGenerateCategoryPerformanceReport.TabIndex = 5;
-            this.btnGenerateCategoryPerformanceReport.Text = "     Rendimiento Categorías";
-            this.btnGenerateCategoryPerformanceReport.UseVisualStyleBackColor = false;
-            this.btnGenerateCategoryPerformanceReport.Click += new System.EventHandler(this.btnGenerateCategoryPerformanceReport_Click);
+            btnGenerateCategoryPerformanceReport.BackColor = Color.FromArgb(248, 249, 250);
+            btnGenerateCategoryPerformanceReport.Cursor = Cursors.Hand;
+            btnGenerateCategoryPerformanceReport.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+            btnGenerateCategoryPerformanceReport.FlatAppearance.BorderSize = 2;
+            btnGenerateCategoryPerformanceReport.FlatStyle = FlatStyle.Flat;
+            btnGenerateCategoryPerformanceReport.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnGenerateCategoryPerformanceReport.ForeColor = Color.FromArgb(64, 64, 64);
+            btnGenerateCategoryPerformanceReport.Image = Properties.Resources.reporte;
+            btnGenerateCategoryPerformanceReport.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGenerateCategoryPerformanceReport.Location = new Point(272, 71);
+            btnGenerateCategoryPerformanceReport.Margin = new Padding(3, 2, 3, 5);
+            btnGenerateCategoryPerformanceReport.Name = "btnGenerateCategoryPerformanceReport";
+            btnGenerateCategoryPerformanceReport.Padding = new Padding(4, 5, 4, 5);
+            btnGenerateCategoryPerformanceReport.Size = new Size(260, 59);
+            btnGenerateCategoryPerformanceReport.TabIndex = 5;
+            btnGenerateCategoryPerformanceReport.Text = "     Rendimiento Categorías";
+            btnGenerateCategoryPerformanceReport.UseVisualStyleBackColor = false;
+            btnGenerateCategoryPerformanceReport.Click += btnGenerateCategoryPerformanceReport_Click;
             // 
             // UC_Reports
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.pnlContent);
-            this.Controls.Add(this.pnlHeader);
-            this.Name = "UC_Reports";
-            this.Padding = new System.Windows.Forms.Padding(20);
-            this.Size = new System.Drawing.Size(782, 589);
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
-            this.pnlContent.ResumeLayout(false);
-            this.flpReports.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            Controls.Add(pnlContent);
+            Controls.Add(pnlHeader);
+            Name = "UC_Reports";
+            Padding = new Padding(20, 23, 20, 23);
+            Size = new Size(782, 668);
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            pnlContent.ResumeLayout(false);
+            flpReports.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
