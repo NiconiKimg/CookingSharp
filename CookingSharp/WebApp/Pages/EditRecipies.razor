@@ -44,7 +44,7 @@ else
                     <MudCardContent>
                         <MudText Class="mb-2">Sube una nueva imagen para reemplazar la actual (opcional).</MudText>
                         <InputFile OnChange="OnFileSelected" accept=".jpg,.jpeg,.png" />
-                        
+
                         <div class="mt-4 d-flex justify-center flex-column align-center">
                             @if (!string.IsNullOrEmpty(_newImageDataUrl))
                             {
@@ -58,7 +58,7 @@ else
                             }
                             else
                             {
-                                 <MudText Color="Color.Info">Esta receta no tiene imagen actualmente.</MudText>
+                                <MudText Color="Color.Info">Esta receta no tiene imagen actualmente.</MudText>
                             }
                         </div>
                     </MudCardContent>
@@ -79,15 +79,18 @@ else
                         <MudPaper Height="200px" Class="overflow-y-auto pa-2 mud-border-solid mud-border-lines-default rounded-lg">
                             @foreach (var category in _availableCategories)
                             {
-                                <MudCheckBox T="bool" Label="@category.Name" Checked="@(_recipeModel.CategoryIds.Contains(category.Id))"
-                                             CheckedChanged="@((bool isChecked) => OnCategoryChecked(category.Id, isChecked))" Color="Color.Primary" />
+                                var currentCategory = category;
+                                <MudCheckBox T="bool" Label="@currentCategory.Name"
+                                                Value="@(_recipeModel.CategoryIds.Contains(currentCategory.Id))"
+                                                ValueChanged="@((bool isChecked) => OnCategoryChecked(currentCategory.Id, isChecked))"
+                                                Color="Color.Primary" />
                             }
                         </MudPaper>
                         <ValidationMessage For="@(() => _recipeModel.CategoryIds)" />
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            
+
             <MudItem xs="12" md="6">
                 <MudCard Elevation="3">
                     <MudCardHeader>
@@ -120,7 +123,7 @@ else
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            
+
             <MudItem xs="12" Class="d-flex justify-end gap-4 mt-4">
                 <MudButton Variant="Variant.Outlined" OnClick="GoBack">Cancelar</MudButton>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save">Guardar Cambios</MudButton>
@@ -173,19 +176,19 @@ else
             Snackbar.Add($"Error al cargar la receta: {ex.Message}", Severity.Error);
         }
     }
-    
+
     private async Task OnFileSelected(InputFileChangeEventArgs e)
     {
         _newImageFile = e.File;
         if (_newImageFile != null)
         {
-            if (_newImageFile.Size > 2_000_000) // 2MB limit
+            if (_newImageFile.Size > 2_000_000)
             {
                 Snackbar.Add("La imagen es demasiado grande. El límite es 2MB.", Severity.Warning);
                 _newImageFile = null;
                 return;
             }
-            
+
             var format = "image/png";
             var resizedImage = await _newImageFile.RequestImageFileAsync(format, 400, 400);
             var buffer = new byte[resizedImage.Size];
@@ -198,7 +201,7 @@ else
     private async Task HandleValidSubmit()
     {
         if (_recipeModel is null) return;
-        
+
         if (_recipeModel.CategoryIds.Count == 0 || _recipeModel.Steps.Count == 0)
         {
             Snackbar.Add("Asegúrate de que la receta tenga al menos una categoría y un paso.", Severity.Warning);
@@ -273,7 +276,7 @@ else
             _editContext.NotifyFieldChanged(new FieldIdentifier(_recipeModel, nameof(_recipeModel.Steps)));
         }
     }
-    
+
     private void HandleKeyDown(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
