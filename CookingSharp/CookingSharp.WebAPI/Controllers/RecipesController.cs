@@ -104,13 +104,14 @@ public class RecipesController : BaseApiController
     /// </summary>
     [HttpPost]
     [Authorize(Roles = "Chef,Admin")]
-    public async Task<IActionResult> Create(RecipeCreateDTO recipeCreateDto)
+    public async Task<IActionResult> Create([FromForm] RecipeCreateDTO recipeCreateDto)
     {
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var createdRecipe = await _recipeService.CreateAsync(recipeCreateDto, userId);
+
+        var createdRecipe = await _recipeService.CreateWithImageAsync(recipeCreateDto, userId);
+
         return CreatedAtAction(nameof(GetById), new { id = createdRecipe.Id }, createdRecipe);
     }
-
     #endregion
 
     #region --- PUT Endpoints ---

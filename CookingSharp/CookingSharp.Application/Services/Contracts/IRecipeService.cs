@@ -29,11 +29,16 @@ public interface IRecipeService
     Task<IEnumerable<RecipeSummaryDTO>> GetAllSummariesAsync();
     Task<IEnumerable<RecipeSummaryDTO>> GetRecipesByUserIdAsync(int userId);
     Task<RecipeResponseDTO> GetByIdAsync(int id);
-    Task UpdateStatusAsync(int recipeId, RecipeStatusUpdateDTO dto);
-
 
     /// <summary>
-    /// Crea una nueva receta.
+    /// Actualiza únicamente el estado de una receta.
+    /// </summary>
+    /// <param name="recipeId">El ID de la receta a actualizar.</param>
+    /// <param name="dto">El DTO con el nuevo estado.</param>
+    Task UpdateStatusAsync(int recipeId, RecipeStatusUpdateDTO dto);
+
+    /// <summary>
+    /// Crea una nueva receta sin imagen.
     /// </summary>
     /// <param name="recipeCreateDto">El DTO con los datos de la nueva receta.</param>
     /// <param name="creatorUserId">El ID del usuario que está creando la receta.</param>
@@ -57,9 +62,13 @@ public interface IRecipeService
     /// <returns>Una colección de DTOs de resumen de receta.</returns>
     Task<IEnumerable<RecipeSummaryDTO>> GetAllPublishedSummariesAsync(string? searchTerm = null, int? categoryId = null);
 
+
     /// <summary>
-    /// Actualiza únicamente el estado de una receta.
+    /// Crea una nueva receta con una imagen.
     /// </summary>
-    /// <param name="id">El ID de la receta a actualizar.</param>
-    /// <param name="statusUpdateDto">El DTO con el nuevo estado.</param>
+    /// <param name="recipeCreateDto">El DTO con los datos de la nueva receta, incluyendo la imagen.</param>
+    /// <param name="userId">El ID del usuario que está creando la receta.</param>
+    /// <returns>El DTO de la receta recién creada.</returns>
+    Task<RecipeResponseDTO> CreateWithImageAsync(RecipeCreateDTO recipeCreateDto, int userId);
+
 }

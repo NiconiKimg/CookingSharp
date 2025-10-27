@@ -48,6 +48,15 @@ public class Recipe
     public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
     public ICollection<RecipeRating> Ratings { get; private set; } = new List<RecipeRating>();
     public ICollection<Menu> Menus { get; private set; } = new List<Menu>();
+    public string ImageUrl { get; private set; }
+    public string ImagePublicId { get; private set; }
+
+    public void SetImage(string imageUrl, string publicId)
+    {
+        ImageUrl = imageUrl;
+        ImagePublicId = publicId;
+    }
+    
 
     private Recipe() { }
 

@@ -31,6 +31,27 @@
                 </MudCardContent>
             </MudCard>
         </MudItem>
+         <MudItem xs="12">
+            <MudCard Elevation="3">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Image" Color="Color.Primary" />
+                            <MudText Typo="Typo.h6">Imagen de la Receta (Opcional)</MudText>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <InputFile OnChange="OnFileSelected" accept=".jpg,.jpeg,.png" />
+                    @if (!string.IsNullOrEmpty(_imageDataUrl))
+                    {
+                        <div class="mt-4 d-flex justify-center">
+                            <MudImage Src="@_imageDataUrl" Alt="Previsualización de imagen" Elevation="3" Class="rounded-lg" Style="height: 250px; max-width: 100%; object-fit: contain;" />
+                        </div>
+                    }
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
 
         <MudItem xs="12" md="6">
             <MudCard Elevation="3">
@@ -137,6 +158,8 @@
     private EditContext _editContext = null!;
     private List<CategoryResponseDTO> _availableCategories = new();
     private string _newStep = "";
+    private IBrowserFile? _imageFile;
+    private string? _imageDataUrl;
 
     protected override async Task OnInitializedAsync()
     {
@@ -153,6 +176,29 @@
         catch (Exception ex)
         {
             Snackbar.Add($"Error al cargar categorías: {ex.Message}", Severity.Error);
+        }
+    }
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        _imageDataUrl = null;
+        _imageFile = e.File;
+
+        if (_imageFile != null)
+        {
+            if (_imageFile.Size > 2_000_000) // Límite de 2MB
+            {
+                Snackbar.Add("La imagen es demasiado grande. El límite es 2MB.", Severity.Warning);
+                _imageFile = null;
+                return;
+            }
+
+            var format = "image/png";
+            var resizedImage = await _imageFile.RequestImageFileAsync(format, 400, 400);
+            var buffer = new byte[resizedImage.Size];
+            await resizedImage.OpenReadStream().ReadAsync(buffer);
+            _imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            
+            StateHasChanged();
         }
     }
 
@@ -211,6 +257,37 @@
             Snackbar.Add("La receta debe tener al menos un paso.", Severity.Warning);
             return;
         }
+            using var content = new MultipartFormDataContent();
+    content.Add(new StringContent(_recipeModel.Name), "Name");
+    content.Add(new StringContent(_recipeModel.Description), "Description");
+
+    foreach (var categoryId in _recipeModel.CategoryIds)
+    {
+        content.Add(new StringContent(categoryId.ToString()), "CategoryIds");
+    }
+
+    for (int i = 0; i < _recipeModel.Steps.Count; i++)
+    {
+        content.Add(new StringContent(_recipeModel.Steps[i]), $"Steps[{i}].Instruction");
+    }
+
+    if (_imageFile != null)
+    {
+        var fileContent = new StreamContent(_imageFile.OpenReadStream(_imageFile.Size));
+        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(_imageFile.ContentType);
+        content.Add(fileContent, "Image", _imageFile.Name);
+    }
+
+
+        try
+        {
+            var response = await Http.PostAsync("api/recipes", content);
+        }catch (Exception ex)
+        {
+            Snackbar.Add($"Error al crear la receta: {ex.Message}", Severity.Error);
+            return;
+        }
+
 
         var dto = new RecipeCreateDTO
         {

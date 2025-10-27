@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using CookingSharp.Application.Common.Exceptions;
 using CookingSharp.Application.Contracts;
+using CookingSharp.Application.Contracts.Infrastructure;
 using CookingSharp.Application.DTOs;
 using CookingSharp.Application.Services.Contracts;
 using CookingSharp.Domain.Entities;
 using CookingSharp.Domain.Enums;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace CookingSharp.Application.Services;
 
@@ -18,20 +17,22 @@ public class RecipeService : IRecipeService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-
+    private readonly IPhotoService _photoService;
     /// <summary>
     /// Inicializa una nueva instancia de la clase <see cref="RecipeService"/>.
     /// </summary>
     /// <param name="unitOfWork">La unidad de trabajo para interactuar con los repositorios.</param>
     /// <param name="mapper">El mapeador de objetos para transformar entidades en DTOs.</param>
-    public RecipeService(IUnitOfWork unitOfWork, IMapper mapper)
+    /// <param name="photoService">El servicio para gestionar la subida de imágenes.</param>
+    public RecipeService(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _photoService = photoService; // Se asigna el servicio
     }
 
     /// <summary>
-    /// Crea una nueva receta de forma asíncrona.
+    /// Crea una nueva receta de forma asíncrona (sin imagen).
     /// </summary>
     /// <param name="recipeCreateDto">El DTO con los datos de la nueva receta.</param>
     /// <param name="creatorUserId">El ID del usuario que está creando la receta.</param>
@@ -177,7 +178,7 @@ public class RecipeService : IRecipeService
                 recipe.Archive();
                 break;
             case "draft":
-                recipe.Unblock(); // "Unblock" tiene el efecto de pasar a "Draft"
+                recipe.Unblock();
                 break;
             case "blocked":
                 recipe.Block();
@@ -198,6 +199,12 @@ public class RecipeService : IRecipeService
     public async Task DeleteAsync(int id)
     {
         var recipe = await _unitOfWork.Recipes.GetByIdAsync(id) ?? throw new NotFoundException(nameof(Recipe), id);
+
+        if (!string.IsNullOrEmpty(recipe.ImagePublicId))
+        {
+            await _photoService.DeletePhotoAsync(recipe.ImagePublicId);
+        }
+
         _unitOfWork.Recipes.Delete(recipe);
         await _unitOfWork.CompleteAsync();
     }
@@ -221,5 +228,43 @@ public class RecipeService : IRecipeService
     {
         var recipes = await _unitOfWork.Recipes.GetAllPublishedWithDetailsAsync(searchTerm, categoryId);
         return _mapper.Map<IEnumerable<RecipeSummaryDTO>>(recipes);
+    }
+
+    /// <summary>
+    /// Crea una nueva receta con una imagen de forma asíncrona.
+    /// </summary>
+    /// <param name="dto">El DTO con los datos de la nueva receta, incluyendo la imagen.</param>
+    /// <param name="userId">El ID del usuario que está creando la receta.</param>
+    /// <returns>El DTO de la receta recién creada y mapeada.</returns>
+    /// <exception cref="NotFoundException">Se lanza si el usuario creador no existe.</exception>
+    /// <exception cref="BadRequestException">Se lanza si alguna de las categorías no existe.</exception>
+    public async Task<RecipeResponseDTO> CreateWithImageAsync(RecipeCreateDTO dto, int userId)
+    {
+        _ = await _unitOfWork.Users.GetByIdAsync(userId) ?? throw new NotFoundException(nameof(User), userId);
+
+        var recipe = new Recipe(dto.Name, dto.Description, userId);
+
+        if (dto.Image != null)
+        {
+            var (imageUrl, publicId) = await _photoService.AddPhotoAsync(dto.Image);
+            recipe.SetImage(imageUrl, publicId);
+        }
+
+        foreach (var stepDto in dto.Steps)
+        {
+            recipe.AddStep(stepDto.Instruction);
+        }
+
+        foreach (var categoryId in dto.CategoryIds)
+        {
+            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId) ?? throw new BadRequestException($"La categoría con ID '{categoryId}' no existe.");
+            recipe.Categories.Add(category);
+        }
+
+        await _unitOfWork.Recipes.AddAsync(recipe);
+        await _unitOfWork.CompleteAsync();
+
+        var createdRecipe = await _unitOfWork.Recipes.GetByIdWithDetailsAsync(recipe.Id);
+        return _mapper.Map<RecipeResponseDTO>(createdRecipe);
     }
 }

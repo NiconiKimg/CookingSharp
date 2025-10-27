@@ -1,4 +1,6 @@
-﻿namespace WebApp.DTOs
+﻿using Microsoft.AspNetCore.Http;
+
+namespace WebApp.DTOs
 {
     // -------------------------------------------------------------------
     //  DTOs para RECIBIR datos de la API (para mostrar en el formulario)
@@ -83,5 +85,7 @@
         public string Description { get; set; } = string.Empty;
         public ICollection<RecipeStepCreateDTO> Steps { get; set; } = new List<RecipeStepCreateDTO>();
         public ICollection<int> CategoryIds { get; set; } = new List<int>();
+        public IFormFile? Image { get; set; }
+
     }
 }

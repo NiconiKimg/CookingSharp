@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace CookingSharp.Application.DTOs;
 
@@ -42,8 +43,9 @@ public class RecipeCreateDTO
 {
     public string Name { get; set; }
     public string Description { get; set; }
+    public List<int> CategoryIds { get; set; }
     public ICollection<RecipeStepCreateDTO> Steps { get; set; }
-    public ICollection<int> CategoryIds { get; set; }
+    public IFormFile? Image { get; set; }
 }
 
 /// <summary>
