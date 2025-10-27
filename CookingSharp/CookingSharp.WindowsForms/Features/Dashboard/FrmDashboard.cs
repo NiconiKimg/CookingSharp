@@ -17,6 +17,11 @@ namespace CookingSharp.WindowsForms
     public partial class FrmDashboard : Form
     {
         /// <summary>
+        /// Flag para diferenciar entre un cierre de sesión (volver al login) y un cierre completo de la aplicación.
+        /// </summary>
+        private bool _isLoggingOut = false;
+
+        /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="FrmDashboard"/>.
         /// </summary>
         public FrmDashboard()
@@ -65,7 +70,7 @@ namespace CookingSharp.WindowsForms
         private void btnNavRecetas_Click(object sender, EventArgs e) => LoadRecipesControl();
 
         /// <summary>
-        /// Maneja el clic en el botón de cerrar sesión. Cierra el formulario actual para volver al login.
+        /// Maneja el clic en el botón de cerrar sesión. Activa el flag y cierra el formulario para volver al login.
         /// </summary>
         private void btnUserOptions_Click(object sender, EventArgs e)
         {
@@ -73,30 +78,31 @@ namespace CookingSharp.WindowsForms
 
             if (confirmResult == DialogResult.Yes)
             {
-                // Cierra solo este formulario, permitiendo que Program.cs muestre el login.
+                _isLoggingOut = true;
                 this.Close();
             }
         }
 
         /// <summary>
-        /// Maneja el evento que se dispara cuando el usuario intenta cerrar el formulario (ej. con la 'X').
-        /// Pide confirmación y, si es afirmativa, cierra toda la aplicación.
+        /// Maneja el evento que se dispara cuando el formulario está a punto de cerrarse.
         /// </summary>
         private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Solo actuar si el cierre fue iniciado por una acción del usuario.
+            if (_isLoggingOut)
+            {
+                return;
+            }
+
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 var confirmResult = MessageBox.Show("¿Está seguro de que desea salir de la aplicación?", "Confirmar Salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    // Forzar la terminación de todo el proceso de la aplicación.
                     System.Windows.Forms.Application.Exit();
                 }
                 else
                 {
-                    // Cancelar el evento de cierre si el usuario selecciona "No".
                     e.Cancel = true;
                 }
             }

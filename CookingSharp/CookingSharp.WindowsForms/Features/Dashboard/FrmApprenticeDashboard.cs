@@ -1,5 +1,4 @@
 ﻿using CookingSharp.Clients;
-using CookingSharp.WindowsForms.Features.Apprentice;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
@@ -12,6 +11,11 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
     /// </summary>
     public partial class FrmApprenticeDashboard : Form
     {
+        /// <summary>
+        /// Flag para diferenciar entre un cierre de sesión (volver al login) y un cierre completo de la aplicación.
+        /// </summary>
+        private bool _isLoggingOut = false;
+
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="FrmApprenticeDashboard"/>.
         /// </summary>
@@ -51,7 +55,7 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         private void picLogo_Click(object sender, EventArgs e) => LoadRecipesView();
 
         /// <summary>
-        /// Maneja el clic en el botón de cerrar sesión. Cierra el formulario actual para volver al login.
+        /// Maneja el clic en el botón de cerrar sesión. Activa el flag de logout y cierra el formulario para volver al login.
         /// </summary>
         private void btnUserOptions_Click(object sender, EventArgs e)
         {
@@ -59,25 +63,37 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
 
             if (confirmResult == DialogResult.Yes)
             {
-                this.Close();
+                // Activamos el flag para indicar que es un cierre de sesión intencionado.
+                _isLoggingOut = true;
+                this.Close(); // Esto disparará el evento FormClosing.
             }
         }
 
         /// <summary>
-        /// Maneja el evento que se dispara cuando el usuario intenta cerrar el formulario (ej. con la 'X').
-        /// Pide confirmación y, si es afirmativa, cierra toda la aplicación.
+        /// Maneja el evento que se dispara cuando el formulario está a punto de cerrarse.
         /// </summary>
         private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Si el flag _isLoggingOut es true, significa que venimos del botón de logout.
+            // En este caso, simplemente permitimos que el formulario se cierre para volver al login.
+            if (_isLoggingOut)
+            {
+                return; // No hacemos nada más, el formulario se cerrará y el bucle de Program.cs continuará.
+            }
+
+            // Si el cierre fue por otra razón (como hacer clic en la 'X'), mostramos la confirmación para salir de la app.
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 var confirmResult = MessageBox.Show("¿Está seguro de que desea salir de la aplicación?", "Confirmar Salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
                 if (confirmResult == DialogResult.Yes)
                 {
+                    // Cierra toda la aplicación.
                     System.Windows.Forms.Application.Exit();
                 }
                 else
                 {
+                    // Cancela el evento de cierre si el usuario selecciona "No".
                     e.Cancel = true;
                 }
             }
@@ -90,12 +106,12 @@ namespace CookingSharp.WindowsForms.Features.Dashboard
         /// <summary>
         /// Carga el User Control para explorar recetas.
         /// </summary>
-        private void LoadRecipesView() => LoadControl<UC_RecipiesApprentice>();
+        private void LoadRecipesView() => LoadControl<Apprentice.UC_RecipiesApprentice>();
 
         /// <summary>
         /// Carga el User Control para gestionar las solicitudes del aprendiz.
         /// </summary>
-        private void LoadAppealsView() => LoadControl<UC_AppealsApprentice>();
+        private void LoadAppealsView() => LoadControl<Apprentice.UC_AppealsApprentice>();
 
         /// <summary>
         /// Carga dinámicamente un UserControl en el panel de contenido principal.
