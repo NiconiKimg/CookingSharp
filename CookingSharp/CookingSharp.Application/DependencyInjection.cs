@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<IAppealService, AppealService>();
         services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IMenuRatingService, MenuRatingService>();
 
 
         return services;

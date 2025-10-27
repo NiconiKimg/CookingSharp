@@ -1,0 +1,56 @@
+﻿@page "/my-menus"
+@using WebApp.DTOs
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+@attribute [Authorize(Roles = "Chef, Admin")]
+
+<MudText Typo="Typo.h3" GutterBottom="true">Mis Menús</MudText>
+<MudText Class="mb-6">Organiza tus recetas en colecciones temáticas para compartirlas fácilmente.</MudText>
+
+<MudTable T="MenuResponseDTO" ServerData="ServerReload"
+          Dense="true" Hover="true" @ref="_table" Striped="true">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/menus/create">
+            Crear Nuevo Menú
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Nombre del Menú</MudTh>
+        <MudTh>Nº de Recetas</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nombre">@context.Name</MudTd>
+        <MudTd DataLabel="Recetas">@context.Recipes.Count</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>Aún no has creado ningún menú. ¡Anímate a crear el primero!</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Cargando tus menús...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private MudTable<MenuResponseDTO> _table = null!;
+    private IEnumerable<MenuResponseDTO> _menus = new List<MenuResponseDTO>();
+
+    private async Task<TableData<MenuResponseDTO>> ServerReload(TableState state, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<List<MenuResponseDTO>>("api/menus/my-menus", cancellationToken);
+            _menus = response ?? new List<MenuResponseDTO>();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar tus menús: {ex.Message}", Severity.Error);
+            _menus = new List<MenuResponseDTO>();
+        }
+        return new TableData<MenuResponseDTO>() { TotalItems = _menus.Count(), Items = _menus };
+    }
+}

@@ -1,0 +1,104 @@
+﻿@page "/menu/{MenuId:int}"
+@using WebApp.DTOs
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+@inject ISnackbar Snackbar
+@attribute [Authorize]
+
+@if (_isLoading)
+{
+    <div class="d-flex justify-center mt-16">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    </div>
+}
+else if (_menu == null)
+{
+    <MudAlert Severity="Severity.Error">No se pudo cargar el menú. Es posible que no exista o haya ocurrido un error.</MudAlert>
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudText Typo="Typo.h3" GutterBottom="true">@_menu.Name</MudText>
+        <MudText Typo="Typo.subtitle1" Class="mb-4">Un menú curado por: @_menu.AuthorName</MudText>
+        <div class="d-flex align-center mb-4">
+            <MudRating SelectedValue="(int)Math.Round(_menu.AverageRating)" ReadOnly="true" />
+            @if (_menu.RatingsCount > 0)
+            {
+                <MudText Typo="Typo.body2" Class="ml-2">@_menu.AverageRating.ToString("0.0") (@_menu.RatingsCount @(_menu.RatingsCount == 1 ? "voto" : "votos"))</MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2" Class="ml-2">Sin valorar</MudText>
+            }
+        </div>
+        <MudText Class="mt-4 mb-6">@_menu.Description</MudText>
+
+        <MudPaper Elevation="2" Class="pa-4 mb-6">
+            <MudText Typo="Typo.h6" GutterBottom="true">Valora este Menú</MudText>
+            <MudRating SelectedValueChanged="OnRatingChanged" />
+        </MudPaper>
+
+        <MudText Typo="Typo.h4" GutterBottom="true" Class="mt-8">Recetas en este Menú</MudText>
+        <MudGrid Spacing="4">
+            @foreach (var recipe in _menu.Recipes)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <RecipeCard Recipe="recipe" />
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
+}
+
+@code {
+    [Parameter]
+    public int MenuId { get; set; }
+
+    private MenuResponseDTO? _menu;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMenuData();
+    }
+
+    private async Task LoadMenuData()
+    {
+        _isLoading = true;
+        try
+        {
+            _menu = await Http.GetFromJsonAsync<MenuResponseDTO>($"api/menus/{MenuId}");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al cargar el menú: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task OnRatingChanged(int newRating)
+    {
+        var dto = new RatingCreateUpdateDTO { Stars = newRating };
+        try
+        {
+            var response = await Http.PostAsJsonAsync($"api/menus/{MenuId}/ratings", dto);
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("¡Gracias por valorar este menú!", Severity.Success);
+                await LoadMenuData();
+                StateHasChanged();
+            }
+            else
+            {
+                Snackbar.Add("Error al enviar tu valoración.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
+    }
+}
