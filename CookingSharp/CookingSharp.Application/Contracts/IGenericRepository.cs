@@ -46,5 +46,12 @@ namespace CookingSharp.Application.Contracts
         /// </summary>
         /// <returns>El número total de entidades.</returns>
         Task<int> CountAsync();
+        
+        /// <summary>
+        /// Marca una colección de entidades para ser eliminadas.
+        /// </summary>
+        /// <param name="entities">La colección de entidades a eliminar.</param>
+        void DeleteRange(IEnumerable<T> entities);
+
     }
 }
