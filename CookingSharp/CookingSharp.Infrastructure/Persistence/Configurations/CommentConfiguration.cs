@@ -22,12 +22,12 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.HasOne(c => c.User)
             .WithMany(u => u.Comments)
             .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Restrict); // No permitir borrar un usuario si tiene comentarios
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Relación Uno-a-Muchos: Una Receta tiene muchos Comentarios
         builder.HasOne(c => c.Recipe)
             .WithMany(r => r.Comments)
             .HasForeignKey(c => c.RecipeId)
-            .OnDelete(DeleteBehavior.Cascade); // Si se borra la receta, se borran sus comentarios
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

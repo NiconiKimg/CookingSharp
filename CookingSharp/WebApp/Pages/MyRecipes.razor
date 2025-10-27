@@ -1,5 +1,6 @@
 ﻿@page "/my-recipes"
 @using WebApp.DTOs
+@using WebApp.Shared
 @using System.Security.Claims
 @using System.Threading
 @using Microsoft.AspNetCore.Authorization
@@ -22,6 +23,8 @@
         </MudButton>
     </ToolBarContent>
     <HeaderContent>
+        <MudTh>Nombre</MudTh>
+        <MudTh>Estado</MudTh>
         <MudTh Style="text-align:right">Acciones</MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -35,6 +38,8 @@
                 <MudButton OnClick="@(() => PublishRecipe(context))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" Class="ml-2">Publicar</MudButton>
             }
             <MudButton OnClick="@(() => EditRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Default" Size="Size.Small" Class="ml-2">Editar</MudButton>
+            
+            <MudIconButton OnClick="@(() => DeleteRecipe(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ml-2" />
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -117,4 +122,36 @@
             }
         }
     }
+
+private async Task DeleteRecipe(RecipeResponseDTO recipe)
+{
+    bool? result = await DialogService.ShowMessageBox(
+        "Confirmar Eliminación", 
+        (MarkupString)$"¿Estás seguro de que deseas eliminar la receta <strong>' {recipe.Name} '</strong>?",
+        yesText: "Eliminar",
+        cancelText: "Cancelar");
+    
+    if (result == true)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"api/recipes/{recipe.Id}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add("Receta eliminada con éxito.", Severity.Success);
+                await _table.ReloadServerData();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Snackbar.Add($"Error al eliminar la receta: {error}", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+        }
+    }
+}
 }

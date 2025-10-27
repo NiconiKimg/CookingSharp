@@ -24,13 +24,13 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
         builder.HasOne(r => r.User)
             .WithMany(u => u.Recipes)
             .HasForeignKey(r => r.UserId)
-            .OnDelete(DeleteBehavior.Cascade); // Si se borra un usuario, se borran sus recetas
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Relación Uno-a-Muchos: Una Receta tiene muchos Pasos
         builder.HasMany(r => r.Steps)
             .WithOne(s => s.Recipe)
             .HasForeignKey(s => s.RecipeId)
-            .OnDelete(DeleteBehavior.Cascade); // Si se borra una receta, se borran sus pasos
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Relación Muchos-a-Muchos: Una Receta puede tener muchas Categorías
         builder.HasMany(r => r.Categories)
