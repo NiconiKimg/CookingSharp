@@ -19,7 +19,7 @@ else
 {
     <MudContainer MaxWidth="MaxWidth.Large">
         <MudText Typo="Typo.h3" GutterBottom="true">@_menu.Name</MudText>
-        <MudText Typo="Typo.subtitle1" Class="mb-4">Un menú curado por: @_menu.AuthorName</MudText>
+        <MudText Typo="Typo.subtitle1" Class="mb-4">Un menú creado por: @_menu.AuthorName</MudText>
         <div class="d-flex align-center mb-4">
             <MudRating SelectedValue="(int)Math.Round(_menu.AverageRating)" ReadOnly="true" />
             @if (_menu.RatingsCount > 0)

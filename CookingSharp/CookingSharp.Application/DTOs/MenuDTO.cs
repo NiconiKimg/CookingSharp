@@ -11,6 +11,7 @@ public class MenuResponseDTO
     public string Name { get; set; }
     public string Description { get; set; }
     public int UserId { get; set; }
+    public string AuthorName { get; set; }
     public double AverageRating { get; set; }
     public int RatingsCount { get; set; }
     public ICollection<RecipeResponseDTO> Recipes { get; set; }
