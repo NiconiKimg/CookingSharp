@@ -177,7 +177,7 @@ public class RecipeService : IRecipeService
                 recipe.Archive();
                 break;
             case "draft":
-                recipe.Unblock(); // "Unblock" tiene el efecto de pasar a "Draft"
+                recipe.Unblock();
                 break;
             case "blocked":
                 recipe.Block();

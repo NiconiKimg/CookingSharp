@@ -120,7 +120,7 @@ public class RecipesController : BaseApiController
     /// </summary>
     [HttpPut("{id}")]
     [ProducesResponseType(204)]
-    [ProducesResponseType(403)] // Forbidden
+    [ProducesResponseType(403)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Update(int id, RecipeUpdateDTO recipeUpdateDto)
     {

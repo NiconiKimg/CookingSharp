@@ -15,8 +15,8 @@ using System.Windows.Forms;
 namespace CookingSharp.WindowsForms
 {
     /// <summary>
-    /// Clase principal de la aplicación. Responsable de la configuración
-    /// y del control del flujo principal (login, dashboards, logout).
+    /// Clase principal de la aplicación. Responsable de la configuración, inyección de dependencias,
+    /// y del control del flujo principal de autenticación y navegación.
     /// </summary>
     internal static class Program
     {
@@ -37,20 +37,24 @@ namespace CookingSharp.WindowsForms
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider();
 
+            // Bucle principal que gestiona el ciclo de vida de la sesión.
             while (true)
             {
-                SessionManager.Logout();
+                SessionManager.Logout(); // Asegura que cualquier sesión anterior esté cerrada.
 
                 using (var loginForm = ServiceProvider.GetRequiredService<FrmLogin>())
                 {
-                    var loginResult = loginForm.ShowDialog();
-
-                    if (loginResult == DialogResult.OK)
+                    // Muestra el formulario de login como un diálogo modal.
+                    if (loginForm.ShowDialog() == DialogResult.OK)
                     {
+                        // Si el login es exitoso, lanza el dashboard correspondiente.
+                        // El código se detendrá aquí hasta que el dashboard se cierre.
                         LaunchDashboardBasedOnRole();
                     }
                     else
                     {
+                        // Si el usuario cierra el login con la 'X' o cancela,
+                        // se rompe el bucle y la aplicación termina.
                         break;
                     }
                 }
@@ -65,6 +69,7 @@ namespace CookingSharp.WindowsForms
             const string baseApiAddress = "https://localhost:7111";
             services.AddApiClients(baseApiAddress);
 
+            // Formularios
             services.AddTransient<FrmLogin>();
             services.AddTransient<FrmDashboard>();
             services.AddTransient<FrmChefDashboard>();
@@ -76,15 +81,16 @@ namespace CookingSharp.WindowsForms
             services.AddTransient<frmAppeal>();
             services.AddTransient<FrmRecipe>();
 
+            // User Controls
             services.AddTransient<UC_AdminPanel>();
             services.AddTransient<UC_Categories>();
             services.AddTransient<UC_Users>();
             services.AddTransient<UC_Appeals>();
             services.AddTransient<UC_Recipes>();
             services.AddTransient<UC_Chef_MyRecipes>();
+            services.AddTransient<UC_Chef_ExploreRecipes>();
             services.AddTransient<UC_AppealsApprentice>();
             services.AddTransient<UC_RecipiesApprentice>();
-            services.AddTransient<UC_Chef_ExploreRecipes>();
         }
 
         /// <summary>
@@ -110,10 +116,11 @@ namespace CookingSharp.WindowsForms
                     break;
                 default:
                     MessageBox.Show("Rol de usuario no reconocido. Volviendo a la pantalla de inicio.", "Error de Permisos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    SessionManager.Logout();
-                    return;
+                    return; // Vuelve al bucle principal que mostrará el login.
             }
 
+            // Inicia el bucle de mensajes para el formulario del dashboard.
+            // El código en Main() esperará aquí hasta que este formulario se cierre.
             System.Windows.Forms.Application.Run(mainForm);
         }
     }
