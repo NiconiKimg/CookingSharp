@@ -34,7 +34,10 @@
     <Compile Update="Features\Chef\FrmRecipe.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Features\Chef\UC_RecipesChef.cs">
+    <Compile Update="Features\Chef\UC_Chef_ExploreRecipes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Features\Chef\UC_Chef_MyRecipes.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Features\Dashboard\FrmApprenticeDashboard.cs">

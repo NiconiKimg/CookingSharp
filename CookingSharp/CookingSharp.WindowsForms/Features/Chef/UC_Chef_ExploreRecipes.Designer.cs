@@ -1,16 +1,9 @@
-﻿namespace CookingSharp.WindowsForms.RecipesControl
+﻿namespace CookingSharp.WindowsForms.Features.Chef
 {
-    partial class UC_Recipes
+    partial class UC_Chef_ExploreRecipes
     {
-        /// <summary> 
-        /// Variable del diseñador necesaria.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Limpiar los recursos que se estén usando.
-        /// </summary>
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,18 +15,11 @@
 
         #region Código generado por el Diseñador de componentes
 
-        /// <summary> 
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
-        /// </summary>
         private void InitializeComponent()
         {
             pnlHeader = new Panel();
             headerLayout = new TableLayoutPanel();
             lblTitle = new Label();
-            flpActions = new FlowLayoutPanel();
-            btnUnblockRecipe = new Button();
-            btnBlockRecipe = new Button();
             pnlGridContainer = new Panel();
             splitContainer1 = new SplitContainer();
             dgvRecipes = new DataGridView();
@@ -52,7 +38,6 @@
             picSearchIcon = new PictureBox();
             pnlHeader.SuspendLayout();
             headerLayout.SuspendLayout();
-            flpActions.SuspendLayout();
             pnlGridContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -74,15 +59,13 @@
             pnlHeader.Location = new Point(20, 23);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.Size = new Size(742, 91);
-            pnlHeader.TabIndex = 2;
+            pnlHeader.TabIndex = 3;
             // 
             // headerLayout
             // 
-            headerLayout.ColumnCount = 2;
+            headerLayout.ColumnCount = 1;
             headerLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            headerLayout.ColumnStyles.Add(new ColumnStyle());
             headerLayout.Controls.Add(lblTitle, 0, 0);
-            headerLayout.Controls.Add(flpActions, 1, 0);
             headerLayout.Dock = DockStyle.Fill;
             headerLayout.Location = new Point(0, 0);
             headerLayout.Name = "headerLayout";
@@ -99,57 +82,9 @@
             lblTitle.ForeColor = Color.FromArgb(64, 64, 64);
             lblTitle.Location = new Point(3, 29);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(229, 32);
+            lblTitle.Size = new Size(203, 32);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Gestión de Recetas";
-            // 
-            // flpActions
-            // 
-            flpActions.Anchor = AnchorStyles.Right;
-            flpActions.AutoSize = true;
-            flpActions.Controls.Add(btnUnblockRecipe);
-            flpActions.Controls.Add(btnBlockRecipe);
-            flpActions.Location = new Point(475, 20);
-            flpActions.Name = "flpActions";
-            flpActions.Size = new Size(264, 51);
-            flpActions.TabIndex = 1;
-            flpActions.WrapContents = false;
-            // 
-            // btnUnblockRecipe
-            // 
-            btnUnblockRecipe.BackColor = Color.White;
-            btnUnblockRecipe.Cursor = Cursors.Hand;
-            btnUnblockRecipe.Enabled = false;
-            btnUnblockRecipe.FlatAppearance.BorderColor = Color.FromArgb(25, 135, 84);
-            btnUnblockRecipe.FlatAppearance.BorderSize = 2;
-            btnUnblockRecipe.FlatStyle = FlatStyle.Flat;
-            btnUnblockRecipe.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnUnblockRecipe.ForeColor = Color.FromArgb(25, 135, 84);
-            btnUnblockRecipe.Location = new Point(3, 3);
-            btnUnblockRecipe.Name = "btnUnblockRecipe";
-            btnUnblockRecipe.Size = new Size(120, 45);
-            btnUnblockRecipe.TabIndex = 3;
-            btnUnblockRecipe.Text = "Desbloquear";
-            btnUnblockRecipe.UseVisualStyleBackColor = false;
-            btnUnblockRecipe.Click += btnUnblockRecipe_Click;
-            // 
-            // btnBlockRecipe
-            // 
-            btnBlockRecipe.BackColor = Color.White;
-            btnBlockRecipe.Cursor = Cursors.Hand;
-            btnBlockRecipe.Enabled = false;
-            btnBlockRecipe.FlatAppearance.BorderColor = Color.FromArgb(220, 53, 69);
-            btnBlockRecipe.FlatAppearance.BorderSize = 2;
-            btnBlockRecipe.FlatStyle = FlatStyle.Flat;
-            btnBlockRecipe.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            btnBlockRecipe.ForeColor = Color.FromArgb(220, 53, 69);
-            btnBlockRecipe.Location = new Point(129, 3);
-            btnBlockRecipe.Name = "btnBlockRecipe";
-            btnBlockRecipe.Size = new Size(132, 45);
-            btnBlockRecipe.TabIndex = 2;
-            btnBlockRecipe.Text = "Bloquear";
-            btnBlockRecipe.UseVisualStyleBackColor = false;
-            btnBlockRecipe.Click += btnBlockRecipe_Click;
+            lblTitle.Text = "Explorar Recetas";
             // 
             // pnlGridContainer
             // 
@@ -160,7 +95,7 @@
             pnlGridContainer.Name = "pnlGridContainer";
             pnlGridContainer.Padding = new Padding(0, 11, 0, 0);
             pnlGridContainer.Size = new Size(742, 474);
-            pnlGridContainer.TabIndex = 3;
+            pnlGridContainer.TabIndex = 5;
             // 
             // splitContainer1
             // 
@@ -304,7 +239,7 @@
             pnlSearch.Name = "pnlSearch";
             pnlSearch.Padding = new Padding(3, 11, 3, 0);
             pnlSearch.Size = new Size(742, 57);
-            pnlSearch.TabIndex = 4;
+            pnlSearch.TabIndex = 6;
             // 
             // cmbCategoryFilter
             // 
@@ -345,7 +280,7 @@
             // 
             picSearchIcon.BackColor = Color.White;
             picSearchIcon.Dock = DockStyle.Left;
-            picSearchIcon.Image = Properties.Resources.searchIcon;
+            picSearchIcon.Image = Properties.Resources.searchIcon1;
             picSearchIcon.Location = new Point(0, 0);
             picSearchIcon.Name = "picSearchIcon";
             picSearchIcon.Padding = new Padding(5, 6, 5, 6);
@@ -354,7 +289,7 @@
             picSearchIcon.TabIndex = 2;
             picSearchIcon.TabStop = false;
             // 
-            // UC_Recipes
+            // UC_Chef_ExploreRecipes
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -362,13 +297,12 @@
             Controls.Add(pnlGridContainer);
             Controls.Add(pnlSearch);
             Controls.Add(pnlHeader);
-            Name = "UC_Recipes";
+            Name = "UC_Chef_ExploreRecipes";
             Padding = new Padding(20, 23, 20, 23);
             Size = new Size(782, 668);
             pnlHeader.ResumeLayout(false);
             headerLayout.ResumeLayout(false);
             headerLayout.PerformLayout();
-            flpActions.ResumeLayout(false);
             pnlGridContainer.ResumeLayout(false);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -383,7 +317,6 @@
             pnlSearchContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picSearchIcon).EndInit();
             ResumeLayout(false);
-
         }
 
         #endregion
@@ -391,12 +324,9 @@
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.TableLayoutPanel headerLayout;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.FlowLayoutPanel flpActions;
-        private System.Windows.Forms.Button btnBlockRecipe;
         private System.Windows.Forms.Panel pnlGridContainer;
-        private System.Windows.Forms.DataGridView dgvRecipes;
-        private System.Windows.Forms.Button btnUnblockRecipe;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.DataGridView dgvRecipes;
         private System.Windows.Forms.Panel pnlDetails;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label lblDetailName;
@@ -406,9 +336,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstDetailSteps;
         private System.Windows.Forms.Panel pnlSearch;
+        private System.Windows.Forms.ComboBox cmbCategoryFilter;
         private System.Windows.Forms.Panel pnlSearchContainer;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.PictureBox picSearchIcon;
-        private System.Windows.Forms.ComboBox cmbCategoryFilter;
     }
 }

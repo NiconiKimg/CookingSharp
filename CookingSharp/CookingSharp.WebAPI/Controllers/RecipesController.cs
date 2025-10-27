@@ -2,6 +2,8 @@
 using CookingSharp.Application.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -20,21 +22,28 @@ public class RecipesController : BaseApiController
     #region --- GET Endpoints ---
 
     /// <summary>
-    /// Obtiene una lista de todas las recetas (público).
+    /// Obtiene una lista de todas las recetas, opcionalmente filtrada (público).
     /// </summary>
+    /// <param name="search">Término de búsqueda para filtrar por nombre, descripción o autor.</param>
+    /// <param name="categoryId">ID de la categoría para filtrar las recetas.</param>
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? search = null, [FromQuery] int? categoryId = null)
     {
-        var recipes = await _recipeService.GetAllAsync();
+        var recipes = await _recipeService.GetAllAsync(search, categoryId);
         return Ok(recipes);
     }
 
+    /// <summary>
+    /// Obtiene un resumen de todas las recetas publicadas, opcionalmente filtradas (endpoint público).
+    /// </summary>
+    /// <param name="search">Término de búsqueda para filtrar por nombre, descripción o autor.</param>
+    /// <param name="categoryId">ID de la categoría para filtrar las recetas.</param>
     [AllowAnonymous]
     [HttpGet("summaries")]
-    public async Task<IActionResult> GetAllSummaries()
+    public async Task<IActionResult> GetAllSummaries([FromQuery] string? search = null, [FromQuery] int? categoryId = null)
     {
-        var recipeSummaries = await _recipeService.GetAllSummariesAsync();
+        var recipeSummaries = await _recipeService.GetAllPublishedSummariesAsync(search, categoryId);
         return Ok(recipeSummaries);
     }
 
@@ -74,6 +83,18 @@ public class RecipesController : BaseApiController
         return Ok(count);
     }
 
+    /// <summary>
+    /// Obtiene todas las recetas completas (con pasos) creadas por el usuario autenticado.
+    /// </summary>
+    [HttpGet("my-full-recipes")]
+    [Authorize(Roles = "Chef,Admin")]
+    public async Task<IActionResult> GetMyFullRecipes()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var recipes = await _recipeService.GetFullRecipesByUserIdAsync(userId);
+        return Ok(recipes);
+    }
+
     #endregion
 
     #region --- POST Endpoints ---
@@ -103,20 +124,16 @@ public class RecipesController : BaseApiController
     [ProducesResponseType(404)]
     public async Task<IActionResult> Update(int id, RecipeUpdateDTO recipeUpdateDto)
     {
-        // 1. Obtener la receta para verificar quién es el autor.
         var recipe = await _recipeService.GetByIdAsync(id);
 
-        // 2. Obtener la información del usuario que hace la petición desde el token JWT.
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;
 
-        // 3. Lógica de Autorización: Permitir solo si el usuario es el autor O si es Admin.
         if (recipe.AuthorId != currentUserId && currentUserRole != "Admin")
         {
-            return Forbid(); // Devuelve un 403 Forbidden si no tiene permisos.
+            return Forbid();
         }
 
-        // 4. Si la autorización pasa, proceder con la actualización.
         await _recipeService.UpdateAsync(id, recipeUpdateDto);
         return NoContent();
     }
@@ -126,29 +143,26 @@ public class RecipesController : BaseApiController
     #region --- PATCH Endpoints ---
 
     /// <summary>
-    /// Actualiza el estado de una receta (solo para Admins).
+    /// Actualiza el estado de una receta (para el autor o un Admin).
     /// </summary>
     [HttpPatch("{id}/status")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Chef")]
     [ProducesResponseType(204)]
     [ProducesResponseType(403)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> UpdateStatus(int id, RecipeStatusUpdateDTO recipeStatusUpdateDto)
     {
-
+        // Verificación de autorización: Un Chef solo puede modificar sus propias recetas.
         var recipe = await _recipeService.GetByIdAsync(id);
+        var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;
 
-        Console.WriteLine($"Simulando cambio de estado para Receta ID {id} a '{recipeStatusUpdateDto.Status}'");
-
-        var fullRecipeDto = new RecipeUpdateDTO
+        if (currentUserRole != "Admin" && recipe.AuthorId != currentUserId)
         {
-            Name = recipe.Name,
-            Description = recipe.Description,
-            Steps = recipe.Steps.Select(s => new RecipeStepCreateDTO { Instruction = s.Instruction }).ToList(),
-            CategoryIds = recipe.Categories.Select(c => c.Id).ToList()
-        };
-        await _recipeService.UpdateAsync(id, fullRecipeDto);
+            return Forbid(); // 403 Forbidden si no es admin y no es el autor
+        }
 
+        await _recipeService.UpdateStatusAsync(id, recipeStatusUpdateDto);
 
         return NoContent();
     }
@@ -166,7 +180,6 @@ public class RecipesController : BaseApiController
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete(int id)
     {
-        // Lógica de autorización idéntica a la de Update.
         var recipe = await _recipeService.GetByIdAsync(id);
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var currentUserRole = User.FindFirstValue(ClaimTypes.Role)!;

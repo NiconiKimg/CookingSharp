@@ -20,5 +20,12 @@ namespace CookingSharp.Application.Contracts
         /// </summary>
         /// <returns>El número de solicitudes pendientes.</returns>
         Task<int> CountPendingAsync();
+
+        /// <summary>
+        /// Verifica si un usuario tiene alguna solicitud en estado "Pendiente".
+        /// </summary>
+        /// <param name="userId">El ID del usuario a verificar.</param>
+        /// <returns>True si el usuario tiene una solicitud pendiente, de lo contrario False.</returns>
+        Task<bool> HasPendingAppealAsync(int userId);
     }
 }

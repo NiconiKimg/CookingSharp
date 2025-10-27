@@ -7,92 +7,85 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CookingSharp.WindowsForms.RecipesControl
+namespace CookingSharp.WindowsForms.Features.Chef
 {
     /// <summary>
-    /// User Control para la gestión de recetas por parte del Administrador.
+    /// User Control que permite a los chefs explorar todas las recetas públicas del sistema.
+    /// Proporciona funcionalidades de búsqueda y filtrado de solo lectura.
     /// </summary>
-    public partial class UC_Recipes : UserControl
+    public partial class UC_Chef_ExploreRecipes : UserControl
     {
         private readonly RecipeApiClient _recipeApiClient;
         private readonly CategoryApiClient _categoryApiClient;
         private readonly System.Windows.Forms.Timer _searchTimer;
 
         /// <summary>
-        /// Constructor del User Control de Recetas.
+        /// Inicializa una nueva instancia de la clase <see cref="UC_Chef_ExploreRecipes"/>.
         /// </summary>
-        /// <param name="recipeApiClient">Cliente para interactuar con la API de recetas.</param>
-        /// <param name="categoryApiClient">Cliente para interactuar con la API de categorías.</param>
-        public UC_Recipes(RecipeApiClient recipeApiClient, CategoryApiClient categoryApiClient)
+        /// <param name="recipeApiClient">El cliente para interactuar con la API de recetas.</param>
+        /// <param name="categoryApiClient">El cliente para interactuar con la API de categorías.</param>
+        public UC_Chef_ExploreRecipes(RecipeApiClient recipeApiClient, CategoryApiClient categoryApiClient)
         {
             InitializeComponent();
             _recipeApiClient = recipeApiClient;
             _categoryApiClient = categoryApiClient;
-            this.Load += UCRecipes_Load;
+            this.Load += UC_Chef_ExploreRecipes_Load;
 
             _searchTimer = new System.Windows.Forms.Timer();
-            _searchTimer.Interval = 500;
+            _searchTimer.Interval = 500; // 500ms de espera para el debouncing
             _searchTimer.Tick += SearchTimer_Tick;
         }
 
         #region Event Handlers
 
-        private async void UCRecipes_Load(object sender, EventArgs e)
+        private async void UC_Chef_ExploreRecipes_Load(object sender, EventArgs e)
         {
             ConfigureGridView();
             await PopulateCategoryFilter();
-            await LoadRecipes();
+            await LoadPublicRecipes();
             DisplayRecipeDetails(null);
         }
-
-        private async void btnBlockRecipe_Click(object sender, EventArgs e) => await ProcessRecipeStatusChange("Blocked");
-        private async void btnUnblockRecipe_Click(object sender, EventArgs e) => await ProcessRecipeStatusChange("Published");
 
         private void dgvRecipes_SelectionChanged(object sender, EventArgs e)
         {
             DisplayRecipeDetails(GetSelectedRecipe());
-            UpdateButtonsState();
         }
 
-        /// <summary>
-        /// Reinicia el temporizador de búsqueda al cambiar el texto.
-        /// </summary>
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            _searchTimer.Stop(); // Reinicia el temporizador si el usuario sigue escribiendo
+            _searchTimer.Stop();
             _searchTimer.Start();
         }
 
-        /// <summary>
-        /// Reinicia el temporizador de búsqueda al cambiar la categoría seleccionada.
-        /// </summary>
         private void cmbCategoryFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _searchTimer.Stop();
             _searchTimer.Start();
         }
 
-        /// <summary>
-        /// Ejecuta la búsqueda cuando el temporizador finaliza.
-        /// </summary>
         private async void SearchTimer_Tick(object sender, EventArgs e)
         {
             _searchTimer.Stop();
             int? categoryId = (cmbCategoryFilter.SelectedItem as CategoryResponseDTO)?.Id;
-            await LoadRecipes(txtSearch.Text, categoryId);
+            await LoadPublicRecipes(txtSearch.Text, categoryId);
         }
 
         #endregion
 
         #region Private Methods
 
-        private async Task LoadRecipes(string? searchTerm = null, int? categoryId = null)
+        /// <summary>
+        /// Carga las recetas públicas desde la API, aplicando filtros opcionales.
+        /// </summary>
+        /// <param name="searchTerm">Término de búsqueda opcional.</param>
+        /// <param name="categoryId">ID de categoría opcional.</param>
+        private async Task LoadPublicRecipes(string? searchTerm = null, int? categoryId = null)
         {
             try
             {
                 var recipes = await _recipeApiClient.GetAllAsync(searchTerm, categoryId);
-                dgvRecipes.DataSource = recipes?.ToList();
-                UpdateButtonsState();
+                // Filtramos en el cliente para mostrar solo las publicadas (el rol de Chef no debe ver las bloqueadas)
+                dgvRecipes.DataSource = recipes?.Where(r => r.Status == "Published").ToList();
             }
             catch (Exception ex)
             {
@@ -100,41 +93,9 @@ namespace CookingSharp.WindowsForms.RecipesControl
             }
         }
 
-        private async Task ProcessRecipeStatusChange(string newStatus)
-        {
-            var selectedRecipe = GetSelectedRecipe();
-            if (selectedRecipe is null) return;
-
-            string action = newStatus == "Blocked" ? "bloquear" : "desbloquear";
-            if (selectedRecipe.Status.Equals(newStatus, StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show($"La receta ya se encuentra en estado '{newStatus}'.", "Acción no requerida", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (MessageBox.Show($"¿Está seguro de que desea {action} esta receta?", "Confirmar Acción", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                try
-                {
-                    var updateDto = new RecipeStatusUpdateDTO { Status = newStatus };
-                    // CORRECCIÓN: Se utiliza _recipeApiClient en lugar del _apiClient genérico.
-                    if (await _recipeApiClient.UpdateStatusAsync(selectedRecipe.Id, updateDto))
-                    {
-                        int? categoryId = (cmbCategoryFilter.SelectedItem as CategoryResponseDTO)?.Id;
-                        await LoadRecipes(txtSearch.Text, categoryId);
-                    }
-                    else
-                    {
-                        MessageBox.Show($"No se pudo {action} la receta.", "Error de Actualización", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error al {action} la receta: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
+        /// <summary>
+        /// Carga y configura el ComboBox de filtro por categorías.
+        /// </summary>
         private async Task PopulateCategoryFilter()
         {
             try
@@ -151,6 +112,9 @@ namespace CookingSharp.WindowsForms.RecipesControl
             }
         }
 
+        /// <summary>
+        /// Configura la apariencia y las columnas del DataGridView.
+        /// </summary>
         private void ConfigureGridView()
         {
             dgvRecipes.AutoGenerateColumns = false;
@@ -162,7 +126,7 @@ namespace CookingSharp.WindowsForms.RecipesControl
                 DataPropertyName = "Name",
                 HeaderText = "Nombre",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 40,
+                FillWeight = 50,
                 MinimumWidth = 200
             });
 
@@ -172,16 +136,8 @@ namespace CookingSharp.WindowsForms.RecipesControl
                 DataPropertyName = "AuthorName",
                 HeaderText = "Autor",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                FillWeight = 50,
                 MinimumWidth = 150
-            });
-
-            dgvRecipes.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "StatusColumn",
-                DataPropertyName = "Status",
-                HeaderText = "Estado",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 120
             });
 
             dgvRecipes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -211,6 +167,10 @@ namespace CookingSharp.WindowsForms.RecipesControl
             dgvRecipes.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
         }
 
+        /// <summary>
+        /// Muestra los detalles de la receta seleccionada en el panel lateral.
+        /// </summary>
+        /// <param name="recipe">La receta a mostrar.</param>
         private void DisplayRecipeDetails(RecipeResponseDTO? recipe)
         {
             if (recipe == null)
@@ -229,16 +189,13 @@ namespace CookingSharp.WindowsForms.RecipesControl
             }
         }
 
+        /// <summary>
+        /// Obtiene la receta seleccionada en el DataGridView.
+        /// </summary>
+        /// <returns>El DTO de la receta seleccionada.</returns>
         private RecipeResponseDTO? GetSelectedRecipe()
         {
             return dgvRecipes.CurrentRow?.DataBoundItem as RecipeResponseDTO;
-        }
-
-        private void UpdateButtonsState()
-        {
-            bool hasSelection = dgvRecipes.SelectedRows.Count > 0;
-            btnBlockRecipe.Enabled = hasSelection;
-            btnUnblockRecipe.Enabled = hasSelection;
         }
 
         #endregion

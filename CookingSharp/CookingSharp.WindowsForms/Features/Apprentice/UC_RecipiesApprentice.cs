@@ -1,6 +1,7 @@
 ﻿using CookingSharp.Application.DTOs;
 using CookingSharp.Clients;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,34 +9,113 @@ using System.Windows.Forms;
 
 namespace CookingSharp.WindowsForms.Features.Apprentice
 {
+    /// <summary>
+    /// User Control para que los Aprendices exploren las recetas públicas.
+    /// </summary>
     public partial class UC_RecipiesApprentice : UserControl
     {
-        private readonly RecipeApiClient _apiClient;
+        private readonly RecipeApiClient _recipeApiClient;
+        private readonly CategoryApiClient _categoryApiClient;
+        private readonly System.Windows.Forms.Timer _searchTimer;
 
-        public UC_RecipiesApprentice(RecipeApiClient apiClient)
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="UC_RecipiesApprentice"/>.
+        /// </summary>
+        /// <param name="recipeApiClient">El cliente para la API de recetas.</param>
+        /// <param name="categoryApiClient">El cliente para la API de categorías.</param>
+        public UC_RecipiesApprentice(RecipeApiClient recipeApiClient, CategoryApiClient categoryApiClient)
         {
             InitializeComponent();
-            _apiClient = apiClient;
+            _recipeApiClient = recipeApiClient;
+            _categoryApiClient = categoryApiClient;
             this.Load += UCApprentice_Load;
+
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 500;
+            _searchTimer.Tick += SearchTimer_Tick;
         }
+
+        #region Event Handlers
 
         private async void UCApprentice_Load(object sender, EventArgs e)
         {
             ConfigureGridView();
-            await LoadRecipes();
+            await PopulateCategoryFilter();
+            await LoadPublicRecipes();
             DisplayRecipeDetails(null);
         }
 
-        private async Task LoadRecipes()
+        private async void dgvRecipesApprentice_SelectionChanged(object sender, EventArgs e)
+        {
+            var selectedSummary = GetSelectedRecipeSummary();
+            if (selectedSummary == null)
+            {
+                DisplayRecipeDetails(null);
+                return;
+            }
+
+            try
+            {
+                // Hacemos una llamada para obtener los detalles completos, incluyendo los pasos
+                var fullRecipe = await _recipeApiClient.GetByIdAsync(selectedSummary.Id);
+                DisplayRecipeDetails(fullRecipe);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los detalles de la receta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DisplayRecipeDetails(null);
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            _searchTimer.Stop();
+            _searchTimer.Start();
+        }
+
+        private void cmbCategoryFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _searchTimer.Stop();
+            _searchTimer.Start();
+        }
+
+        private async void SearchTimer_Tick(object sender, EventArgs e)
+        {
+            _searchTimer.Stop();
+            int? categoryId = (cmbCategoryFilter.SelectedItem as CategoryResponseDTO)?.Id;
+            await LoadPublicRecipes(txtSearch.Text, categoryId);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task LoadPublicRecipes(string? searchTerm = null, int? categoryId = null)
         {
             try
             {
-                var recipes = await _apiClient.GetAllAsync();
+                var recipes = await _recipeApiClient.GetAllSummariesAsync(searchTerm, categoryId);
                 dgvRecipesApprentice.DataSource = recipes?.ToList();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar las recetas: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task PopulateCategoryFilter()
+        {
+            try
+            {
+                var categories = (await _categoryApiClient.GetAllAsync())?.ToList() ?? new List<CategoryResponseDTO>();
+                categories.Insert(0, new CategoryResponseDTO { Id = 0, Name = "Todas las categorías" });
+                cmbCategoryFilter.DataSource = categories;
+                cmbCategoryFilter.DisplayMember = "Name";
+                cmbCategoryFilter.ValueMember = "Id";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el filtro de categorías: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -71,7 +151,6 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             dgvRecipesApprentice.RowHeadersVisible = false;
             dgvRecipesApprentice.BackgroundColor = Color.White;
             dgvRecipesApprentice.BorderStyle = BorderStyle.None;
-
             dgvRecipesApprentice.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
             dgvRecipesApprentice.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvRecipesApprentice.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -80,7 +159,6 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             dgvRecipesApprentice.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvRecipesApprentice.EnableHeadersVisualStyles = false;
             dgvRecipesApprentice.ColumnHeadersHeight = 40;
-
             dgvRecipesApprentice.DefaultCellStyle.BackColor = Color.White;
             dgvRecipesApprentice.DefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
             dgvRecipesApprentice.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
@@ -109,19 +187,10 @@ namespace CookingSharp.WindowsForms.Features.Apprentice
             }
         }
 
-        private RecipeResponseDTO? GetSelectedRecipe()
+        private RecipeSummaryDTO? GetSelectedRecipeSummary()
         {
-            if (dgvRecipesApprentice.CurrentRow != null && dgvRecipesApprentice.CurrentRow.DataBoundItem is RecipeResponseDTO recipe)
-            {
-                return recipe;
-            }
-            return null;
+            return dgvRecipesApprentice.CurrentRow?.DataBoundItem as RecipeSummaryDTO;
         }
-
-        private void dgvRecipesApprentice_SelectionChanged(object sender, EventArgs e)
-        {
-            var selectedRecipe = GetSelectedRecipe();
-            DisplayRecipeDetails(selectedRecipe);
-        }
+        #endregion
     }
 }
