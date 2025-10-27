@@ -110,6 +110,18 @@ namespace WebApp.Auth
                 {
                     claims.Add(new Claim(ClaimTypes.Name, nameElement.GetString() ?? ""));
                 }
+
+                if (keyValuePairs.TryGetValue(ClaimTypes.GivenName, out var givenNameElement) ||
+                    keyValuePairs.TryGetValue("given_name", out givenNameElement))
+                {
+                    claims.Add(new Claim(ClaimTypes.GivenName, givenNameElement.GetString() ?? ""));
+                }
+
+                if (keyValuePairs.TryGetValue(ClaimTypes.Surname, out var surnameElement) ||
+                    keyValuePairs.TryGetValue("family_name", out surnameElement))
+                {
+                    claims.Add(new Claim(ClaimTypes.Surname, surnameElement.GetString() ?? ""));
+                }
             }
             return claims;
         }
