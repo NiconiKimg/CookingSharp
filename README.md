@@ -3,6 +3,7 @@
 CookingSharp es una plataforma completa para un recetario colaborativo, con aplicación web (Blazor WebAssembly), API RESTful y aplicación de escritorio Windows Forms, desarrollada con .NET 8 y C#.
 
 ## Tabla de Contenidos
+
 - [Descripción](#descripción)
 - [Características](#características)
 - [Arquitectura](#arquitectura)
@@ -18,21 +19,21 @@ CookingSharp es un sistema integral donde los usuarios pueden crear, compartir y
 
 ## Características
 
--  **Gestión de Recetas**: Crear, editar y publicar recetas con pasos detallados e imágenes (integración con Cloudinary)
--  **Sistema de Roles**: Aprendices, Chefs y Administradores con permisos diferenciados
--  **Menús Personalizados**: Los chefs pueden crear menús combinando múltiples recetas
--  **Sistema de Valoraciones**: Los usuarios pueden calificar recetas y menús
--  **Comentarios**: Interacción entre usuarios en cada receta
--  **Reportes en PDF**: Generación de reportes analíticos para administradores
--  **Autenticación JWT**: Sistema de autenticación seguro con tokens
--  **Múltiples Interfaces**: WebApp con MudBlazor y aplicación de escritorio Windows Forms
+- **Gestión de Recetas**: Crear, editar y publicar recetas con pasos detallados e imágenes (integración con Cloudinary)
+- **Sistema de Roles**: Aprendices, Chefs y Administradores con permisos diferenciados
+- **Menús Personalizados**: Los chefs pueden crear menús combinando múltiples recetas
+- **Sistema de Valoraciones**: Los usuarios pueden calificar recetas y menús
+- **Comentarios**: Interacción entre usuarios en cada receta
+- **Reportes en PDF**: Generación de reportes analíticos para administradores
+- **Autenticación JWT**: Sistema de autenticación seguro con tokens
+- **Múltiples Interfaces**: WebApp con MudBlazor y aplicación de escritorio Windows Forms
 
 ## Arquitectura
 
 El proyecto sigue los principios de **Clean Architecture** con una clara separación de responsabilidades entre capas. Además, implementa el patrón **Repository** y **Unit of Work** para la gestión de datos, y utiliza **AutoMapper** para el mapeo entre entidades de dominio y DTOs.
 
 ![Clean Architecture Diagram](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
-*Diagrama conceptual de Clean Architecture por Robert C. Martin.*
+_Diagrama conceptual de Clean Architecture por Robert C. Martin._
 
 ### Patrones Implementados
 
@@ -46,6 +47,7 @@ El proyecto sigue los principios de **Clean Architecture** con una clara separac
 ## Tecnologías Utilizadas
 
 ### Backend
+
 - **.NET 8**: Framework principal
 - **Entity Framework Core**: ORM para acceso a datos
 - **SQL Server**: Base de datos relacional
@@ -57,6 +59,7 @@ El proyecto sigue los principios de **Clean Architecture** con una clara separac
 - **Cloudinary**: Almacenamiento de imágenes
 
 ### Frontend
+
 - **Blazor WebAssembly**: Aplicación web SPA
 - **MudBlazor**: Biblioteca de componentes UI
 - **Windows Forms**: Aplicación de escritorio nativa
@@ -64,6 +67,7 @@ El proyecto sigue los principios de **Clean Architecture** con una clara separac
 ## Cómo Empezar
 
 Para ejecutar el proyecto, necesitarás tener instalado:
+
 - .NET 8 SDK
 - SQL Server (LocalDB o instancia completa)
 - Visual Studio 2022 (recomendado) o Visual Studio Code
@@ -277,17 +281,19 @@ El proyecto utiliza **SQL Server** con **Entity Framework Core** para la persist
 ### Migraciones
 
 Para crear una nueva migración:
+
 ```bash
 dotnet ef migrations add NombreDeLaMigracion --project CookingSharp.Infrastructure --startup-project CookingSharp.WebAPI
 ```
 
 Para aplicar migraciones:
+
 ```bash
 dotnet ef database update --project CookingSharp.Infrastructure --startup-project CookingSharp.WebAPI
 ```
 
 ## Repositorio
 
- **Código fuente y documentación completa en:**
+**Código fuente y documentación completa en:**
 
 [https://github.com/NiconiKimg/CookingSharp](https://github.com/NiconiKimg/CookingSharp)

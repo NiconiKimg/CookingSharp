@@ -1,8 +1,10 @@
 using CookingSharp.Application;
 using CookingSharp.Application.Services;
 using CookingSharp.Infrastructure;
+using CookingSharp.Infrastructure.Persistence;
 using CookingSharp.WebAPI.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -45,6 +47,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<CookingSharpDbContext>();
+        
+        context.Database.EnsureCreated();
+        
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Base de datos verificada/creada exitosamente.");
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error al verificar/crear la base de datos.");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {
