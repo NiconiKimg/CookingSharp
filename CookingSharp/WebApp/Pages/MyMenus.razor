@@ -3,54 +3,68 @@
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
 @inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
 @attribute [Authorize(Roles = "Chef, Admin")]
 
 <MudText Typo="Typo.h3" GutterBottom="true">Mis Menús</MudText>
 <MudText Class="mb-6">Organiza tus recetas en colecciones temáticas para compartirlas fácilmente.</MudText>
 
-<MudTable T="MenuResponseDTO" ServerData="ServerReload"
-          Dense="true" Hover="true" @ref="_table" Striped="true">
-    <ToolBarContent>
-        <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/menus/create">
-            Crear Nuevo Menú
-        </MudButton>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Nombre del Menú</MudTh>
-        <MudTh>Nº de Recetas</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Nombre">@context.Name</MudTd>
-        <MudTd DataLabel="Recetas">@context.Recipes.Count</MudTd>
-    </RowTemplate>
-    <NoRecordsContent>
-        <MudText>Aún no has creado ningún menú. ¡Anímate a crear el primero!</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Cargando tus menús...</MudText>
-    </LoadingContent>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/menus/create" Class="mb-4">
+    Crear Nuevo Menú
+</MudButton>
+
+@if (_menus == null)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="@_menus" Dense="true" Hover="true" Striped="true">
+        <HeaderContent>
+            <MudTh>Nombre del Menú</MudTh>
+            <MudTh>Nº de Recetas</MudTh>
+            <MudTh Style="text-align:right">Acciones</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nombre">@context.Name</MudTd>
+            <MudTd DataLabel="Recetas">@context.Recipes.Count</MudTd>
+            <MudTd DataLabel="Acciones" Style="text-align:right">
+                <MudIconButton OnClick="@(() => ViewMenu(context.Id))" Icon="@Icons.Material.Filled.Visibility" Color="Color.Default" Size="Size.Small" Title="Ver Menú" />
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>Aún no has creado ningún menú. ¡Anímate a crear el primero!</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Cargando tus menús...</MudText>
+        </LoadingContent>
+    </MudTable>
+}
+
 
 @code {
-    private MudTable<MenuResponseDTO> _table = null!;
-    private IEnumerable<MenuResponseDTO> _menus = new List<MenuResponseDTO>();
+    private List<MenuResponseDTO>? _menus;
 
-    private async Task<TableData<MenuResponseDTO>> ServerReload(TableState state, CancellationToken cancellationToken)
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMenus();
+    }
+
+    private async Task LoadMenus()
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<List<MenuResponseDTO>>("api/menus/my-menus", cancellationToken);
-            _menus = response ?? new List<MenuResponseDTO>();
+            _menus = await Http.GetFromJsonAsync<List<MenuResponseDTO>>("api/menus/my-menus");
         }
         catch (Exception ex)
         {
             Snackbar.Add($"Error al cargar tus menús: {ex.Message}", Severity.Error);
             _menus = new List<MenuResponseDTO>();
         }
-        return new TableData<MenuResponseDTO>() { TotalItems = _menus.Count(), Items = _menus };
+    }
+
+    private void ViewMenu(int menuId)
+    {
+        NavigationManager.NavigateTo($"/menu/{menuId}");
     }
 }

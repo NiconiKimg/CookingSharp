@@ -1,116 +1,129 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using WebApp.DTOs
-@using MudBlazor
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-<MudDialog>
-    <TitleContent>
-        <MudText Typo="Typo.h6">Solicitud para ser Chef</MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudText Class="mb-4">Explica por qué te gustaría convertirte en Chef. Tu solicitud será revisada por un administrador.</MudText>
-        <EditForm Model="@_model" OnValidSubmit="Submit">
-            <DataAnnotationsValidator />
-            <MudTextField @bind-Value="_model.Description"
-                          For="@(() => _model.Description)"
-                          Label="Tu motivación"
-                          Variant="Variant.Outlined"
-                          Lines="5" />
-        </EditForm>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="Cancel">Cancelar</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="@_isSubmitting">
-            @if (_isSubmitting)
-            {
-                <MudProgressCircular Indeterminate="true" Size="Size.Small" />
-            }
-            else
-            {
-                <span>Enviar Solicitud</span>
-            }
-        </MudButton>
-    </DialogActions>
-</MudDialog>
+@if (_isVisible)
+{
+    <div class="modal-overlay" @onclick="HandleOverlayClick">
+        <div class="modal-container" @onclick:stopPropagation="true">
+            <div class="modal-header">
+                <h2>Solicitud para ser Chef</h2>
+                <button class="close-button" @onclick="Cancel">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <p class="modal-description">
+                    Explica por qué te gustaría convertirte en Chef. Tu solicitud será revisada por un administrador.
+                </p>
+                
+                <EditForm Model="@_model" OnValidSubmit="Submit">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label for="description">Tu motivación</label>
+                        <InputTextArea 
+                            id="description"
+                            class="form-control" 
+                            @bind-Value="_model.Description" 
+                            rows="5"
+                            placeholder="Escribe aquí tu motivación..." />
+                        <ValidationMessage For="@(() => _model.Description)" />
+                    </div>
+                </EditForm>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="Cancel" disabled="@_isSubmitting">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" @onclick="Submit" disabled="@_isSubmitting">
+                    @if (_isSubmitting)
+                    {
+                        <span class="spinner"></span>
+                        <span>Enviando...</span>
+                    }
+                    else
+                    {
+                        <span>Enviar Solicitud</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
-    [CascadingParameter]
-    object? DialogInstance { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
 
     private AppealCreateModel _model = new();
     private bool _isSubmitting = false;
+    private bool _isVisible = true;
+
+    protected override void OnInitialized()
+    {
+        _isVisible = true;
+    }
 
     private async Task Submit()
     {
         if (string.IsNullOrWhiteSpace(_model.Description))
         {
-            Snackbar.Add("La descripción no puede estar vacía.", Severity.Warning);
+            Snackbar.Add("La descripción no puede estar vacía.", MudBlazor.Severity.Warning);
             return;
         }
 
         _isSubmitting = true;
-
-        var dto = new AppealCreateDTO { Description = _model.Description };
+        StateHasChanged();
 
         try
         {
+            var dto = new AppealCreateDTO { Description = _model.Description };
             var response = await Http.PostAsJsonAsync("api/appeals", dto);
+
             if (response.IsSuccessStatusCode)
             {
-                Snackbar.Add("Solicitud enviada con éxito.", Severity.Success);
-
-                try
-                {
-                    if (DialogInstance != null)
-                    {
-                        var t = DialogInstance.GetType();
-                        var cancel = t.GetMethod("Cancel", System.Type.EmptyTypes);
-                        if (cancel != null)
-                        {
-                            cancel.Invoke(DialogInstance, null);
-                        }
-                        else
-                        {
-                            var closeNoArg = t.GetMethod("Close", System.Type.EmptyTypes);
-                            if (closeNoArg != null)
-                                closeNoArg.Invoke(DialogInstance, null);
-                            else
-                            {
-                                var closeWithArg = t.GetMethod("Close", new[] { typeof(object) });
-                                if (closeWithArg != null)
-                                    closeWithArg.Invoke(DialogInstance, new object[] { null });
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                }
+                Snackbar.Add("Solicitud enviada con éxito.", MudBlazor.Severity.Success);
+                await CloseModal(true);
             }
             else
             {
-                var error = await response.Content.ReadAsStringAsync();
-                Snackbar.Add($"Error al enviar la solicitud: {error}", Severity.Error);
-                _isSubmitting = false;
+                var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                var errorMessage = errorResponse?.Error ?? "Ocurrió un error al procesar la solicitud.";
+                Snackbar.Add($"Error: {errorMessage}", MudBlazor.Severity.Error);
+                await CloseModal(false);
             }
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error de conexión: {ex.Message}", Severity.Error);
+            Snackbar.Add($"Error de conexión: {ex.Message}", MudBlazor.Severity.Error);
+            await CloseModal(false);
+        }
+        finally
+        {
             _isSubmitting = false;
         }
     }
 
-    void Cancel()
+    private async Task Cancel()
     {
-        try
+        await CloseModal(false);
+    }
+
+    private void HandleOverlayClick()
+    {
+        if (!_isSubmitting)
         {
-            DialogInstance?.GetType().GetMethod("Cancel", System.Type.EmptyTypes)?.Invoke(DialogInstance, null);
+            _ = Cancel();
         }
-        catch
-        {
-        }
+    }
+
+    private async Task CloseModal(bool success)
+    {
+        _isVisible = false;
+        StateHasChanged();
+        await Task.Delay(100);
+        await OnClose.InvokeAsync(success);
     }
 
     public class AppealCreateModel
@@ -118,5 +131,10 @@
         [Required(ErrorMessage = "Debes escribir una motivación.")]
         [StringLength(1000, ErrorMessage = "La descripción no puede exceder los 1000 caracteres.")]
         public string Description { get; set; } = "";
+    }
+
+    private class ErrorResponse
+    {
+        public string? Error { get; set; }
     }
 }
