@@ -13,86 +13,89 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Mis Recetas</MudText>
 <MudText Class="mb-6">Aquí puedes gestionar todas las recetas que has creado.</MudText>
 
-<MudTable T="RecipeResponseDTO"
-          ServerData="ServerReload"
-          Dense="true" Hover="true" @ref="_table" Striped="true">
-    <ToolBarContent>
-        <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/recipes/create">
-            Crear Nueva Receta
-        </MudButton>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Nombre</MudTh>
-        <MudTh>Estado</MudTh>
-        <MudTh Style="text-align:right">Acciones</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Nombre">@context.Name</MudTd>
-        <MudTd DataLabel="Estado">
-            <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small">@context.Status</MudChip>
-        </MudTd>
-        <MudTd DataLabel="Acciones" Style="text-align:right">
+<MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/recipes/create" Class="mb-4">
+    Crear Nueva Receta
+</MudButton>
 
-            @if (context.Status == "Draft")
-            {
-                <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Published", "publicar"))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small">Publicar</MudButton>
-            }
-            @if (context.Status == "Published")
-            {
-                <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Archived", "archivar"))" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small">Archivar</MudButton>
-            }
-            @if (context.Status == "Archived")
-            {
-                <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Draft", "mover a borrador"))" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small">A Borrador</MudButton>
-            }
+@if (_recipes == null)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="@_recipes" Dense="true" Hover="true" Striped="true">
+        <HeaderContent>
+            <MudTh>Nombre</MudTh>
+            <MudTh>Estado</MudTh>
+            <MudTh Style="text-align:right">Acciones</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nombre">@context.Name</MudTd>
+            <MudTd DataLabel="Estado">
+                <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small">@context.Status</MudChip>
+            </MudTd>
+            <MudTd DataLabel="Acciones" Style="text-align:right">
+                <MudStack Row="true" Justify="Justify.FlexEnd">
 
-            <MudTooltip Text="Solo se pueden editar recetas en estado 'Borrador'" Disabled="@(context.Status == "Draft")">
-                <MudButton OnClick="@(() => EditRecipe(context.Id))"
-                           Variant="Variant.Filled"
-                           Color="Color.Default"
-                           Size="Size.Small"
-                           Class="ml-2"
-                           Disabled="@(context.Status != "Draft")">
-                    Editar
-                </MudButton>
-            </MudTooltip>
+                    <MudIconButton OnClick="@(() => ViewRecipe(context.Id))" Icon="@Icons.Material.Filled.Visibility" Color="Color.Default" Size="Size.Small" Title="Ver Receta" />
 
-            <MudIconButton OnClick="@(() => DeleteRecipe(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ml-2" />
+                    @if (context.Status == "Draft")
+                    {
+                        <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Published", "publicar"))" Variant="Variant.Filled" Color="Color.Success" Size="Size.Small">Publicar</MudButton>
+                    }
+                    @if (context.Status == "Published")
+                    {
+                        <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Archived", "archivar"))" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small">Archivar</MudButton>
+                    }
+                    @if (context.Status == "Archived")
+                    {
+                        <MudButton OnClick="@(() => ChangeRecipeStatus(context, "Draft", "mover a borrador"))" Variant="Variant.Filled" Color="Color.Info" Size="Size.Small">A Borrador</MudButton>
+                    }
 
-        </MudTd>
-    </RowTemplate>
-    <NoRecordsContent>
-        <MudText>No has creado ninguna receta todavía.</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Cargando tus recetas...</MudText>
-    </LoadingContent>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
+                    <MudTooltip Text="Solo se pueden editar recetas en estado 'Borrador'" Disabled="@(context.Status == "Draft")">
+                        <MudButton OnClick="@(() => EditRecipe(context.Id))"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Default"
+                                   Size="Size.Small"
+                                   Class="ml-2"
+                                   Disabled="@(context.Status != "Draft")">
+                            Editar
+                        </MudButton>
+                    </MudTooltip>
+
+                    <MudIconButton OnClick="@(() => DeleteRecipe(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" Class="ml-2" />
+                </MudStack>
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>No has creado ninguna receta todavía.</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Cargando tus recetas...</MudText>
+        </LoadingContent>
+    </MudTable>
+}
+
 
 @code {
-    private MudTable<RecipeResponseDTO> _table = null!;
-    private IEnumerable<RecipeResponseDTO> _recipes = new List<RecipeResponseDTO>();
-    private int _totalItems;
+    private List<RecipeResponseDTO>? _recipes;
 
-    private async Task<TableData<RecipeResponseDTO>> ServerReload(TableState state, CancellationToken cancellationToken)
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRecipes();
+    }
+
+    private async Task LoadRecipes()
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<List<RecipeResponseDTO>>("api/recipes/my-full-recipes", cancellationToken);
-            _recipes = response ?? new List<RecipeResponseDTO>();
+            _recipes = await Http.GetFromJsonAsync<List<RecipeResponseDTO>>("api/recipes/my-full-recipes");
         }
         catch (Exception ex)
         {
             Snackbar.Add($"Error al cargar tus recetas: {ex.Message}", Severity.Error);
             _recipes = new List<RecipeResponseDTO>();
         }
-
-        _totalItems = _recipes.Count();
-        return new TableData<RecipeResponseDTO>() { TotalItems = _totalItems, Items = _recipes };
     }
 
     private Color GetStatusColor(string status) => status switch
@@ -107,6 +110,11 @@
     private void EditRecipe(int recipeId)
     {
         NavigationManager.NavigateTo($"/recipes/edit/{recipeId}");
+    }
+
+    private void ViewRecipe(int recipeId)
+    {
+        NavigationManager.NavigateTo($"/recipe/{recipeId}");
     }
 
     private async Task ChangeRecipeStatus(RecipeResponseDTO recipe, string newStatus, string actionText)
@@ -126,7 +134,7 @@
             if (response.IsSuccessStatusCode)
             {
                 Snackbar.Add($"¡Receta actualizada a '{newStatus}' con éxito!", Severity.Success);
-                await _table.ReloadServerData();
+                await LoadRecipes();
             }
             else
             {
@@ -156,7 +164,7 @@
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Receta eliminada con éxito.", Severity.Success);
-                    await _table.ReloadServerData();
+                    await LoadRecipes();
                 }
                 else
                 {

@@ -75,11 +75,11 @@
             tlpMainLayout.Controls.Add(pnlForm, 1, 0);
             tlpMainLayout.Dock = DockStyle.Fill;
             tlpMainLayout.Location = new Point(0, 0);
-            tlpMainLayout.Margin = new Padding(4, 3, 4, 3);
+            tlpMainLayout.Margin = new Padding(6, 4, 6, 4);
             tlpMainLayout.Name = "tlpMainLayout";
             tlpMainLayout.RowCount = 1;
             tlpMainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlpMainLayout.Size = new Size(1105, 701);
+            tlpMainLayout.Size = new Size(1579, 1031);
             tlpMainLayout.TabIndex = 0;
             // 
             // pnlBranding
@@ -87,11 +87,11 @@
             pnlBranding.BackColor = Color.FromArgb(31, 41, 55);
             pnlBranding.Controls.Add(tlpBrandingContent);
             pnlBranding.Dock = DockStyle.Fill;
-            pnlBranding.Location = new Point(4, 3);
-            pnlBranding.Margin = new Padding(4, 3, 4, 3);
+            pnlBranding.Location = new Point(6, 4);
+            pnlBranding.Margin = new Padding(6, 4, 6, 4);
             pnlBranding.Name = "pnlBranding";
-            pnlBranding.Padding = new Padding(38, 0, 38, 0);
-            pnlBranding.Size = new Size(489, 695);
+            pnlBranding.Padding = new Padding(54, 0, 54, 0);
+            pnlBranding.Size = new Size(698, 1023);
             pnlBranding.TabIndex = 0;
             // 
             // tlpBrandingContent
@@ -101,14 +101,14 @@
             tlpBrandingContent.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlpBrandingContent.Controls.Add(flpBrandingStack, 0, 1);
             tlpBrandingContent.Dock = DockStyle.Fill;
-            tlpBrandingContent.Location = new Point(38, 0);
-            tlpBrandingContent.Margin = new Padding(4, 3, 4, 3);
+            tlpBrandingContent.Location = new Point(54, 0);
+            tlpBrandingContent.Margin = new Padding(6, 4, 6, 4);
             tlpBrandingContent.Name = "tlpBrandingContent";
             tlpBrandingContent.RowCount = 3;
             tlpBrandingContent.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpBrandingContent.RowStyles.Add(new RowStyle());
             tlpBrandingContent.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpBrandingContent.Size = new Size(413, 695);
+            tlpBrandingContent.Size = new Size(590, 1023);
             tlpBrandingContent.TabIndex = 0;
             // 
             // flpBrandingStack
@@ -122,10 +122,10 @@
             flpBrandingStack.Controls.Add(lblFeature2);
             flpBrandingStack.Controls.Add(lblFeature3);
             flpBrandingStack.FlowDirection = FlowDirection.TopDown;
-            flpBrandingStack.Location = new Point(79, 206);
-            flpBrandingStack.Margin = new Padding(4, 3, 4, 3);
+            flpBrandingStack.Location = new Point(112, 299);
+            flpBrandingStack.Margin = new Padding(6, 4, 6, 4);
             flpBrandingStack.Name = "flpBrandingStack";
-            flpBrandingStack.Size = new Size(254, 282);
+            flpBrandingStack.Size = new Size(365, 425);
             flpBrandingStack.TabIndex = 2;
             flpBrandingStack.WrapContents = false;
             // 
@@ -133,10 +133,10 @@
             // 
             picLogo.Anchor = AnchorStyles.None;
             picLogo.Image = Properties.Resources.roundedLogo;
-            picLogo.Location = new Point(77, 0);
-            picLogo.Margin = new Padding(0, 0, 0, 25);
+            picLogo.Location = new Point(111, 0);
+            picLogo.Margin = new Padding(0, 0, 0, 37);
             picLogo.Name = "picLogo";
-            picLogo.Size = new Size(100, 100);
+            picLogo.Size = new Size(143, 147);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
@@ -147,10 +147,10 @@
             lblAppName.AutoSize = true;
             lblAppName.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblAppName.ForeColor = Color.White;
-            lblAppName.Location = new Point(53, 125);
-            lblAppName.Margin = new Padding(4, 0, 4, 0);
+            lblAppName.Location = new Point(70, 184);
+            lblAppName.Margin = new Padding(6, 0, 6, 0);
             lblAppName.Name = "lblAppName";
-            lblAppName.Size = new Size(148, 40);
+            lblAppName.Size = new Size(224, 60);
             lblAppName.TabIndex = 1;
             lblAppName.Text = "Cooking#";
             // 
@@ -158,10 +158,10 @@
             // 
             lblSlogan.AutoSize = true;
             lblSlogan.ForeColor = Color.WhiteSmoke;
-            lblSlogan.Location = new Point(0, 165);
-            lblSlogan.Margin = new Padding(0, 0, 0, 37);
+            lblSlogan.Location = new Point(0, 244);
+            lblSlogan.Margin = new Padding(0, 0, 0, 54);
             lblSlogan.Name = "lblSlogan";
-            lblSlogan.Size = new Size(254, 17);
+            lblSlogan.Size = new Size(342, 25);
             lblSlogan.TabIndex = 2;
             lblSlogan.Text = "Sistema de gestión de recetas profesional";
             // 
@@ -172,10 +172,10 @@
             lblFeature1.ForeColor = Color.White;
             lblFeature1.Image = Properties.Resources.circleCheck;
             lblFeature1.ImageAlign = ContentAlignment.MiddleLeft;
-            lblFeature1.Location = new Point(12, 219);
-            lblFeature1.Margin = new Padding(12, 0, 0, 6);
+            lblFeature1.Location = new Point(17, 323);
+            lblFeature1.Margin = new Padding(17, 0, 0, 9);
             lblFeature1.Name = "lblFeature1";
-            lblFeature1.Size = new Size(207, 17);
+            lblFeature1.Size = new Size(299, 28);
             lblFeature1.TabIndex = 1;
             lblFeature1.Text = "        Gestión completa de recetas";
             lblFeature1.TextAlign = ContentAlignment.MiddleLeft;
@@ -187,10 +187,10 @@
             lblFeature2.ForeColor = Color.White;
             lblFeature2.Image = Properties.Resources.circleCheck;
             lblFeature2.ImageAlign = ContentAlignment.MiddleLeft;
-            lblFeature2.Location = new Point(12, 242);
-            lblFeature2.Margin = new Padding(12, 0, 0, 6);
+            lblFeature2.Location = new Point(17, 360);
+            lblFeature2.Margin = new Padding(17, 0, 0, 9);
             lblFeature2.Name = "lblFeature2";
-            lblFeature2.Size = new Size(239, 17);
+            lblFeature2.Size = new Size(348, 28);
             lblFeature2.TabIndex = 3;
             lblFeature2.Text = "        Panel de administración avanzado";
             lblFeature2.TextAlign = ContentAlignment.MiddleLeft;
@@ -202,10 +202,10 @@
             lblFeature3.ForeColor = Color.White;
             lblFeature3.Image = Properties.Resources.circleCheck;
             lblFeature3.ImageAlign = ContentAlignment.MiddleLeft;
-            lblFeature3.Location = new Point(12, 265);
-            lblFeature3.Margin = new Padding(12, 0, 0, 0);
+            lblFeature3.Location = new Point(17, 397);
+            lblFeature3.Margin = new Padding(17, 0, 0, 0);
             lblFeature3.Name = "lblFeature3";
-            lblFeature3.Size = new Size(218, 17);
+            lblFeature3.Size = new Size(315, 28);
             lblFeature3.TabIndex = 4;
             lblFeature3.Text = "        Seguridad y control de acceso";
             lblFeature3.TextAlign = ContentAlignment.MiddleLeft;
@@ -216,11 +216,11 @@
             pnlForm.Controls.Add(btnClose);
             pnlForm.Controls.Add(tlpFormContent);
             pnlForm.Dock = DockStyle.Fill;
-            pnlForm.Location = new Point(501, 3);
-            pnlForm.Margin = new Padding(4, 3, 4, 3);
+            pnlForm.Location = new Point(716, 4);
+            pnlForm.Margin = new Padding(6, 4, 6, 4);
             pnlForm.Name = "pnlForm";
-            pnlForm.Padding = new Padding(62, 0, 62, 0);
-            pnlForm.Size = new Size(600, 695);
+            pnlForm.Padding = new Padding(89, 0, 89, 0);
+            pnlForm.Size = new Size(857, 1023);
             pnlForm.TabIndex = 1;
             // 
             // btnClose
@@ -234,10 +234,10 @@
             btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnClose.ForeColor = Color.FromArgb(64, 64, 64);
-            btnClose.Location = new Point(560, 0);
-            btnClose.Margin = new Padding(4, 3, 4, 3);
+            btnClose.Location = new Point(800, 0);
+            btnClose.Margin = new Padding(6, 4, 6, 4);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(39, 38);
+            btnClose.Size = new Size(56, 56);
             btnClose.TabIndex = 99;
             btnClose.Text = "X";
             btnClose.UseVisualStyleBackColor = false;
@@ -250,14 +250,14 @@
             tlpFormContent.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlpFormContent.Controls.Add(flpFormControls, 0, 1);
             tlpFormContent.Dock = DockStyle.Fill;
-            tlpFormContent.Location = new Point(62, 0);
-            tlpFormContent.Margin = new Padding(4, 3, 4, 3);
+            tlpFormContent.Location = new Point(89, 0);
+            tlpFormContent.Margin = new Padding(6, 4, 6, 4);
             tlpFormContent.Name = "tlpFormContent";
             tlpFormContent.RowCount = 3;
             tlpFormContent.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpFormContent.RowStyles.Add(new RowStyle());
             tlpFormContent.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpFormContent.Size = new Size(476, 695);
+            tlpFormContent.Size = new Size(679, 1023);
             tlpFormContent.TabIndex = 0;
             // 
             // flpFormControls
@@ -274,10 +274,10 @@
             flpFormControls.Controls.Add(chkVerPassword);
             flpFormControls.Controls.Add(btnAcceder);
             flpFormControls.FlowDirection = FlowDirection.TopDown;
-            flpFormControls.Location = new Point(13, 169);
-            flpFormControls.Margin = new Padding(4, 3, 4, 3);
+            flpFormControls.Location = new Point(17, 244);
+            flpFormControls.Margin = new Padding(6, 4, 6, 4);
             flpFormControls.Name = "flpFormControls";
-            flpFormControls.Size = new Size(450, 356);
+            flpFormControls.Size = new Size(644, 534);
             flpFormControls.TabIndex = 0;
             flpFormControls.WrapContents = false;
             // 
@@ -286,9 +286,9 @@
             lblLoginTitle.AutoSize = true;
             lblLoginTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             lblLoginTitle.Location = new Point(0, 0);
-            lblLoginTitle.Margin = new Padding(0, 0, 0, 6);
+            lblLoginTitle.Margin = new Padding(0, 0, 0, 9);
             lblLoginTitle.Name = "lblLoginTitle";
-            lblLoginTitle.Size = new Size(218, 45);
+            lblLoginTitle.Size = new Size(327, 65);
             lblLoginTitle.TabIndex = 0;
             lblLoginTitle.Text = "Iniciar Sesión";
             // 
@@ -297,10 +297,10 @@
             lblLoginSubtitle.AutoSize = true;
             lblLoginSubtitle.Font = new Font("Segoe UI", 9.75F);
             lblLoginSubtitle.ForeColor = Color.DimGray;
-            lblLoginSubtitle.Location = new Point(0, 51);
-            lblLoginSubtitle.Margin = new Padding(0, 0, 0, 63);
+            lblLoginSubtitle.Location = new Point(0, 74);
+            lblLoginSubtitle.Margin = new Padding(0, 0, 0, 93);
             lblLoginSubtitle.Name = "lblLoginSubtitle";
-            lblLoginSubtitle.Size = new Size(176, 17);
+            lblLoginSubtitle.Size = new Size(261, 28);
             lblLoginSubtitle.TabIndex = 1;
             lblLoginSubtitle.Text = "Accede a tu panel de control";
             // 
@@ -308,10 +308,10 @@
             // 
             lblEmailPrompt.AutoSize = true;
             lblEmailPrompt.Font = new Font("Segoe UI", 9F);
-            lblEmailPrompt.Location = new Point(0, 131);
-            lblEmailPrompt.Margin = new Padding(0, 0, 0, 6);
+            lblEmailPrompt.Location = new Point(0, 195);
+            lblEmailPrompt.Margin = new Padding(0, 0, 0, 9);
             lblEmailPrompt.Name = "lblEmailPrompt";
-            lblEmailPrompt.Size = new Size(36, 15);
+            lblEmailPrompt.Size = new Size(54, 25);
             lblEmailPrompt.TabIndex = 2;
             lblEmailPrompt.Text = "Email";
             // 
@@ -320,30 +320,30 @@
             txtEmail.BorderStyle = BorderStyle.None;
             txtEmail.Font = new Font("Segoe UI", 11.25F);
             txtEmail.ForeColor = Color.FromArgb(64, 64, 64);
-            txtEmail.Location = new Point(6, 152);
-            txtEmail.Margin = new Padding(6, 0, 6, 0);
+            txtEmail.Location = new Point(9, 229);
+            txtEmail.Margin = new Padding(9, 0, 9, 0);
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "tu@email.com";
-            txtEmail.Size = new Size(438, 20);
+            txtEmail.Size = new Size(626, 30);
             txtEmail.TabIndex = 1;
             // 
             // pnlEmailUnderline
             // 
             pnlEmailUnderline.BackColor = Color.Gainsboro;
-            pnlEmailUnderline.Location = new Point(6, 172);
-            pnlEmailUnderline.Margin = new Padding(6, 0, 6, 25);
+            pnlEmailUnderline.Location = new Point(9, 259);
+            pnlEmailUnderline.Margin = new Padding(9, 0, 9, 37);
             pnlEmailUnderline.Name = "pnlEmailUnderline";
-            pnlEmailUnderline.Size = new Size(438, 1);
+            pnlEmailUnderline.Size = new Size(626, 1);
             pnlEmailUnderline.TabIndex = 4;
             // 
             // lblPasswordPrompt
             // 
             lblPasswordPrompt.AutoSize = true;
             lblPasswordPrompt.Font = new Font("Segoe UI", 9F);
-            lblPasswordPrompt.Location = new Point(0, 211);
-            lblPasswordPrompt.Margin = new Padding(0, 13, 0, 6);
+            lblPasswordPrompt.Location = new Point(0, 316);
+            lblPasswordPrompt.Margin = new Padding(0, 19, 0, 9);
             lblPasswordPrompt.Name = "lblPasswordPrompt";
-            lblPasswordPrompt.Size = new Size(67, 15);
+            lblPasswordPrompt.Size = new Size(101, 25);
             lblPasswordPrompt.TabIndex = 5;
             lblPasswordPrompt.Text = "Contraseña";
             // 
@@ -352,10 +352,10 @@
             pnlPasswordContainer.Controls.Add(txtPassword);
             pnlPasswordContainer.Controls.Add(picTogglePassword);
             pnlPasswordContainer.Controls.Add(pnlPasswordUnderline);
-            pnlPasswordContainer.Location = new Point(6, 232);
-            pnlPasswordContainer.Margin = new Padding(6, 0, 6, 8);
+            pnlPasswordContainer.Location = new Point(9, 350);
+            pnlPasswordContainer.Margin = new Padding(9, 0, 9, 12);
             pnlPasswordContainer.Name = "pnlPasswordContainer";
-            pnlPasswordContainer.Size = new Size(438, 30);
+            pnlPasswordContainer.Size = new Size(626, 44);
             pnlPasswordContainer.TabIndex = 8;
             // 
             // txtPassword
@@ -366,16 +366,17 @@
             txtPassword.Location = new Point(0, 0);
             txtPassword.Margin = new Padding(0);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(412, 20);
+            txtPassword.Size = new Size(589, 30);
             txtPassword.TabIndex = 2;
             // 
             // picTogglePassword
             // 
             picTogglePassword.Cursor = Cursors.Hand;
             picTogglePassword.Dock = DockStyle.Right;
-            picTogglePassword.Location = new Point(412, 0);
+            picTogglePassword.Location = new Point(589, 0);
+            picTogglePassword.Margin = new Padding(4);
             picTogglePassword.Name = "picTogglePassword";
-            picTogglePassword.Size = new Size(26, 29);
+            picTogglePassword.Size = new Size(37, 43);
             picTogglePassword.SizeMode = PictureBoxSizeMode.CenterImage;
             picTogglePassword.TabIndex = 9;
             picTogglePassword.TabStop = false;
@@ -385,9 +386,10 @@
             // 
             pnlPasswordUnderline.BackColor = Color.Gainsboro;
             pnlPasswordUnderline.Dock = DockStyle.Bottom;
-            pnlPasswordUnderline.Location = new Point(0, 29);
+            pnlPasswordUnderline.Location = new Point(0, 43);
+            pnlPasswordUnderline.Margin = new Padding(4);
             pnlPasswordUnderline.Name = "pnlPasswordUnderline";
-            pnlPasswordUnderline.Size = new Size(438, 1);
+            pnlPasswordUnderline.Size = new Size(626, 1);
             pnlPasswordUnderline.TabIndex = 5;
             // 
             // chkVerPassword
@@ -395,10 +397,10 @@
             chkVerPassword.AutoSize = true;
             chkVerPassword.Cursor = Cursors.Hand;
             chkVerPassword.Font = new Font("Segoe UI", 9F);
-            chkVerPassword.Location = new Point(6, 270);
-            chkVerPassword.Margin = new Padding(6, 0, 4, 17);
+            chkVerPassword.Location = new Point(9, 406);
+            chkVerPassword.Margin = new Padding(9, 0, 6, 25);
             chkVerPassword.Name = "chkVerPassword";
-            chkVerPassword.Size = new Size(130, 19);
+            chkVerPassword.Size = new Size(194, 29);
             chkVerPassword.TabIndex = 3;
             chkVerPassword.Text = "Mostrar Contraseña";
             chkVerPassword.UseVisualStyleBackColor = true;
@@ -415,10 +417,10 @@
             btnAcceder.FlatStyle = FlatStyle.Flat;
             btnAcceder.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             btnAcceder.ForeColor = Color.White;
-            btnAcceder.Location = new Point(37, 306);
+            btnAcceder.Location = new Point(54, 460);
             btnAcceder.Margin = new Padding(0);
             btnAcceder.Name = "btnAcceder";
-            btnAcceder.Size = new Size(375, 50);
+            btnAcceder.Size = new Size(536, 74);
             btnAcceder.TabIndex = 4;
             btnAcceder.Text = "Acceder";
             btnAcceder.UseVisualStyleBackColor = false;
@@ -426,13 +428,13 @@
             // 
             // FrmLogin
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1105, 701);
+            ClientSize = new Size(1579, 1031);
             Controls.Add(tlpMainLayout);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(4, 3, 4, 3);
+            Margin = new Padding(6, 4, 6, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmLogin";

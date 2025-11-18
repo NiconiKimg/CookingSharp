@@ -7,11 +7,15 @@
 @using MudBlazor
 @inject HttpClient Http
 @inject ISnackbar Snackbar
-@inject IDialogService DialogService
 @attribute [Authorize(Roles = "Apprentice")]
 
 <MudText Typo="Typo.h3" GutterBottom="true">Conviértete en Chef</MudText>
 <MudText Class="mb-6">Aquí puedes enviar una solicitud para obtener el rol de Chef y ver el estado de tus solicitudes anteriores.</MudText>
+
+@if (_showDialog)
+{
+    <CreateAppealDialog OnClose="HandleDialogClose" />
+}
 
 <MudTable T="AppealResponseDTO" ServerData="ServerReload"
           Dense="true" Hover="true" @ref="_table" Striped="true">
@@ -43,6 +47,7 @@
 @code {
     private MudTable<AppealResponseDTO> _table = null!;
     private IEnumerable<AppealResponseDTO> _applications = new List<AppealResponseDTO>();
+    private bool _showDialog = false;
 
     private async Task<TableData<AppealResponseDTO>> ServerReload(TableState state, CancellationToken cancellationToken)
     {
@@ -67,36 +72,21 @@
         _ => Color.Default
     };
 
-    private async Task OpenCreateApplicationDialog()
+    private void OpenCreateApplicationDialog()
     {
-        var dialog = await DialogService.ShowAsync<CreateAppealDialog>("Nueva Solicitud");
-        var result = await dialog.Result;
+        _showDialog = true;
+    }
 
-        bool cancelled = false;
-        if (result != null)
-        {
-            var t = result.GetType();
-            var prop = t.GetProperty("Cancelled")
-                   ?? t.GetProperty("Canceled")
-                   ?? t.GetProperty("IsCancelled")
-                   ?? t.GetProperty("IsCanceled");
-
-            if (prop != null && prop.PropertyType == typeof(bool))
-            {
-                try
-                {
-                    cancelled = (bool?)prop.GetValue(result) ?? false;
-                }
-                catch
-                {
-                    cancelled = false;
-                }
-            }
-        }
-
-        if (!cancelled)
+    private async Task HandleDialogClose(bool success)
+    {
+        _showDialog = false;
+        
+        // Si fue exitoso, recargar la tabla
+        if (success)
         {
             await _table.ReloadServerData();
         }
+        
+        StateHasChanged();
     }
 }
